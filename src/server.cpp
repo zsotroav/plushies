@@ -3,11 +3,17 @@
 //
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <thread>
 #include <future>
 #include <utility>
+#include <string>
+#include <vector>
 #include "server.h"
 #include "player.h"
+
+using std::string, std::stoi;
 
 namespace plushies {
 
@@ -20,8 +26,47 @@ namespace plushies {
         std::cout << future0.get() << " - " << future1.get() << std::endl;
     }
 
-    Server::Server(plushies::Player player0, plushies::Player player1) {
-        players[0] = std::move(player0);
-        players[1] = std::move(player1);
+    std::vector<string> readCSV(std::ifstream& ifstream) {
+        string line, word;
+
+        std::getline(ifstream, line);
+        std::vector<string> row;
+        std::stringstream ss(line);
+        while (std::getline(ss, word, ';'))
+            row.push_back(word);
+
+        return row;
+    }
+
+    Server::Server(const string& brandFile,
+                   const string& actionFile) {
+        std::ifstream ifbrand(brandFile, std::ios::in);
+        while (ifbrand.good()) {
+            auto l = readCSV(ifbrand);
+
+
+            int arr[] = { stoi(l[3]), stoi(l[4]), stoi(l[5]), stoi(l[6]), stoi(l[7]), stoi(l[8]) };
+            this->brands.push_back(Brand(
+                    l[0],
+                    static_cast<type>(stoi(l[1])),
+                    static_cast<type>(stoi(l[2])),
+                    arr));
+        }
+        ifbrand.close();
+
+        std::ifstream ifaction(actionFile, std::ios::in);
+        while (ifaction.good()) {
+            auto l = readCSV(ifaction);
+
+            this->actions.push_back(Action(
+                    l[0],       // Name
+                    stoi(l[1]), // Base Power/Damage
+                    stoi(l[2]), // Accuracy
+                    std::stod(l[3]), // Priority mod
+                    static_cast<type>(stoi(l[4])),
+                    static_cast<ActionCategory>(stoi(l[5]))));
+        }
+        ifaction.close();
+
     }
 }

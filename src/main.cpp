@@ -18,7 +18,7 @@ int main() {
     Action *ac2 = new Action("b", 10, 100, 2, type::NORMAL, ActionCategory::Physical);
 
     int st[] = {100, 90, 45, 45, 90, 60 };
-    Brand br = Brand(1, "Blahaj", type::WATER, type::NONE, st);
+    Brand br = Brand("Blahaj", type::WATER, type::NONE, st);
 
     int uv[] = {63, 40, 45, 20, 32, 10};
     Action* actions[] = { ac1, ac2, nullptr, nullptr};
@@ -28,7 +28,9 @@ int main() {
     p0.addPlush(pl);
     p1.addPlush(pl);
 
-    Server s = Server(p0, p1);
+    Server s = Server();
+    s.RegisterPlayer(p0);
+    s.RegisterPlayer(p1);
 
     s.serverLoop();
 

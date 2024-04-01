@@ -13,7 +13,6 @@ using namespace plushies;
 
 /// Getters
 
-int Plush::getBrandId() { return brand.getID(); }
 Brand& Plush::getBrand() { return brand; }
 int Plush::getHP() { return health; }
 int Plush::getUV(StatOrder uvo) { return UV[uvo]; }

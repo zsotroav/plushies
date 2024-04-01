@@ -25,7 +25,7 @@ attack damage. The six stats are the following:
   - Health (HP)
   - Attack (Atk)
   - Defense (Def)
-  - Speed (Spd)
+  - Speed (Spe)
   - Special Attack (SpA)
   - Special Defense (SpD)
 - **Brand:** A general group of creatures that have shared base stats
@@ -90,3 +90,18 @@ connection details and get accepted by the host.
 
 Before the game begins, players don't see the other's selected plush, only the
 number of plushes.
+
+## File formats
+Files are stored in a CSV format with the following format:
+
+### data/brands.txt
+Used for storing the brands in the game.
+```csv
+NAME; BASE_TYPE_ID; SECONDARY_TYPE_ID; HP; ATK; DEF; SPD; SPA; SPE
+```
+
+### data/actions.txt
+Used for storing the actions available to use in the game
+```csv
+NAME; BASE_POWER; ACCURACY; SPEED_MULTIPLYER; TYPE_ID; CATEGORY_ID
+```

@@ -12,7 +12,6 @@ using std::string;
 
 namespace plushies {
     class Brand {
-        int id;
         string name;
         type baseType;
         type secondaryType;
@@ -20,14 +19,13 @@ namespace plushies {
 
     public:
         // Getters
-        int getID();
         string getName();
         type getBaseType();
         type getSecondaryType();
         int getBaseStat(StatOrder stat);
 
         // ctor
-        Brand(int id, string name, type base, type secondary, const int baseStats[6]);
+        Brand(string name, type base, type secondary, const int baseStats[6]);
     };
 }
 

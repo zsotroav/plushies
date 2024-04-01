@@ -7,11 +7,13 @@
 #define _NHF_SERVER_H
 
 #include <vector>
+#include <string>
 #include "action.h"
 #include "common.h"
 #include "player.h"
 #include "plush.h"
 
+using std::string;
 
 namespace plushies {
 
@@ -40,7 +42,12 @@ namespace plushies {
 
         void serverLoop();
 
-        Server(Player player0, Player player1);
+        inline void RegisterPlayer(Player p, int num = 0) {
+            players[num] = std::move(p);
+        }
+
+        Server(const string& brandFile = "data/brands.txt",
+               const string& actionFile = "data/actions.txt");
     };
 }
 
