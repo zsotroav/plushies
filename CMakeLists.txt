@@ -7,7 +7,7 @@ include_directories(include)
 include_directories(src)
 include_directories(lib)
 
-add_executable(_NHF src/main.cpp
+add_executable(Plushies src/main.cpp
 
         lib/memtrace.h
         lib/memtrace.cpp
