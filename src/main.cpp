@@ -1,18 +1,36 @@
+/*
+ * Due to CPORTA's weird testing requirements this file is only an entry point
+ * to the application and with the CPORTA compile flag it will only compile
+ * the tests and the base logic of the game without any UI
+ */
+
 #include <iostream>
-#include "plush.h"
-#include "memtrace.h"
-#include "server.h"
 
-using namespace plushies;
 
+#ifdef CPORTA
+
+//TODO: TEST
+//#include "test.h"
+
+#else
+
+#include "menu.h"
+
+#endif
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+#ifdef CPORTA
+    //dotest();
+#else
+    menu();
 
+#endif
+    return 0;
+}
 
-
-
+/*
     std::cout << (type::GRASS >> type::WATER) << std::endl;
+
 
     Action *ac1 = new Action("a", 50, 100, 1, type::WATER, ActionCategory::Physical);
     Action *ac2 = new Action("b", 10, 100, 2, type::NORMAL, ActionCategory::Physical);
@@ -45,5 +63,4 @@ int main() {
     delete ac1;
     delete ac2;
 
-    return 0;
-}
+*/
