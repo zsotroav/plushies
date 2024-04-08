@@ -2,8 +2,8 @@
 // Created by zsotroav on 2024-03-24.
 //
 
-#ifndef NHF_ACTION_H
-#define NHF_ACTION_H
+#ifndef PLUSHIES_ACTION_H
+#define PLUSHIES_ACTION_H
 
 #include "common.h"
 #include <string>
@@ -32,4 +32,4 @@ namespace plushies {
     };
 }
 
-#endif //NHF_ACTION_H
+#endif //PLUSHIES_ACTION_H

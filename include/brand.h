@@ -2,8 +2,8 @@
 // Created by zsotroav on 2024-03-24.
 //
 
-#ifndef NHF_BRAND_H
-#define NHF_BRAND_H
+#ifndef PLUSHIES_BRAND_H
+#define PLUSHIES_BRAND_H
 
 #include <string>
 #include "common.h"
@@ -29,4 +29,4 @@ namespace plushies {
     };
 }
 
-#endif //NHF_BRAND_H
+#endif //PLUSHIES_BRAND_H

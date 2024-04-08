@@ -3,8 +3,8 @@
 //
 
 
-#ifndef _NHF_SERVER_H
-#define _NHF_SERVER_H
+#ifndef PLUSHIES_SERVER_H
+#define PLUSHIES_SERVER_H
 
 #include <vector>
 #include <string>
@@ -51,4 +51,4 @@ namespace plushies {
     };
 }
 
-#endif //_NHF_SERVER_H
+#endif //PLUSHIES_SERVER_H

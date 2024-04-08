@@ -4,8 +4,8 @@
 
 /// @file Common data structures and enums
 
-#ifndef NHF_COMMON_H
-#define NHF_COMMON_H
+#ifndef PLUSHIES_COMMON_H
+#define PLUSHIES_COMMON_H
 
 
 namespace plushies {
@@ -64,4 +64,4 @@ namespace plushies {
 
 double operator>>(plushies::type attacker, plushies::type target);
 
-#endif //NHF_COMMON_H
+#endif //PLUSHIES_COMMON_H

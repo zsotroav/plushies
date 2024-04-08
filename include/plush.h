@@ -1,8 +1,8 @@
 //
 // Created by zsotroav on 2024-03-22.
 //
-#ifndef NHF_PLUSH_H
-#define NHF_PLUSH_H
+#ifndef PLUSHIES_PLUSH_H
+#define PLUSHIES_PLUSH_H
 
 #include <string>
 #include "action.h"
@@ -73,4 +73,4 @@ namespace plushies {
 }
 
 
-#endif //NHF_PLUSH_H
+#endif //PLUSHIES_PLUSH_H

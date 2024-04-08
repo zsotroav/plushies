@@ -2,8 +2,8 @@
 // Created by zsotroav on 2024-03-24.
 //
 
-#ifndef _NHF_PLAYER_H
-#define _NHF_PLAYER_H
+#ifndef PLUSHIES_PLAYER_H
+#define PLUSHIES_PLAYER_H
 
 #include <vector>
 #include "common.h"
@@ -23,4 +23,4 @@ namespace plushies {
 
 } // plushies
 
-#endif //_NHF_PLAYER_H
+#endif //PLUSHIES_PLAYER_H
