@@ -62,6 +62,7 @@ to play in:
 - **Plush count:** The number of plushes to use (1-3)
 - **Play against:** What you want to play against
   - **Overlord:** You will play against a basic AI
+  - **Player 2:** A second player on the same computer
   - **LAN play:** A second player from their own computer
 
 ### Plush configuration screen
