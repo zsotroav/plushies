@@ -22,7 +22,7 @@
 
 
 ## About
-Plush Monsters' fight club is a basic command-line turn-based battle system
+Plush Monsters' Fight Club is a basic command-line turn-based battle system
 emulator made as the big homework for the "Basics of Programming 2" course.
 
 ## Definitions
@@ -44,10 +44,10 @@ learn.
   - **Categories:** Moves can be in the *Physical* or *Special* category.
   These categories affect which statistics are used for damage calculations.
   - **Power:** Each move has a base power for damage calculations.
-  - **Accuracy:** Attacks can miss and for example, a low accuracy can 
+  - **Accuracy:** Attacks can miss, and for example, a low accuracy can 
   balance high base power for moves.
   - **Energy:** Every move can only be used a limited number of times. 
-  This varies move by move and even failed moves decrease the move's energy.
+  This varies move by move; failed moves also decrease the move's energy.
   - **Priority:** Moves may have a priority value that can override the
   order of attacking. 
 - **Type:** Plushes can have one or two types while moves always have one.
@@ -76,16 +76,13 @@ to play in:
 If custom or detailed mode was selected, you will be asked to select the 
 following details for each of your plushes:
 1. Plush's brand
-1. Up to four moves for the plush
-1. Exact UVs (if in detailed mode)
-
-If local player 2 was selected, the same screens will appear again to configure
-the second player's plushes.
+2. Up to four moves for the plush
+3. Exact UVs (if in detailed mode)
 
 There is an option to save or load the current plush into/from a file.
 
 #### LAN play (network connection setup)
-If LAN play was selected, you are first asked if you want to host the game or
+If LAN play was selected you are first asked if you want to host the game or
 connect to another player's game.
 
 If you are hosting, all required information for the connection will be
@@ -117,8 +114,6 @@ During the player's turn, they may choose one of these actions:
 
 ## File formats
 Files are stored in a CSV format (using semicolons) with the following layouts:
-(Spaces are only for ease of reading, the file may not contain spaces in front
-of or after the semicolon)
 
 ### data/brands.csv
 Used for storing the brands in the game.
@@ -141,8 +136,8 @@ BRAND_ID; MOVE_ID_1; MOVE_ID_2; ...
 ```
 
 ## AI Players 
-If the "Overlord" opponent is selected at the beginning of the game, the player
-will play against a randomly picked AI opponent:
+If the "Overlord" opponent option is selected at the beginning of the game, the 
+player will play against a randomly picked AI opponent:
 * Dennis: Picks moves randomly
 * Clyde: Waits 5-10 seconds before selecting a move randomly
 * Ninty: Will always use the move that deals the most damage, always has high
@@ -150,7 +145,6 @@ will play against a randomly picked AI opponent:
 * Waffles: Will always use the move that deals the least damage, but always has
   high stat plush with medium-high UVs (40-50)
 * Muffins: Will always use the move that deals the least damage
-
 
 ## Network Communication protocol
 LAN play may use any TCP port for communicating using plaintext messages.
@@ -160,13 +154,14 @@ Each message is made up of the various parts separated by whitespaces:
 
 #### Connection
 * Client connection request: 
-`CONN <PROTOCOL VERSION> <GAME MODE> <PLUSH COUNT>`
-* Server response: `CACK`
+`CONN <VERSION> <GAME MODE> <PLUSH COUNT>`
+* Server response: `CACK` - Acknowledge the request
   * If the settings do not match the server's, ask the user to accept the
-  connection.
+  connection manually otherwise send accept automatically.
+  * Mismatched version requests should be denied automatically.
 * Server response accept/deny:
   * Accept: `CACC` - Continue sync
-  * Deny: `CDEN` - The erver waits for another request and the client is sent 
+  * Deny: `CDEN` - The server waits for another request, and the client is sent
   back to the config menu
 * Base sync: First client to server, then server to client
   * Send plush data (one for each plush): 
@@ -183,7 +178,7 @@ Since the damage is deterministic, there is no need to sync the whole game
 state every turn, only the changes. The server will let the client know of
 all changes using the same messages the client sends.
 
-Optionally, the same `PSYN` (Plush Sync) command can be sent by the server, or
+Optionally, the same `PSYN` (Plush Sync) command can be sent by the server or
 be requested by the client using the `RSYN` (Request Sync) command. The
 client is forced to accept all synced-down information from the server to fix
 any potential errors.
