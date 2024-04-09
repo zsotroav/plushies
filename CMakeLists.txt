@@ -12,6 +12,9 @@ add_executable(Plushies src/main.cpp
         lib/memtrace.h
         lib/memtrace.cpp
 
+        lib/econio.c
+        lib/econio.h
+
         include/Server.h
 
         include/plush.h
@@ -26,6 +29,10 @@ add_executable(Plushies src/main.cpp
         src/player.cpp
         include/player.h
         src/server.cpp
+        src/menu.cpp
+        include/menu.h
+        src/game.cpp
+        include/game.h
 
 )
 

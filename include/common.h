@@ -60,6 +60,13 @@ namespace plushies {
         type type;
         ActionCategory category;
     };
+
+    enum GameMode {
+        RANDOM = 0,
+        CUSTOM = 1,
+        DETAIL = 2,
+        INVALID = -1
+    };
 }
 
 double operator>>(plushies::type attacker, plushies::type target);

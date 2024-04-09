@@ -1,11 +1,20 @@
-#include <iostream>
-#include "plush.h"
-#include "memtrace.h"
-#include "server.h"
+#ifdef CPORTA
 
+#include "test.h"
+
+int main() { dotest(); return 0; }
+
+#else
+
+#include "game.h"
+
+int main() {gameInit(); return 0; }
+
+#endif
+
+
+/*
 using namespace plushies;
-
-
 int main() {
     std::cout << "Hello, World!" << std::endl;
 
@@ -47,3 +56,4 @@ int main() {
 
     return 0;
 }
+*/
