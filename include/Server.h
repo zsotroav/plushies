@@ -47,7 +47,8 @@ namespace plushies {
         }
 
         Server(const string& brandFile = "data/brands.csv",
-               const string& actionFile = "data/actions.csv");
+               const string& actionFile = "data/actions.csv",
+               const string& actionLearnFile = "data/action_learn.csv");
     };
 }
 

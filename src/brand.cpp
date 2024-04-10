@@ -7,12 +7,6 @@
 
 using namespace plushies;
 
-string Brand::getName() { return name; }
-type Brand::getBaseType() { return baseType; }
-type Brand::getSecondaryType() { return secondaryType; }
-int Brand::getBaseStat(StatOrder stat) { return baseStats[stat]; }
-
-
 plushies::Brand::Brand(string name, plushies::type base,
                        plushies::type secondary, const int *baseStats) :
         name(std::move(name)), baseType(base), secondaryType(secondary) {

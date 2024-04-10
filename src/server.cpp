@@ -39,7 +39,8 @@ namespace plushies {
     }
 
     Server::Server(const string& brandFile,
-                   const string& actionFile) {
+                   const string& actionFile,
+                   const string& actionLearnFile) {
         std::ifstream ifbrand(brandFile, std::ios::in);
         while (ifbrand.good()) {
             auto l = readCSV(ifbrand);
@@ -67,6 +68,16 @@ namespace plushies {
                     static_cast<ActionCategory>(stoi(l[5]))));
         }
         ifaction.close();
+
+        std::ifstream iflearn(actionLearnFile, std::ios::in);
+        while (iflearn.good()) {
+            auto l = readCSV(iflearn);
+            for (int i = 1; i < l.size(); i++) {
+                brands[stoi(l[0])].addLearnableAction(&actions[stoi(l[i])]);    
+            }
+            
+        }
+        iflearn.close();
 
     }
 }
