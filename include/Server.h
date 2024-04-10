@@ -20,7 +20,8 @@ namespace plushies {
     class Server {
         ActionContext executedActions[2];
 
-        Player players[2];
+        Player* players[2];
+    public:
 
         /**
          * @brief Available Brands in the current game
@@ -31,7 +32,6 @@ namespace plushies {
          * @brief Available actions in the current game
          */
         std::vector<Action> actions;
-    public:
 
         /**
          * @brief Get all info about a specific player to sync local state
@@ -42,13 +42,18 @@ namespace plushies {
 
         void serverLoop();
 
-        inline void RegisterPlayer(Player p, int num = 0) {
-            players[num] = std::move(p);
+        inline void RegisterPlayer(Player* p, int num = 0) {
+            players[num] = p;
         }
 
         Server(const string& brandFile = "data/brands.csv",
                const string& actionFile = "data/actions.csv",
                const string& actionLearnFile = "data/action_learn.csv");
+
+        ~Server() {
+            delete players[0];
+            delete players[1];
+        }
     };
 }
 

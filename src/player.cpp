@@ -1,9 +1,6 @@
 //
 // Created by zsotroav on 2024-03-24.
 //
-#include <random>
-#include <thread>
-#include <chrono>
 #include <iostream>
 #include "player.h"
 
@@ -20,14 +17,8 @@ namespace plushies {
         return counter;
     }
 
-    int Player::ready() {
-
-        std::random_device r;
-        std::default_random_engine e1(r());
-        std::uniform_int_distribution<int> uniform_dist(1, 6);
-        int mean = uniform_dist(e1);
-        std::this_thread::sleep_for(std::chrono::seconds(mean));
-        return mean;
+    int Player::ready(const Plush& opponent) {
+        return 0;
     }
 
 }

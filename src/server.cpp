@@ -17,13 +17,13 @@ using std::string, std::stoi;
 
 namespace plushies {
 
-    Player Server::syncPlayer(int id) { return players[id]; }
+    Player Server::syncPlayer(int id) { return *players[id]; }
 
     void Server::serverLoop() {
-        auto future0 = std::async(&Player::ready, &players[0]);
-        auto future1 = std::async(&Player::ready, &players[1]);
+        auto future0 = std::async(&Player::ready, players[0], players[1]->active());
+        auto future1 = std::async(&Player::ready, players[1], players[0]->active());
 
-        std::cout << future0.get() << " - " << future1.get() << std::endl;
+        std::wcout << future0.get() << " - " << future1.get() << std::endl;
     }
 
     std::vector<string> readCSV(std::ifstream& ifstream) {

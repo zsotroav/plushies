@@ -33,6 +33,8 @@ add_executable(Plushies src/main.cpp
         include/menu.h
         src/game.cpp
         include/game.h
+        include/overlord.h
+        src/overlord.cpp
 
 )
 
