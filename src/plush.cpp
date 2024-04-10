@@ -11,12 +11,6 @@ using plushies::ActionContext;
 using namespace plushies;
 
 
-/// Getters
-
-Brand& Plush::getBrand() { return brand; }
-int Plush::getHP() { return health; }
-int Plush::getUV(StatOrder uvo) { return UV[uvo]; }
-
 
 /// Ctor
 
@@ -38,6 +32,17 @@ Plush::Plush(Brand& brand, const int UV[6],
 
 
 /// Functions
+
+int Plush::validMoves() const {
+    int cnt = 0;
+    for (int i = 0; i < 4; ++i) {
+        if (Actions[i] == nullptr ||
+            Actions[i]->getType() == NONE)
+            continue;
+        cnt++;
+    }
+    return cnt;
+}
 
 int Plush::calcDamage(Action* act) {
     // TODO: Accuracy and random variation
@@ -93,14 +98,20 @@ ActionContext Plush::operator>>(int actionId) {
 void Plush::operator<<(int hp) { health -= hp; }
 
 void Plush::operator<<(ActionContext damage) {
-    auto cat = damage.category == Physical ? Def : SpD;
-    *this << floor(damage.damage *
-                  (damage.type >> brand.getBaseType()) *
-                  (damage.type >> brand.getSecondaryType())
-
-                  /
-
-                  (brand.getBaseStat(cat) * (UV[cat] / 120.0 + 1))
-            );
+    *this << (damage >> *this);
 }
 
+int operator>>(const ActionContext& damage, const Plush& target) {
+    auto cat = damage.category == Physical ? Def : SpD;
+    auto brand = target.getBrand();
+    return floor(damage.damage *
+                 (damage.type >> brand.getBaseType()) *
+                 (damage.type >> brand.getSecondaryType())
+
+                 /
+
+                 (brand.getBaseStat(cat) *
+                 (target.getUV(cat) / 120.0 + 1))
+    );
+
+}

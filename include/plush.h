@@ -25,12 +25,13 @@ namespace plushies {
 
         /// Getters
         int getBrandId();
-        Brand& getBrand();
-        int getHP();
-        int getUV(StatOrder uvo);
-
+        [[nodiscard]] inline Brand& getBrand() const { return brand; }
+        [[nodiscard]] inline int getHP() const { return health; };
+        [[nodiscard]] inline int getUV(StatOrder uvo) const { return UV[uvo]; }
 
         /// Functions
+        int validMoves() const;
+
         int calcDamage(Action* act);
         int calcDamage(int actionId);
 
@@ -71,6 +72,15 @@ namespace plushies {
         Plush(Brand& brand, const int UV[6], Action* actions[4]);
     };
 }
+
+/**
+ * @brief Get exact amount of damage dealt by an Action context on a plush
+ * @param lhs Action Context attacking the plush
+ * @param rhs Plush being attacked
+ * @return Damage after all defense and type calculations.
+ */
+int operator>>(const plushies::ActionContext& lhs,
+               const plushies::Plush& rhs);
 
 
 #endif //PLUSHIES_PLUSH_H

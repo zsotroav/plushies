@@ -69,6 +69,14 @@ namespace plushies {
     };
 }
 
+/**
+ * @brief Get a random number between a and b
+ * @param a Random from (inclusive)
+ * @param b Random to (inclusive)
+ * @returns pseudo random int
+ */
+int random(int a, int b);
+
 double operator>>(plushies::type attacker, plushies::type target);
 
 #endif //PLUSHIES_COMMON_H
