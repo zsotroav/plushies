@@ -38,5 +38,6 @@ add_executable(Plushies src/main.cpp
 
 add_compile_definitions(MEMTRACE)
 
-configure_file(data/brands.txt data/brands.txt COPYONLY)
-configure_file(data/actions.txt data/actions.txt COPYONLY)
+configure_file(data/brands.csv data/brands.csv COPYONLY)
+configure_file(data/actions.csv data/actions.csv COPYONLY)
+configure_file(data/action_learn.csv data/action_learn.csv COPYONLY)

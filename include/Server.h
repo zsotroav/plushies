@@ -46,8 +46,8 @@ namespace plushies {
             players[num] = std::move(p);
         }
 
-        Server(const string& brandFile = "data/brands.txt",
-               const string& actionFile = "data/actions.txt");
+        Server(const string& brandFile = "data/brands.csv",
+               const string& actionFile = "data/actions.csv");
     };
 }
 
