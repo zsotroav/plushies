@@ -84,12 +84,12 @@ namespace plushies {
 
     Plush Server::createRandomPlush(int bst, int movepwr, 
                                     int uvmin, int uvmax) {
-        int brandid = random(0, brands.size());
+        int brandid = random(0, brands.size() - 1);
         bool bsts = bst >= 0;
         
         while ((brands[brandid].baseStatTotal() < bst && bsts) ||
                (brands[brandid].baseStatTotal() > -1* bst && !bsts)) 
-            brandid = random(0, brands.size());
+            brandid = random(0, brands.size() - 1);
 
         int uv[] = {random(uvmin, uvmax),
                     random(uvmin, uvmax),
@@ -106,8 +106,8 @@ namespace plushies {
         if (learn.size() <= 4)
             for (int i = 0; i < learn.size(); i++) ac[i] = learn[i];           
         else 
-            for (int i = 0; i < 4; i++) ac[i] = learn[random(0, learn.size())];
-    
+            for (auto & i : ac) i = learn[random(0, learn.size()-1)];
+
         return Plush(brands[brandid], uv, ac);
     }
 }
