@@ -5,14 +5,6 @@
 
 using namespace plushies;
 
-/// Getters
-
-int Action::getDamage() { return damage; }
-int Action::getAccuracy() { return accuracy; }
-double Action::getPriority() { return priority; }
-ActionCategory Action::getCategory() { return category; }
-plushies::type Action::getType() { return type; }
-
 
 /// Constructors
 

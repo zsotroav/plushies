@@ -21,11 +21,12 @@ namespace plushies {
     public:
         /// Getters
 
-        int getDamage();
-        int getAccuracy();
-        double getPriority();
-        ActionCategory getCategory();
-        plushies::type getType();
+        inline string getName() const { return name; }
+        inline int getDamage() const { return damage; }
+        inline int getAccuracy() const { return accuracy; }
+        inline double getPriority() const { return priority; }
+        inline ActionCategory getCategory() const { return category; }
+        inline plushies::type getType() const { return type; }
 
         Action(string name, int dam, int acc, double pri, plushies::type typ,
                ActionCategory cat);

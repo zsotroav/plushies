@@ -7,6 +7,8 @@
 #ifndef PLUSHIES_COMMON_H
 #define PLUSHIES_COMMON_H
 
+#include <ostream>
+#include <string>
 
 namespace plushies {
     const double relationChart[9][9] = {
@@ -78,5 +80,11 @@ namespace plushies {
 int random(int a, int b);
 
 double operator>>(plushies::type attacker, plushies::type target);
+
+std::wostream& operator<<(std::wostream& os, plushies::type type);
+
+std::wostream& operator<<(std::wostream& os, plushies::ActionCategory ac);
+
+std::wstring convertUFT8(const std::string& s);
 
 #endif //PLUSHIES_COMMON_H

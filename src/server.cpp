@@ -48,11 +48,11 @@ namespace plushies {
 
 
             int arr[] = { stoi(l[3]), stoi(l[4]), stoi(l[5]), stoi(l[6]), stoi(l[7]), stoi(l[8]) };
-            this->brands.push_back(Brand(
+            this->brands.emplace_back(
                     l[0],
                     static_cast<type>(stoi(l[1])),
                     static_cast<type>(stoi(l[2])),
-                    arr));
+                    arr);
         }
         ifbrand.close();
 
@@ -60,13 +60,13 @@ namespace plushies {
         while (ifaction.good()) {
             auto l = readCSV(ifaction);
 
-            this->actions.push_back(Action(
+            this->actions.emplace_back(
                     l[0],       // Name
                     stoi(l[1]), // Base Power/Damage
                     stoi(l[2]), // Accuracy
                     std::stod(l[3]), // Priority mod
                     static_cast<type>(stoi(l[4])),
-                    static_cast<ActionCategory>(stoi(l[5]))));
+                    static_cast<ActionCategory>(stoi(l[5])));
         }
         ifaction.close();
 
