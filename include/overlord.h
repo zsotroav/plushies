@@ -9,6 +9,7 @@
 #include "common.h"
 #include "plush.h"
 #include "player.h"
+#include "server.h"
 
 
 namespace plushies::overlord {
@@ -17,8 +18,14 @@ namespace plushies::overlord {
      */
     class Dennis : public plushies::Player {
     public:
-        inline int ready(const Plush& opponent) override
-        { return random(1, active().validMoves()); }
+        int ready(const Plush& opponent) override;
+
+        /**
+         * @brief Generate AI with random plushes
+         * @param s Server for the available brands and actions
+         * @param count Number of plushes to generate
+         */
+        Dennis(Server& s, int count);
     };
 
     /**
@@ -27,6 +34,13 @@ namespace plushies::overlord {
     class Clyde : public plushies::Player {
     public:
         int ready(const Plush& opponent) override;
+        
+        /**
+         * @brief Generate AI with random plushes
+         * @param s Server for the available brands and actions
+         * @param count Number of plushes to generate
+         */
+        Clyde(Server& s, int count);
     };
 
     /**
@@ -35,6 +49,13 @@ namespace plushies::overlord {
     class Ninty : public plushies::Player {
     public:
         int ready(const Plush& opponent) override;
+
+        /**
+         * @brief Generate AI with random, but strong plushes
+         * @param s Server for the available brands and actions
+         * @param count Number of plushes to generate
+         */
+        Ninty(Server& s, int count);
     };
 
     /**
@@ -43,6 +64,13 @@ namespace plushies::overlord {
     class Waffles : public plushies::Player {
     public:
         int ready(const Plush& opponent) override;
+
+        /**
+         * @brief Generate AI with random, but strong plushes
+         * @param s Server for the available brands and actions
+         * @param count Number of plushes to generate
+         */
+        Waffles(Server& s, int count);
     };
 
     /**
@@ -51,6 +79,13 @@ namespace plushies::overlord {
     class Muffins : public plushies::Player {
     public:
         int ready(const Plush& opponent) override;
+        
+        /**
+         * @brief Generate AI with random plushes
+         * @param s Server for the available brands and actions
+         * @param count Number of plushes to generate
+         */
+        Muffins(Server& s, int count);
     };
 } // plushies::overlord
 

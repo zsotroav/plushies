@@ -10,6 +10,7 @@
 #include <utility>
 #include <string>
 #include <vector>
+#include "common.h"
 #include "server.h"
 #include "player.h"
 
@@ -79,5 +80,34 @@ namespace plushies {
         }
         iflearn.close();
 
+    }
+
+    Plush Server::createRandomPlush(int bst, int movepwr, 
+                                    int uvmin, int uvmax) {
+        int brandid = random(0, brands.size());
+        bool bsts = bst >= 0;
+        
+        while ((brands[brandid].baseStatTotal() < bst && bsts) ||
+               (brands[brandid].baseStatTotal() > -1* bst && !bsts)) 
+            brandid = random(0, brands.size());
+
+        int uv[] = {random(uvmin, uvmax),
+                    random(uvmin, uvmax),
+                    random(uvmin, uvmax),
+                    random(uvmin, uvmax),
+                    random(uvmin, uvmax),
+                    random(uvmin, uvmax)};
+
+        auto learn = brands[brandid].getLearnableActions();
+        
+        Action* ac[] = { nullptr, nullptr, nullptr, nullptr};
+
+        // TODO: implement movepwr
+        if (learn.size() <= 4)
+            for (int i = 0; i < learn.size(); i++) ac[i] = learn[i];           
+        else 
+            for (int i = 0; i < 4; i++) ac[i] = learn[random(0, learn.size())];
+    
+        return Plush(brands[brandid], uv, ac);
     }
 }

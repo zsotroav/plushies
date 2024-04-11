@@ -28,6 +28,12 @@ namespace plushies {
         inline type getSecondaryType() const { return secondaryType; }
         inline int getBaseStat(const StatOrder stat) const { return baseStats[stat]; }
 
+        inline int baseStatTotal() const { 
+            return baseStats[0] + baseStats[1] + baseStats[2] + 
+                   baseStats[3] + baseStats[4] + baseStats[5];
+        }
+
+        inline std::vector<Action*> getLearnableActions() const { return learnActions; }
 
         /// Setters
         inline void addLearnableAction(Action* ac) { learnActions.push_back(ac); }

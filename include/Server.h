@@ -40,6 +40,16 @@ namespace plushies {
          */
         Player syncPlayer(int id);
 
+        /**
+         * @brief Generate a random plush with optional strength restrictions 
+         * @param bst Minimum Base Stat Total (negative for maximum)
+         * @param movepwr Miminum move power (negative for max)
+         * @param uvmin minimum values for UVs
+         * @param uvmax maximum values for UVs
+         */
+        Plush createRandomPlush(int bst = 0, int movepwr = 0, 
+                                int uvmin = 0, int uvmax = 63);
+
         void serverLoop();
 
         inline void RegisterPlayer(Player* p, int num = 0) {
