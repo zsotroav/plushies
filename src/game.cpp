@@ -3,12 +3,12 @@
 //
 #include <fcntl.h>      // for _setmode
 #include <iostream>
+#include "common.h"
 #include "econio.h"
 #include "menu.h"
 #include "menu_plush_create.h"
-#include "common.h"
-#include "server.h"
 #include "overlord.h"
+#include "server.h"
 
 #include "game.h"
 

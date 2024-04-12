@@ -3,16 +3,12 @@
 //
 
 #include <iostream>
-#include <locale>
-#include <codecvt>
 #include <string>
 
 #include <iomanip>
-#include <iostream>
 #include "action.h"
 #include "brand.h"
 #include "common.h"
-#include "player.h"
 #include "plush.h"
 #include "server.h"
 
@@ -70,12 +66,9 @@ void printDetail(int i, std::string s, bool highlight = false) {
     econio_textcolor(COL_WHITE);
     econio_textbackground(COL_BLACK);
 
-    auto ws = convertUFT8(s);
-    wcout << L"  │ " << ws;
+    wcout << L"  │ " << s;
 
-    for (size_t j = 0; j < 23 - ws.length(); ++j) {
-        wcout << " ";
-    }
+    for (size_t j = 0; j < 23 - s.length(); ++j) wcout << " ";
 }
 
 void printBrandDetail(const Brand& b, int i, bool highlight = false) {
@@ -176,7 +169,7 @@ Plush plushies::menuPlushCreate(Server& s, bool detailed) {
 
     int brandid = selectItem(s);
     econio_gotoxy(13, 2);
-    wcout << brandid << " - " << convertUFT8(s.brands[brandid].getName()) << flush;
+    wcout << brandid << " - " << s.brands[brandid].getName() << flush;
 
     Action* ac[] = { nullptr, nullptr, nullptr, nullptr };
 
@@ -187,7 +180,7 @@ Plush plushies::menuPlushCreate(Server& s, bool detailed) {
         ac[i] = s.brands[brandid].getLearnableActions()[acid];
 
         econio_gotoxy(10, 4 + 2*i);
-        wcout << acid << " - " << convertUFT8(ac[i]->getName()) << flush;
+        wcout << acid << " - " << ac[i]->getName() << flush;
     }
 
     int uv[] = { random(30, 63), random(30, 63), random(30, 63),

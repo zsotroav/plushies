@@ -3,6 +3,8 @@ project(Plushies)
 
 set(CMAKE_CXX_STANDARD 17)
 
+add_compile_options(-Wall -Werror)
+
 include_directories(include)
 include_directories(src)
 include_directories(lib)

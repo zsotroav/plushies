@@ -2,13 +2,12 @@
 // Created by zsotroav on 2024-03-24.
 //
 
+#include <codecvt>
 #include <iostream>
 #include <locale>
-#include <codecvt>
-#include <string>
 #include <random>
-#include <thread>
-#include <chrono>
+#include <string>
+
 #include "common.h"
 
 int random(int a, int b) {
@@ -22,6 +21,11 @@ int random(int a, int b) {
 double operator>>(plushies::type attacker, plushies::type target) {
     if (attacker == plushies::NONE || target == plushies::NONE) return 1;
     return plushies::relationChart[attacker-1][target-1];
+}
+
+std::wstring convertUFT8(const std::string& s) {
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    return converter.from_bytes(s);
 }
 
 std::wostream& operator<<(std::wostream& os, plushies::type type) {
@@ -39,6 +43,7 @@ std::wostream& operator<<(std::wostream& os, plushies::type type) {
     }
     return os;
 }
+
 std::wostream& operator<<(std::wostream& os, plushies::ActionCategory ac) {
     switch (ac) {
         case plushies::Physical: return os << "PHYSICAL";
@@ -47,8 +52,3 @@ std::wostream& operator<<(std::wostream& os, plushies::ActionCategory ac) {
     return os;
 }
 
-
-std::wstring convertUFT8(const std::string& s) {
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    return converter.from_bytes(s);
-}

@@ -17,7 +17,7 @@ namespace plushies {
         return counter;
     }
 
-    int Player::ready(const Plush& opponent) {
+    int Player::ready(const Plush&) {
         return 0;
     }
 

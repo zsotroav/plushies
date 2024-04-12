@@ -32,6 +32,8 @@ namespace plushies {
         inline Action* activeAction(int id) { return active().Actions[id]; }
 
         Player() : activePlush(0) {}
+
+        virtual ~Player() = default;
     };
 
 } // plushies

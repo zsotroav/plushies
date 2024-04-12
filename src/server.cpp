@@ -73,7 +73,7 @@ namespace plushies {
         std::ifstream iflearn(actionLearnFile, std::ios::in);
         while (iflearn.good()) {
             auto l = readCSV(iflearn);
-            for (int i = 1; i < l.size(); i++) {
+            for (size_t i = 1; i < l.size(); i++) {
                 brands[stoi(l[0])].addLearnableAction(&actions[stoi(l[i])]);    
             }
             
@@ -82,7 +82,7 @@ namespace plushies {
 
     }
 
-    Plush Server::createRandomPlush(int bst, int movepwr, 
+    Plush Server::createRandomPlush(int bst, int,
                                     int uvmin, int uvmax) {
         int brandid = random(0, brands.size() - 1);
         bool bsts = bst >= 0;
@@ -104,7 +104,7 @@ namespace plushies {
 
         // TODO: implement movepwr
         if (learn.size() <= 4)
-            for (int i = 0; i < learn.size(); i++) ac[i] = learn[i];           
+            for (size_t i = 0; i < learn.size(); i++) ac[i] = learn[i];
         else 
             for (auto & i : ac) i = learn[random(0, learn.size()-1)];
 

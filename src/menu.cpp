@@ -3,8 +3,8 @@
 //
 
 #include <iostream>
-#include "econio.h"
 #include "common.h"
+#include "econio.h"
 
 #include "menu.h"
 

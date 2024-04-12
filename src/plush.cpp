@@ -2,8 +2,8 @@
 // Created by zsotroav on 2024-03-23.
 //
 
-#include <stdexcept>
 #include <cmath>
+#include <stdexcept>
 #include "common.h"
 #include "plush.h"
 

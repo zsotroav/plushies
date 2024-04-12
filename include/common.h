@@ -81,10 +81,13 @@ int random(int a, int b);
 
 double operator>>(plushies::type attacker, plushies::type target);
 
+std::wstring convertUFT8(const std::string& s);
+
+inline std::wostream& operator<<(std::wostream& os, const std::string& s)
+{ return os << convertUFT8(s); }
+
 std::wostream& operator<<(std::wostream& os, plushies::type type);
 
 std::wostream& operator<<(std::wostream& os, plushies::ActionCategory ac);
-
-std::wstring convertUFT8(const std::string& s);
 
 #endif //PLUSHIES_COMMON_H

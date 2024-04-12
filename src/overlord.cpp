@@ -23,7 +23,7 @@ int maxminAction(plushies::Player& att,
             continue;
 
         auto c = (att.active() >> i) >> opponent;
-        if ((c < max && maxmode) || c > max && !maxmode) continue;
+        if ((c < max && maxmode) || (c > max && !maxmode)) continue;
         if ((c == max &&
                 att.activeAction(i)->getAccuracy() >
                         att.activeAction(mid)->getAccuracy())
@@ -35,11 +35,11 @@ int maxminAction(plushies::Player& att,
 }
 
 
-int Dennis::ready(const Plush& opponent) { 
+int Dennis::ready(const Plush&) {
     return random(1, active().validMoves()); 
 }
 
-int Clyde::ready(const Plush& opponent) {
+int Clyde::ready(const Plush&) {
     std::this_thread::sleep_for(std::chrono::seconds(random(5, 10)));
 
     return random(1, active().validMoves());

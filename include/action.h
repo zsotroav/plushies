@@ -5,8 +5,8 @@
 #ifndef PLUSHIES_ACTION_H
 #define PLUSHIES_ACTION_H
 
-#include "common.h"
 #include <string>
+#include "common.h"
 
 using std::string;
 
