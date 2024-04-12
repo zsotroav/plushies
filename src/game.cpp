@@ -86,13 +86,15 @@ void gameInit() {
 
     Server s;
 
-    if (gm == RANDOM || gm == CUSTOM) {
-        // Register random overlords
-        switch (random(0,4)) {
-            case 0:  s.RegisterPlayer(new overlord::Dennis (s, cnt)); break;
-            case 1:  s.RegisterPlayer(new overlord::Clyde  (s, cnt)); break;
-            case 2:  s.RegisterPlayer(new overlord::Ninty  (s, cnt)); break;
-            case 3:  s.RegisterPlayer(new overlord::Waffles(s, cnt)); break;
+    if (opp == 0) {
+        // TODO: LAN PLAY
+    } else {
+        // Register overlords
+        switch ( opp > 0 ? opp : random(1, 5)) {
+            case 1:  s.RegisterPlayer(new overlord::Dennis (s, cnt)); break;
+            case 2:  s.RegisterPlayer(new overlord::Clyde  (s, cnt)); break;
+            case 3:  s.RegisterPlayer(new overlord::Ninty  (s, cnt)); break;
+            case 4:  s.RegisterPlayer(new overlord::Waffles(s, cnt)); break;
             default: s.RegisterPlayer(new overlord::Muffins(s, cnt)); break;
         }
     }
@@ -105,6 +107,8 @@ void gameInit() {
             human->addPlush(menuPlushCreate(s, gm == DETAIL));
     }
     s.RegisterPlayer(human, 1);
+
+    econio_clrscr();
 
 
 

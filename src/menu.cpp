@@ -87,7 +87,7 @@ int plushCountSelect() {
     return -1;
 }
 
-int opponentSelect() {
+int opponentSelect(bool detail) {
     econio_gotoxy(0, 25);
     wcout << "Play against local AI or LAN play? " << std::flush;
 
@@ -95,11 +95,29 @@ int opponentSelect() {
     while (!econio_kbhit()) econio_sleep(0.2);
     int c = econio_getch();
 
-    econio_gotoxy(36, 23);
+    if (c == 'l' || c == 'L') return 0;  // LAN
 
-    if (c == 'a' || c == 'A') return 1; // AI
-    if (c == 'l' || c == 'L') return 2; // LAN
-    return -1;
+    if (c != 'a' && c != 'A') return -1; // INV
+
+    if (!detail) return -2; // Random AI
+    
+    econio_gotoxy(35, 25);
+    wcout << "Overlord" << endl << endl <<
+             "Which Overlord do you want to play against? "
+             "(Dennis/Clyde/Ninty/Waffles/Muffins)" << std::flush;
+
+    while(true) {
+        while (!econio_kbhit()) econio_sleep(0.2);
+        c = econio_getch();
+        switch (c) {
+            case 'd': case 'D': return 1; // Dennis
+            case 'c': case 'C': return 2; // Clyde
+            case 'n': case 'N': return 3; // Ninty
+            case 'w': case 'W': return 4; // Waffles
+            case 'm': case 'M': return 5; // Muffins
+            default: break; // Invalid choice, try again
+        }
+    }
 }
 
 void menu(GameMode& gm, int& cnt, int& opp) {
@@ -110,7 +128,7 @@ void menu(GameMode& gm, int& cnt, int& opp) {
 
     while((cnt = plushCountSelect()) == -1) ;
 
-    while((opp = opponentSelect()) == -1) ;
+    while((opp = opponentSelect(gm == DETAIL)) == -1) ;
 
     econio_clrscr();
 }

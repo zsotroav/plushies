@@ -45,7 +45,7 @@ void printMPC() {
              "  - SPA:       We attack *special*                                                     ║      │                        ║\n"
              "  - SPE:       Gotta go fast                                                           ║      │                        ║\n"
              "                                                                                       ║      │                        ║\n"
-             "Overlord type:                                                                         ║      │                        ║\n"
+             "                                                                                       ║      │                        ║\n"
              "                                                                                       ║      │                        ║\n"
              "                                                                                       ║      │                        ║\n"
              "                                                            ╔═══════════════════════╗  ║      │                        ║\n"
@@ -73,7 +73,7 @@ void printDetail(int i, std::string s, bool highlight = false) {
     auto ws = convertUFT8(s);
     wcout << L"  │ " << ws;
 
-    for (int j = 0; j < 23 - ws.length(); ++j) {
+    for (size_t j = 0; j < 23 - ws.length(); ++j) {
         wcout << " ";
     }
 }
@@ -120,19 +120,6 @@ void printBrands(Server& s) {
     wcout << flush;
 }
 
-void printOverlords() {
-    string s[] = { "Dennis", "Clyde", "Ninty", "Waffles", "Muffins" };
-
-    printDetail(0, s[0], true);
-    for (int i = 1; i < 5; ++i) {
-        printDetail(i, s[i]);
-    }
-    for (int i = 0; i < 27-5; ++i) {
-        econio_gotoxy(90, 5+2+i);
-        wcout << L"    │                        ║" ;
-    }
-}
-
 void printActions(Brand& b) {
     auto a = b.getLearnableActions();
     int l = a.size();
@@ -169,10 +156,6 @@ int selectItem(Server& s, int brandid = -1) {
         if (brandid == -1) {
             printBrandDetail(s.brands[prev], prev);
             printBrandDetail(s.brands[curr], curr, true);
-        } else if (brandid == -2) {
-            string o[] = { "Dennis", "Clyde", "Ninty", "Waffles", "Muffins" };
-            printDetail(prev, o[prev]);
-            printDetail(curr, o[curr], true);
         } else {
             printActionDetail(s.brands[brandid].getLearnableActions()[prev], prev);
             printActionDetail(s.brands[brandid].getLearnableActions()[curr], curr, true);
@@ -222,11 +205,7 @@ Plush plushies::menuPlushCreate(Server& s, bool detailed) {
             }
         }
         econio_rawmode();
-
-        printOverlords();
-        int o = selectItem(s, -2);
-        wcout << o;
     }
 
-    return Plush(s.brands[brandid], uv, ac);
+    return {s.brands[brandid], uv, ac};
 }
