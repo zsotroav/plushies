@@ -23,6 +23,9 @@ namespace plushies {
         Player* players[2];
     public:
 
+        [[nodiscard]] inline const Player* const getPlayer(int i) const
+        { return players[i]; }
+
         /**
          * @brief Available Brands in the current game
          */

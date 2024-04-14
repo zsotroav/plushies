@@ -3,6 +3,7 @@
 //
 #include <iostream>
 #include "player.h"
+#include "game_screen.h"
 
 namespace plushies {
 
@@ -17,8 +18,10 @@ namespace plushies {
         return counter;
     }
 
-    int Player::ready(const Plush&) {
-        return 0;
+    int Player::ready(const Plush& foe) {
+        updatePlush(plushes[activePlush]);
+        updatePlush(foe, true);
+        return chooseMove(*this);
     }
 
 }

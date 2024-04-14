@@ -62,7 +62,7 @@ void printDetail(int i, std::string s, bool highlight = false) {
         econio_textcolor(COL_BLACK);
         econio_textbackground(COL_WHITE);
     }
-    wcout << ss.str().c_str();
+    wcout << ss.str();
     econio_textcolor(COL_WHITE);
     econio_textbackground(COL_BLACK);
 
@@ -70,6 +70,8 @@ void printDetail(int i, std::string s, bool highlight = false) {
 
     for (size_t j = 0; j < 23 - s.length(); ++j) wcout << " ";
 }
+
+// TODO: Print brand types
 
 void printBrandDetail(const Brand& b, int i, bool highlight = false) {
     printDetail(i, b.getName(), highlight);

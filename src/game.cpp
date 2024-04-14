@@ -5,6 +5,7 @@
 #include <iostream>
 #include "common.h"
 #include "econio.h"
+#include "game_screen.h"
 #include "menu.h"
 #include "menu_plush_create.h"
 #include "overlord.h"
@@ -109,6 +110,10 @@ void gameInit() {
     s.RegisterPlayer(human, 1);
 
     econio_clrscr();
+
+    printScreen();
+
+    s.serverLoop();
 
 
 

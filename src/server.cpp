@@ -24,7 +24,7 @@ namespace plushies {
         auto future0 = std::async(&Player::ready, players[0], players[1]->active());
         auto future1 = std::async(&Player::ready, players[1], players[0]->active());
 
-        std::wcout << future0.get() << " - " << future1.get() << std::endl;
+        std::cout << future0.get() << " - " << future1.get() << std::endl;
     }
 
     std::vector<string> readCSV(std::ifstream& ifstream) {

@@ -22,7 +22,7 @@ Plush::Plush(Brand& brand, const int UV[6],
         this->UV[i] = UV[i];
     }
 
-    health = floor(0.75 * (2*(this->brand.getBaseStat(HP)) + UV[HP]) + 50);
+    maxhp = health = floor(0.75 * (2*(this->brand.getBaseStat(HP)) + UV[HP]) + 50);
 
     this->Actions[0] = actions[0];
     this->Actions[1] = actions[1];

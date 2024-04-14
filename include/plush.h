@@ -17,6 +17,7 @@ namespace plushies {
         Brand& brand; //!< ID of plush's brand
         int UV[6];    //!< Unique Values for plush
         int health;   //!< Current health value
+        int maxhp;    //!< Max possible hp
 
     public:
         // Public members
@@ -24,9 +25,10 @@ namespace plushies {
 
 
         /// Getters
-        int getBrandId();
+        [[nodiscard]] inline std::string getName() const { return brand.getName(); }
         [[nodiscard]] inline Brand& getBrand() const { return brand; }
-        [[nodiscard]] inline int getHP() const { return health; };
+        [[nodiscard]] inline int getHP() const { return health; }
+        [[nodiscard]] inline int getMaxHP() const { return maxhp; }
         [[nodiscard]] inline int getUV(StatOrder uvo) const { return UV[uvo]; }
 
         /// Functions

@@ -3,7 +3,7 @@ project(Plushies)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_compile_options(-Wall -Werror)
+add_compile_options(-Wall)
 
 include_directories(include)
 include_directories(src)
@@ -39,6 +39,8 @@ add_executable(Plushies src/main.cpp
         src/overlord.cpp
         src/menu_plush_create.cpp
         include/menu_plush_create.h
+        src/game_screen.cpp
+        include/game_screen.h
 
 )
 

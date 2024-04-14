@@ -110,7 +110,7 @@ During the player's turn, they may choose one of these actions:
   * If the player wants to change out their plush for a different one, they can
     choose to swap their plush for another one instead of using an Action. 
     Swapping always happens first before any other actions get executed.
-* Forefit the fight
+* Forfeit the fight
 
 ## File formats
 Files are stored in a CSV format (using semicolons) with the following layouts:
