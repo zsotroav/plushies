@@ -20,11 +20,56 @@ namespace plushies {
 
     Player Server::syncPlayer(int id) { return *players[id]; }
 
-    void Server::serverLoop() {
-        auto future0 = std::async(&Player::ready, players[0], players[1]->active());
-        auto future1 = std::async(&Player::ready, players[1], players[0]->active());
+    int Server::serverLoop() {
+        bool active = true;
+        while(active) {
+            auto f0 = std::async(&Player::ready, players[0], players[1]->active());
+            auto f1 = std::async(&Player::ready, players[1], players[0]->active());
 
-        std::cout << future0.get() << " - " << future1.get() << std::endl;
+            int p0 = f0.get();
+            int p1 = f1.get();
+
+            bool sw0 = p0 < 0, sw1 = p1 < 0;
+
+            // Forfeit
+            if (p0 == 0) return 1;
+            if (p1 == 0) return 0;
+
+            // Swap
+            if (sw0) {
+                players[0]->setActive(-1*p0);
+                players[0]->active() << (players[1]->active() >> (p1-1));
+                continue;
+            }
+            if (sw1) {
+                players[1]->setActive(-1*p1);
+                players[1]->active() << (players[0]->active() >> (p1-1));
+                continue;
+            }
+
+            // Actions
+            auto ac0 = players[0]->active() >> (p0-1);
+            auto ac1 = players[1]->active() >> (p1-1);
+
+            if (ac0.speed > ac1.speed) {
+                players[0]->active() << ac1;
+                if (players[0]->active().getHP() > 0)
+                    players[1]->active() << ac0;
+            } else {
+                players[1]->active() << ac0;
+                if (players[1]->active().getHP() > 0)
+                    players[0]->active() << ac1;
+            }
+
+            // Alive checks
+            if (players[0]->numPlushes(true) <= 0) return 1;
+            if (players[1]->numPlushes(true) <= 0) return 0;
+
+            if (players[0]->active().getHP() <= 0) players[0]->nextAlive();
+            if (players[1]->active().getHP() <= 0) players[1]->nextAlive();
+
+        }
+
     }
 
     std::vector<string> readCSV(std::ifstream& ifstream) {

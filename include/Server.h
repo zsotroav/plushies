@@ -53,7 +53,7 @@ namespace plushies {
         Plush createRandomPlush(int bst = 0, int movepwr = 0, 
                                 int uvmin = 0, int uvmax = 63);
 
-        void serverLoop();
+        int serverLoop();
 
         inline void RegisterPlayer(Player* p, int num = 0) {
             players[num] = p;

@@ -60,13 +60,14 @@ void updatePlush(const plushies::Plush& p, bool foe) {
     for (int i = 0; i < n; ++i) wcout << L"█";
     for (int i = 0; i < 20 - n; ++i) wcout << " ";
 
+    if (foe) return;
+
     econio_gotoxy(50, 27);
 
     std::stringstream ss;
-    ss << std::setfill('0') << std::setw(3) << p.getHP() <<
-    "/" << p.getMaxHP() << " HP";
+    ss << std::setfill(' ') << std::setw(3) << p.getHP();
 
-    wcout << ss.str() << flush;
+    wcout << ss.str() << "/" << p.getMaxHP() << " HP" << flush;
 }
 
 
@@ -114,6 +115,7 @@ void printList(std::vector<std::string>& list) {
 
 int chooseAction(const Plush& p) {
     updateSelection(p.Actions[0]->getName(), 0, true);
+    updateActionInfo(p.Actions[0]);
     int i = 1;
     for (; i < 4; ++i) {
         if (p.Actions[i] == nullptr || p.Actions[i]->getType() == NONE) break;
@@ -132,7 +134,10 @@ int chooseAction(const Plush& p) {
             case 's': case KEY_DOWN:
                 if (curr == i - 1) continue;
                 prev = curr; ++curr; break;
-            case ' ': case KEY_ENTER: return curr;
+            case ' ': case KEY_ENTER:
+                std::vector<std::string> v = {"", "", "", ""};
+                printList(v);
+                return curr;
         }
 
         updateSelection(p.Actions[curr]->getName(), curr, true);
@@ -163,7 +168,10 @@ int choosePlush(const Player& p) {
             case 's': case KEY_DOWN:
                 if (curr == i - 1) continue;
                 prev = curr; ++curr; break;
-            case ' ': case KEY_ENTER: return curr;
+            case ' ': case KEY_ENTER:
+                std::vector<std::string> v = {"", "", "", ""};
+                printList(v);
+                return curr;
         }
 
         updateSelection(pl[curr].getName(), curr, true);
@@ -172,7 +180,7 @@ int choosePlush(const Player& p) {
 }
 
 int chooseMove(const plushies::Player& player) {
-    std::vector<string> options = { "Attack", "Swap plushies", "Forfeit"};
+    std::vector<string> options = { "Attack", "Swap plushies", "Forfeit", ""};
     printList(options);
     int curr = 0, prev = 0;
     bool selecting = true;

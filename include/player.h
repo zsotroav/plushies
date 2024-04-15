@@ -20,6 +20,8 @@ namespace plushies {
 
     public:
         void addPlush(Plush p);
+        void setActive(int i);
+        void nextAlive();
         int numPlushes(bool alive = false);
         /**
          * @brief Request Action from the player
