@@ -23,18 +23,18 @@ using std::wcout, std::flush;
 void printMPC() {
     wcout << L"                                    Plush Monsters' Fight Club - Plush Configuration                                    \n"
              "                                                                                       ╔══════╤════════════════════════╗\n"
-             "Plush Brand:                                                        ╔═══════════════╗  ║      │                        ║\n"
-             "                                                                    ║      HP       ║  ║      │                        ║\n"
-             "Action 1:                                                           ║               ║  ║      │                        ║\n"
-             "                                                                    ║  SA      AT   ║  ║      │                        ║\n"
-             "Action 2:                                                           ║               ║  ║      │                        ║\n"
-             "                                                                    ║  SD      DE   ║  ║      │                        ║\n"
-             "Action 3:                                                           ║               ║  ║      │                        ║\n"
-             "                                                                    ║      SP       ║  ║      │                        ║\n"
-             "Action 4:                                                           ╚═══════════════╝  ║      │                        ║\n"
-             "                                                                                       ║      │                        ║\n"
-             "Uniquie Values:                                                                        ║      │                        ║\n"
-             "  - HP:        How tanky are you?                                                      ║      │                        ║\n"
+             "Plush Brand:                                                       ╔════════════════╗  ║      │                        ║\n"
+             "                                                                   ║       HP       ║  ║      │                        ║\n"
+             "Action 1:                                                          ║                ║  ║      │                        ║\n"
+             "                                                                   ║   SA      AT   ║  ║      │                        ║\n"
+             "Action 2:                                                          ║                ║  ║      │                        ║\n"
+             "                                                                   ║   SD      DE   ║  ║      │                        ║\n"
+             "Action 3:                                                          ║                ║  ║      │                        ║\n"
+             "                                                                   ║       SP       ║  ║      │                        ║\n"
+             "Action 4:                                                          ╟────────────────╢  ║      │                        ║\n"
+             "                                                                   ║ TYP1/          ║  ║      │                        ║\n"
+             "Uniquie Values:                                                    ║ TYP2/          ║  ║      │                        ║\n"
+             "  - HP:        How tanky are you?                                  ╚════════════════╝  ║      │                        ║\n"
              "  - ATK:       That's gonna hurt                                                       ║      │                        ║\n"
              "  - DEF:       Nothing without a good defense                                          ║      │                        ║\n"
              "  - SPD:       We're *special*                                                         ║      │                        ║\n"
@@ -71,8 +71,6 @@ void printDetail(int i, std::string s, bool highlight = false) {
     for (size_t j = 0; j < 23 - s.length(); ++j) wcout << " ";
 }
 
-// TODO: Print brand types
-
 void printBrandDetail(const Brand& b, int i, bool highlight = false) {
     printDetail(i, b.getName(), highlight);
 
@@ -84,6 +82,13 @@ void printBrandDetail(const Brand& b, int i, bool highlight = false) {
     wcout << b.getBaseStat(SpD) << "      " << b.getBaseStat(Def);
     econio_gotoxy(75, 9);
     wcout << b.getBaseStat(Spe);
+
+    econio_gotoxy(75, 11);
+    wcout << b.getBaseType();
+    econio_gotoxy(75, 12);
+    wcout << b.getSecondaryType();
+
+    wcout << std::flush;
 }
 
 void printActionDetail(const Action* a, int i, bool highlight = false) {

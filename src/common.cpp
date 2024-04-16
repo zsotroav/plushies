@@ -30,7 +30,7 @@ std::wstring convertUFT8(const std::string& s) {
 
 std::wostream& operator<<(std::wostream& os, plushies::type type) {
     switch (type) {
-        case plushies::NONE:     return os << "?       ";
+        case plushies::NONE:     return os << "NONE    ";
         case plushies::NORMAL:   return os << "NORMAL  ";
         case plushies::FIRE:     return os << "FIRE    ";
         case plushies::WATER:    return os << "WATER   ";
