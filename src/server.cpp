@@ -21,8 +21,7 @@ namespace plushies {
     Player Server::syncPlayer(int id) { return *players[id]; }
 
     int Server::serverLoop() {
-        bool active = true;
-        while(active) {
+        while(true) {
             auto f0 = std::async(&Player::ready, players[0], players[1]->active());
             auto f1 = std::async(&Player::ready, players[1], players[0]->active());
 

@@ -52,7 +52,7 @@ void updatePlush(const plushies::Plush& p, bool foe) {
     econio_gotoxy(foe ? 63 : 40, foe ? 2 : 26);
     wcout << p.getBrand().getName();
 
-    for (int i = 0; i < 20 - p.getBrand().getName().length(); ++i)  wcout << " ";
+    for (size_t i = 0; i < 20 - p.getBrand().getName().length(); ++i)  wcout << " ";
 
     econio_gotoxy(foe ? 63 : 40, foe ? 4 : 28);
     int n = ((double)p.getHP() / p.getMaxHP()) * 20;
@@ -97,7 +97,7 @@ void updateSelection(const std::string& item, const int id, const bool highlight
 
     wcout << item;
 
-    for (int i = 0; i < 21 - item.length(); ++i) wcout << " ";
+    for (size_t i = 0; i < 21 - item.length(); ++i) wcout << " ";
 
     if (highlight) {
         econio_textbackground(COL_BLACK);
@@ -109,7 +109,7 @@ void updateSelection(const std::string& item, const int id, const bool highlight
 
 void printList(std::vector<std::string>& list) {
     updateSelection(list[0], 0, true);
-    for (int i = 1; i < list.size(); ++i) updateSelection(list[i], i);
+    for (size_t i = 1; i < list.size(); ++i) updateSelection(list[i], i);
 }
 
 // TODO: Template?
@@ -157,7 +157,7 @@ int choosePlush(const Player& p) {
         updateSelection(pl[i].getName(), i);
     }
 
-    int curr = 0, prev = 0;
+    size_t curr = 0, prev = 0;
 
     while (true) {
         while (!econio_kbhit()) econio_sleep(0.2);
