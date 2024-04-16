@@ -71,11 +71,11 @@ Clyde::Clyde(Server& s, int count) {
 }
 
 Ninty::Ninty(Server& s, int count) {
-    for (int i = 0; i < count; i++) addPlush(s.createRandomPlush(300, 0, 50));
+    for (int i = 0; i < count; i++) addPlush(s.createRandomPlush(300, 50));
 }
 
 Waffles::Waffles(Server& s, int count) {
-    for (int i = 0; i < count; i++) addPlush(s.createRandomPlush(300, 0, 30, 50));
+    for (int i = 0; i < count; i++) addPlush(s.createRandomPlush(300, 30, 50));
 }
 
 Muffins::Muffins(Server& s, int count) {

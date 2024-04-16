@@ -19,12 +19,15 @@ namespace plushies {
 
     class Server {
         ActionContext executedActions[2];
+        bool lan;
 
         Player* players[2];
     public:
 
         [[nodiscard]] inline const Player* const getPlayer(int i) const
         { return players[i]; }
+
+        [[nodiscard]] inline const bool getLanMode() { return lan; }
 
         /**
          * @brief Available Brands in the current game
@@ -46,12 +49,10 @@ namespace plushies {
         /**
          * @brief Generate a random plush with optional strength restrictions 
          * @param bst Minimum Base Stat Total (negative for maximum)
-         * @param movepwr Miminum move power (negative for max)
          * @param uvmin minimum values for UVs
          * @param uvmax maximum values for UVs
          */
-        Plush createRandomPlush(int bst = 0, int movepwr = 0, 
-                                int uvmin = 0, int uvmax = 63);
+        Plush createRandomPlush(int bst = 0, int uvmin = 0, int uvmax = 63);
 
         int serverLoop();
 
@@ -59,7 +60,7 @@ namespace plushies {
             players[num] = p;
         }
 
-        Server(const string& brandFile = "data/brands.csv",
+        Server(bool lan, const string& brandFile = "data/brands.csv",
                const string& actionFile = "data/actions.csv",
                const string& actionLearnFile = "data/action_learn.csv");
 

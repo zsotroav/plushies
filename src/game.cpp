@@ -85,7 +85,7 @@ void gameInit() {
     int cnt, opp;
     menu(gm, cnt, opp); // Get game config
 
-    Server s;
+    Server s = Server(opp==0);
 
     if (opp == 0) {
         // TODO: LAN PLAY
@@ -103,7 +103,7 @@ void gameInit() {
     Player* human = new Player();
     for (int i = 0; i < cnt; ++i) {
         if (gm == RANDOM) // Register random plushies for player
-            human->addPlush(s.createRandomPlush(0, 0, 30));
+            human->addPlush(s.createRandomPlush(0, 30));
         else
             human->addPlush(menuPlushCreate(s, gm == DETAIL));
     }

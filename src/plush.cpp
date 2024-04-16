@@ -104,14 +104,14 @@ ActionContext Plush::operator>>(Action& act) {
     act.decEnergy();
 
     int ran = random(0,100);
-    if (ran < act.getAccuracy()) throw FailedAction();
+    if (ran > act.getAccuracy()) throw FailedAction();
 
     return ac;
 }
 
 ActionContext Plush::operator>>(int actionId) {
     if (actionId > 3) throw std::invalid_argument("Invalid move");
-    return *this >> this->Actions[actionId];
+    return *this >> Actions[actionId];
 }
 
 void Plush::operator<<(int hp) { health -= hp; }

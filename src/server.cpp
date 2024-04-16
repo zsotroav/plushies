@@ -37,13 +37,27 @@ namespace plushies {
             // Swap
             if (sw0) {
                 players[0]->setActive(-1*p0 - 1);
-                try { players[0]->active() << (players[1]->active() >> (p0-1)); }
+                try { players[0]->active() << (players[1]->active() >> (p1-1)); }
                 catch (...) { } // If the move failed, oh well, suck for you ig
                 continue;
             }
             if (sw1) {
                 players[1]->setActive(-1*p1 - 1);
-                try { players[1]->active() << (players[0]->active() >> (p1-1)); }
+                try {
+                    if (!lan) { // Lan has accuracy precalculated
+                        players[1]->active() << (players[0]->active() >> (p0 - 1));
+                        continue;
+                    }
+
+                    if (p0 > 10) {
+                        // Opponent's action failed, we just decrement the energy
+                        players[0]->active().Actions[p0-11].decEnergy();
+                        continue;
+                    }
+
+                    // use getAC to avoid double calculating accuracy
+                    players[1]->active() << (players[0]->active().getAC(p0-1));
+                }
                 catch (...) { }
                 continue;
             }
@@ -51,8 +65,21 @@ namespace plushies {
             // Actions
             ActionContext ac0 = {0, 0, NONE, Physical};
             ActionContext ac1 = {0, 0, NONE, Physical};
-            try { ac0 = players[0]->active() >> (p0-1);} catch (...) {}
-            try { ac1 = players[1]->active() >> (p1-1);} catch (...) {}
+            try {
+                if (!lan) { // Lan has accuracy precalculated
+                    ac0 = players[0]->active() >> (p0 - 1);
+                    std::cout << "asd";
+                } else {
+                    if (p0 > 10) {
+                        // Opponent's action failed, we just decrement the energy
+                        players[0]->active().Actions[p0-11].decEnergy();
+                    } else {
+                        // use getAC to avoid double calculating accuracy
+                        ac0 = players[0]->active().getAC(p0 - 1);
+                    }
+                }
+            } catch (...) {}
+            try { ac1 = players[0]->active() >> (p1-1);} catch (...) {}
 
             if (ac0.speed > ac1.speed) {
                 players[0]->active() << ac1;
@@ -87,9 +114,10 @@ namespace plushies {
         return row;
     }
 
-    Server::Server(const string& brandFile,
+    Server::Server(bool lan,
+                   const string& brandFile,
                    const string& actionFile,
-                   const string& actionLearnFile) {
+                   const string& actionLearnFile) : lan(lan) {
         std::ifstream ifbrand(brandFile, std::ios::in);
         while (ifbrand.good()) {
             auto l = readCSV(ifbrand);
@@ -131,8 +159,7 @@ namespace plushies {
 
     }
 
-    Plush Server::createRandomPlush(int bst, int,
-                                    int uvmin, int uvmax) {
+    Plush Server::createRandomPlush(int bst, int uvmin, int uvmax) {
         int brandid = random(0, brands.size() - 1);
         bool bsts = bst >= 0;
         
