@@ -15,6 +15,8 @@ namespace plushies {
         string name;
         int damage;
         int accuracy;
+        int energy;
+        int maxEnergy;
         double priority;
         type type;
         ActionCategory category;
@@ -24,13 +26,21 @@ namespace plushies {
         inline string getName() const { return name; }
         inline int getDamage() const { return damage; }
         inline int getAccuracy() const { return accuracy; }
+        inline int getEnergy() const { return energy; }
+        inline int getMaxEnergy() const { return maxEnergy; }
+        inline void decEnergy() { energy -= 1; }
         inline double getPriority() const { return priority; }
         inline ActionCategory getCategory() const { return category; }
         inline plushies::type getType() const { return type; }
 
-        Action(string name, int dam, int acc, double pri, plushies::type typ,
+        Action(string name, int dam, int acc, int en, double pri, plushies::type typ,
                ActionCategory cat);
+
+        bool operator==(const Action& rhs);
     };
+
+
+    const Action NullAction = Action("Invalid", 0, 0, 0, 0, NONE, Physical);
 }
 
 #endif //PLUSHIES_ACTION_H

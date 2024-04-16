@@ -31,7 +31,7 @@ namespace plushies {
         virtual int ready(const Plush& opponent);
 
         inline Plush& active() { return plushes[activePlush]; }
-        inline Action* activeAction(int id) { return active().Actions[id]; }
+        inline Action activeAction(int id) { return active().Actions[id]; }
         inline std::vector<Plush> getPlushes() const { return plushes; }
         inline Plush getActivePlush() const { return plushes[activePlush]; }
 

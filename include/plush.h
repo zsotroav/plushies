@@ -21,7 +21,7 @@ namespace plushies {
 
     public:
         // Public members
-        Action* Actions[4];
+        std::vector<Action> Actions;
 
 
         /// Getters
@@ -34,10 +34,10 @@ namespace plushies {
         /// Functions
         int validMoves() const;
 
-        int calcDamage(Action* act);
+        int calcDamage(const Action& act);
         int calcDamage(int actionId);
 
-        int calcSpeed(Action* act);
+        int calcSpeed(const Action& act);
         int calcSpeed(int actionId);
 
         /// Operators
@@ -47,7 +47,7 @@ namespace plushies {
          * @param act Pointer to action
          * @return Damage before type effectiveness calculations
          */
-        ActionContext operator>>(Action* act);
+        ActionContext operator>>(Action& act);
 
         /**
          * @brief Get damage of executed action
@@ -71,7 +71,7 @@ namespace plushies {
 
 
         /// Ctor
-        Plush(Brand& brand, const int UV[6], Action* actions[4]);
+        Plush(Brand& brand, const int UV[6], Action actions[4]);
     };
 }
 

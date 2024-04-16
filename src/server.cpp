@@ -38,18 +38,22 @@ namespace plushies {
             // Swap
             if (sw0) {
                 players[0]->setActive(-1*p0);
-                players[0]->active() << (players[1]->active() >> (p1-1));
+                try { players[0]->active() << (players[1]->active() >> (p0-1)); }
+                catch (...) { } // If the move failed, oh well, suck for you ig
                 continue;
             }
             if (sw1) {
                 players[1]->setActive(-1*p1);
-                players[1]->active() << (players[0]->active() >> (p1-1));
+                try { players[1]->active() << (players[0]->active() >> (p1-1)); }
+                catch (...) { } // If the move failed, oh well, suck for you ig
                 continue;
             }
 
             // Actions
-            auto ac0 = players[0]->active() >> (p0-1);
-            auto ac1 = players[1]->active() >> (p1-1);
+            ActionContext ac0 = {0, 0, NONE, Physical};
+            ActionContext ac1 = {0, 0, NONE, Physical};
+            try { ac0 = players[0]->active() >> (p0-1);} catch (...) {}
+            try { ac1 = players[1]->active() >> (p1-1);} catch (...) {}
 
             if (ac0.speed > ac1.speed) {
                 players[0]->active() << ac1;
@@ -109,9 +113,10 @@ namespace plushies {
                     l[0],       // Name
                     stoi(l[1]), // Base Power/Damage
                     stoi(l[2]), // Accuracy
-                    std::stod(l[3]), // Priority mod
-                    static_cast<type>(stoi(l[4])),
-                    static_cast<ActionCategory>(stoi(l[5])));
+                    stoi(l[3]), // Energy
+                    std::stod(l[4]), // Priority mod
+                    static_cast<type>(stoi(l[5])),
+                    static_cast<ActionCategory>(stoi(l[6])));
         }
         ifaction.close();
 
@@ -145,13 +150,19 @@ namespace plushies {
 
         auto learn = brands[brandid].getLearnableActions();
         
-        Action* ac[] = { nullptr, nullptr, nullptr, nullptr};
+        Action ac[] = { NullAction, NullAction, NullAction, NullAction};
 
         // TODO: implement movepwr
-        if (learn.size() <= 4)
-            for (size_t i = 0; i < learn.size(); i++) ac[i] = learn[i];
-        else 
-            for (auto & i : ac) i = learn[random(0, learn.size()-1)];
+        if (learn.size() <= 4) {
+            for (size_t i = 0; i < learn.size(); i++) ac[i] = *learn[i];
+            return {brands[brandid], uv, ac};
+        }
+        for (int i = 0; i < 4; ++i) {
+            ac[i] = *learn[random(0, learn.size()-1)];
+            for (int j = 0; j < i; ++j) {
+                if (ac[i] == ac[j]) { i--; break; }
+            }
+        }
 
         return Plush(brands[brandid], uv, ac);
     }

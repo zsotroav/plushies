@@ -15,7 +15,7 @@ using namespace plushies;
 /// Ctor
 
 Plush::Plush(Brand& brand, const int UV[6],
-                       Action *actions[4]): brand(brand) {
+                       Action actions[4]): brand(brand) {
     for (int i = 0; i < 6; ++i) {
         if (UV[i] > 63 || UV[i] < 0)
             throw std::invalid_argument("Invalid UV value");
@@ -24,10 +24,8 @@ Plush::Plush(Brand& brand, const int UV[6],
 
     maxhp = health = floor(0.75 * (2*(this->brand.getBaseStat(HP)) + UV[HP]) + 50);
 
-    this->Actions[0] = actions[0];
-    this->Actions[1] = actions[1];
-    this->Actions[2] = actions[2];
-    this->Actions[3] = actions[3];
+    this->Actions = {Action(actions[0]), Action(actions[1]),
+                     Action(actions[2]), Action(actions[3])};
 }
 
 
@@ -36,24 +34,23 @@ Plush::Plush(Brand& brand, const int UV[6],
 int Plush::validMoves() const {
     int cnt = 0;
     for (int i = 0; i < 4; ++i) {
-        if (Actions[i] == nullptr ||
-            Actions[i]->getType() == NONE)
+        if (Actions[i].getType() == NONE)
             continue;
         cnt++;
     }
     return cnt;
 }
 
-int Plush::calcDamage(Action* act) {
+int Plush::calcDamage(const Action& act) {
     // TODO: Accuracy and random variation
 
     int lvl = 50;
-    auto cat = act->getCategory() == Physical ? Atk : SpA;
-    auto type = act->getType();
+    auto cat = act.getCategory() == Physical ? Atk : SpA;
+    auto type = act.getType();
     return floor(
             (
                     (((2.0*lvl)/8 + 5) * // Base power multiplier
-                     act->getDamage() *   // Base power
+                     act.getDamage() *   // Base power
                      brand.getBaseStat(cat) * // Stat multiplier
                      ((double) UV[cat] / 120 + 1)) // UV multiplier
             ) / 20 // Move base power
@@ -69,10 +66,10 @@ int Plush::calcDamage(int actionId) {
     return calcDamage(Actions[actionId]);
 }
 
-int Plush::calcSpeed(Action* act) {
+int Plush::calcSpeed(const Action& act) {
     return floor(brand.getBaseStat(StatOrder::Spe) *
            (UV[StatOrder::Spe] / 120.0 + 1) *
-           act->getPriority());
+           act.getPriority());
 }
 
 int Plush::calcSpeed(int actionId) {
@@ -82,12 +79,14 @@ int Plush::calcSpeed(int actionId) {
 
 /// Operators
 
-ActionContext Plush::operator>>(Action* act) {
-    if (act == nullptr) throw std::invalid_argument("Invalid move");
+ActionContext Plush::operator>>( Action& act) {
+    if (act.getType() == NONE) throw std::invalid_argument("Invalid move");
+    if (act.getEnergy() <= 0) throw std::invalid_argument("No more energy");
+    act.decEnergy();
     int dmg = calcDamage(act);
     int spd = calcSpeed(act);
 
-    return {dmg, spd, act->getType(), act->getCategory()};
+    return {dmg, spd, act.getType(), act.getCategory()};
 }
 
 ActionContext Plush::operator>>(int actionId) {

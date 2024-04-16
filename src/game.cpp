@@ -113,14 +113,11 @@ void gameInit() {
 
     printScreen();
 
-    s.serverLoop();
+    int res = s.serverLoop();
 
-
-
-
-
-
-
-
-    wcout << "Game init" << endl;
+    econio_clrscr();
+    wcout << "A few plushies may have been ripped apart by bonks and " <<
+             "omnomnoms... " << (res == 1 ? "But you at least won" :
+                                            "And you couldn't even win...")
+          << std::endl << "Thank you for playing." << std::endl;
 }

@@ -43,8 +43,8 @@ void printScreen() {
              "    x:.:;;:.............:;x          ┌────────────────────                               ║                       ║  \n"
              "    x.:+;:;;...........+....;+x      │┌──────────────────────╖                           ║                       ║  \n"
              "   Xx;......::........;:.......;     ││                      ║                           ╟───────────────────────╢  \n"
-             "x:...........;........;:.......:     ││           000/000 HP ║                           ║ TYP/FIGHTING   00/00  ║  \n"
-             "X;...........;.......:;........x     ││[████████████████████]║                           ║ 000 PWR   ◎   ACC 100 ║  \n"
+             "x:...........;........;:.......:     ││           000/000 HP ║                           ║ TYP/                  ║  \n"
+             "X;...........;.......:;........x     ││[████████████████████]║                           ║                       ║  \n"
              " XXx;:::::;;;.....::::+x+;;++xX       ╘══════════════════════╝                           ╚═══════════════════════╝  ";
 }
 
@@ -71,18 +71,19 @@ void updatePlush(const plushies::Plush& p, bool foe) {
 }
 
 
-void updateActionInfo(const Action* a) {
+void updateActionInfo(const Action a) {
     econio_gotoxy(95, 27);
-    wcout << a->getType() << "     ";
+    wcout << a.getType() << "     ";
 
-    // TODO: Energy
+    econio_gotoxy(107, 27);
+    wcout << a.getEnergy() << "/" << a.getMaxEnergy();
 
     econio_gotoxy(91, 28);
-    wcout << a->getDamage() << " ";
+    wcout << a.getDamage() << " PWR";
 
     econio_gotoxy(101, 28);
-    wcout << (a->getCategory() == ActionCategory::Physical ? L"★" : L"◎")
-    << "   ACC " << a->getAccuracy() << (a->getAccuracy() < 100 ? "%" : "")
+    wcout << (a.getCategory() == ActionCategory::Physical ? L"★" : L"◎")
+    << "   ACC " << a.getAccuracy() << (a.getAccuracy() < 100 ? "%" : "")
 
     << flush;
 }
@@ -114,12 +115,12 @@ void printList(std::vector<std::string>& list) {
 // TODO: Template?
 
 int chooseAction(const Plush& p) {
-    updateSelection(p.Actions[0]->getName(), 0, true);
+    updateSelection(p.Actions[0].getName(), 0, true);
     updateActionInfo(p.Actions[0]);
     int i = 1;
     for (; i < 4; ++i) {
-        if (p.Actions[i] == nullptr || p.Actions[i]->getType() == NONE) break;
-        updateSelection(p.Actions[i]->getName(), i);
+        if (p.Actions[i].getType() == plushies::type::NONE || p.Actions[i].getType() == NONE) break;
+        updateSelection(p.Actions[i].getName(), i);
     }
 
     int curr = 0, prev = 0;
@@ -140,8 +141,8 @@ int chooseAction(const Plush& p) {
                 return curr;
         }
 
-        updateSelection(p.Actions[curr]->getName(), curr, true);
-        updateSelection(p.Actions[prev]->getName(), prev, false);
+        updateSelection(p.Actions[curr].getName(), curr, true);
+        updateSelection(p.Actions[prev].getName(), prev, false);
 
         updateActionInfo(p.Actions[curr]);
     }
@@ -151,7 +152,7 @@ int chooseAction(const Plush& p) {
 int choosePlush(const Player& p) {
     auto pl = p.getPlushes();
     updateSelection(pl[0].getName(), 0, true);
-    int i = 1;
+    size_t i = 1;
     for (; i < pl.size(); ++i) {
         updateSelection(pl[i].getName(), i);
     }

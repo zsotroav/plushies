@@ -173,16 +173,16 @@ Plush plushies::menuPlushCreate(Server& s, bool detailed) {
     econio_gotoxy(13, 2);
     wcout << brandid << " - " << s.brands[brandid].getName() << flush;
 
-    Action* ac[] = { nullptr, nullptr, nullptr, nullptr };
+    Action ac[] = { NullAction, NullAction, NullAction, NullAction };
 
     for (int i = 0; i < 4; ++i) {
         printActions(s.brands[brandid]);
 
         int acid = selectItem(s, brandid);
-        ac[i] = s.brands[brandid].getLearnableActions()[acid];
+        ac[i] = *s.brands[brandid].getLearnableActions()[acid];
 
         econio_gotoxy(10, 4 + 2*i);
-        wcout << acid << " - " << ac[i]->getName() << flush;
+        wcout << acid << " - " << ac[i].getName() << flush;
     }
 
     int uv[] = { random(30, 63), random(30, 63), random(30, 63),

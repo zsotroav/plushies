@@ -25,7 +25,7 @@ void printScreen();
  */
 void updatePlush(const plushies::Plush& p, bool foe = false);
 
-void updateActionInfo(const plushies::Action* a);
+void updateActionInfo(const plushies::Action a);
 
 void updateSelection(const std::string& item, const int id,
                      const bool highlight = false);

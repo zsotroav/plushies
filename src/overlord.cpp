@@ -14,19 +14,23 @@ int maxminAction(plushies::Player& att,
                  const plushies::Plush& opponent,
                  bool maxmode = true) {
 
-    int max = (att.active() >> 0) >> opponent;
+    int max = 0;
+    try { max = (att.active() >> 0) >> opponent; }
+    catch (...) { max = 0; }
     int mid = 0;
 
     for (int i = 1; i < 4; ++i) {
-        if (att.activeAction(i) == nullptr ||
-                att.activeAction(i)->getType() == plushies::type::NONE)
+        if (att.activeAction(i).getType() == plushies::type::NONE ||
+                att.activeAction(i).getType() == plushies::type::NONE)
             continue;
 
-        auto c = (att.active() >> i) >> opponent;
+        int c = 0;
+        try { c = (att.active() >> i) >> opponent; }
+        catch (...) { c = 0; }
         if ((c < max && maxmode) || (c > max && !maxmode)) continue;
         if ((c == max &&
-                att.activeAction(i)->getAccuracy() >
-                        att.activeAction(mid)->getAccuracy())
+                att.activeAction(i).getAccuracy() >
+                        att.activeAction(mid).getAccuracy())
             || (c > max && maxmode) || (c < max && !maxmode)) {
             max = c; mid = i;
         }
