@@ -79,7 +79,7 @@ namespace plushies {
                     }
                 }
             } catch (...) {}
-            try { ac1 = players[0]->active() >> (p1-1);} catch (...) {}
+            try { ac1 = players[1]->active() >> (p1-1);} catch (...) {}
 
             if (ac0.speed > ac1.speed) {
                 players[0]->active() << ac1;
@@ -178,7 +178,6 @@ namespace plushies {
         
         Action ac[] = { NullAction, NullAction, NullAction, NullAction};
 
-        // TODO: implement movepwr
         if (learn.size() <= 4) {
             for (size_t i = 0; i < learn.size(); i++) ac[i] = *learn[i];
             return {brands[brandid], uv, ac};

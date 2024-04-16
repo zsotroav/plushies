@@ -72,11 +72,14 @@ void updatePlush(const plushies::Plush& p, bool foe) {
 
 
 void updateActionInfo(const Action a) {
-    econio_gotoxy(95, 27);
-    wcout << a.getType() << "     ";
+    econio_gotoxy(91, 27);
+    wcout << "TYP/" << a.getType() << "     ";
 
     econio_gotoxy(107, 27);
-    wcout << a.getEnergy() << "/" << a.getMaxEnergy();
+    std::stringstream ss;
+    ss << std::setfill(' ') << std::setw(2)
+       << a.getEnergy() << "/" << a.getMaxEnergy();
+    wcout << ss.str();
 
     econio_gotoxy(91, 28);
     wcout << a.getDamage() << " PWR";
@@ -86,6 +89,13 @@ void updateActionInfo(const Action a) {
     << "   ACC " << a.getAccuracy() << (a.getAccuracy() < 100 ? "%" : "")
 
     << flush;
+}
+
+void clearActionInfo() {
+    econio_gotoxy(91, 27);
+    wcout << "                      ";
+    econio_gotoxy(91, 28);
+    wcout << "                      " << std::flush;
 }
 
 void updateSelection(const std::string& item, const int id, const bool highlight) {
@@ -112,8 +122,6 @@ void printList(std::vector<std::string>& list) {
     for (size_t i = 1; i < list.size(); ++i) updateSelection(list[i], i);
 }
 
-// TODO: Template?
-
 int chooseAction(const Plush& p) {
     updateSelection(p.Actions[0].getName(), 0, true);
     updateActionInfo(p.Actions[0]);
@@ -138,6 +146,7 @@ int chooseAction(const Plush& p) {
             case ' ': case KEY_ENTER:
                 std::vector<std::string> v = {"", "", "", ""};
                 printList(v);
+                clearActionInfo();
                 return curr;
         }
 

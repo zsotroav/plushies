@@ -99,7 +99,7 @@ void printActionDetail(const Action* a, int i, bool highlight = false) {
     econio_gotoxy(74, 25);
     wcout << a->getAccuracy() << "%   ";
     econio_gotoxy(74, 26);
-    wcout << "--";
+    wcout << a->getMaxEnergy() << "   ";
     econio_gotoxy(74, 27);
     wcout << a->getType();
     econio_gotoxy(74, 28);
