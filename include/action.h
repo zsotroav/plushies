@@ -43,4 +43,15 @@ namespace plushies {
     const Action NullAction = Action("Invalid", 0, 0, 0, 0, NONE, Physical);
 }
 
+class FailedAction : public std::exception {
+    std::string message;
+
+public:
+    explicit FailedAction(const char * msg) : message(msg) {}
+    FailedAction() : message("Action failed!") {}
+
+    [[nodiscard]] const char* what() const noexcept override { return message.c_str(); }
+};
+
+
 #endif //PLUSHIES_ACTION_H

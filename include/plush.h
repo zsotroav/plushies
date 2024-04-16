@@ -37,6 +37,12 @@ namespace plushies {
         int calcDamage(const Action& act);
         int calcDamage(int actionId);
 
+        ActionContext getAC(const Action& act);
+        ActionContext getAC(const int actId);
+
+        ActionContext getSafeAC(const Action& act);
+        ActionContext getSafeAC(const int actId);
+
         int calcSpeed(const Action& act);
         int calcSpeed(int actionId);
 

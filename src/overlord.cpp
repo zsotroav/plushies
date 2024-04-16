@@ -15,7 +15,7 @@ int maxminAction(plushies::Player& att,
                  bool maxmode = true) {
 
     int max = 0;
-    try { max = (att.active() >> 0) >> opponent; }
+    try { max = (att.active().getSafeAC(0)) >> opponent; }
     catch (...) { max = 0; }
     int mid = 0;
 
@@ -25,7 +25,7 @@ int maxminAction(plushies::Player& att,
             continue;
 
         int c = 0;
-        try { c = (att.active() >> i) >> opponent; }
+        try { c = (att.active().getSafeAC(i)) >> opponent; }
         catch (...) { c = 0; }
         if ((c < max && maxmode) || (c > max && !maxmode)) continue;
         if ((c == max &&

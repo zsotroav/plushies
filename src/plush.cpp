@@ -42,8 +42,6 @@ int Plush::validMoves() const {
 }
 
 int Plush::calcDamage(const Action& act) {
-    // TODO: Accuracy and random variation
-
     int lvl = 50;
     auto cat = act.getCategory() == Physical ? Atk : SpA;
     auto type = act.getType();
@@ -77,16 +75,38 @@ int Plush::calcSpeed(int actionId) {
     return calcSpeed(Actions[actionId]);
 }
 
-/// Operators
-
-ActionContext Plush::operator>>( Action& act) {
-    if (act.getType() == NONE) throw std::invalid_argument("Invalid move");
-    if (act.getEnergy() <= 0) throw std::invalid_argument("No more energy");
-    act.decEnergy();
+ActionContext Plush::getAC(const Action& act) {
     int dmg = calcDamage(act);
     int spd = calcSpeed(act);
 
     return {dmg, spd, act.getType(), act.getCategory()};
+}
+
+ActionContext Plush::getAC(const int actId) {
+    return getAC(Actions[actId]);
+}
+
+ActionContext Plush::getSafeAC(const Action& act){
+    if (act.getType() == NONE) throw std::invalid_argument("Invalid move");
+    if (act.getEnergy() <= 0) throw std::invalid_argument("No more energy");
+    return getAC(act);
+}
+
+ActionContext Plush::getSafeAC(const int actId) {
+    return getSafeAC(Actions[actId]);
+}
+
+/// Operators
+
+ActionContext Plush::operator>>(Action& act) {
+    auto ac = getSafeAC(act);
+
+    act.decEnergy();
+
+    int ran = random(0,100);
+    if (ran < act.getAccuracy()) throw FailedAction();
+
+    return ac;
 }
 
 ActionContext Plush::operator>>(int actionId) {
@@ -103,6 +123,7 @@ void Plush::operator<<(ActionContext damage) {
 int operator>>(const ActionContext& damage, const Plush& target) {
     auto cat = damage.category == Physical ? Def : SpD;
     auto brand = target.getBrand();
+
     return floor(damage.damage *
                  (damage.type >> brand.getBaseType()) *
                  (damage.type >> brand.getSecondaryType())
