@@ -41,6 +41,10 @@ add_executable(Plushies src/main.cpp
         include/menu_plush_create.h
         src/game_screen.cpp
         include/game_screen.h
+        include/lanplayer.h
+        src/lanplayer.cpp
+        lib/nyetwork.h
+        lib/nyetwork.cpp
 
 )
 
@@ -49,3 +53,7 @@ add_compile_definitions(MEMTRACE)
 configure_file(data/brands.csv data/brands.csv COPYONLY)
 configure_file(data/actions.csv data/actions.csv COPYONLY)
 configure_file(data/action_learn.csv data/action_learn.csv COPYONLY)
+
+if(WIN32)
+    target_link_libraries(Plushies wsock32 ws2_32)
+endif()
