@@ -1,11 +1,5 @@
-//
-// Created by zsotroav on 2024-04-18.
-//
-
 #include <string>
-#include <cstdlib>
 #include <cstdio>
-#include <iostream>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -29,21 +23,16 @@ namespace nyetwork {
     }
 
      vector<string> getIPv4() {
-        regex regexip("^((25[0-5]|(2[0-4]|1\\d|[1-9]|)\\d)\\.?\b){4}$");
-        string sys;
+        string sys, line;
+        vector<string> re, row;
         #ifdef __WIN32__
-            sys = exec("ipconfig | findstr /i \"ipv4\"");
+            sys = exec(R"(for /f "tokens=2 delims=[]" %a in ('ping -n 1 -4 "%computername%"') do @echo %a)");
         #else
-            sys = exec("ifconfig | grep "inet "");
+            sys = exec(R"ip -4 addr | grep -oP '(?<=inet\s)\\d+(\.\d+){3}'");
         #endif
 
-        const auto ip_beg = sregex_iterator(sys.begin(), sys.end(), regexip);
-        const auto ip_end = sregex_iterator();
-
-        vector<string> re;
-
-        for (std::sregex_iterator i = ip_beg; i != ip_end; ++i)
-            re.emplace_back(i->str());
+        stringstream ss(sys);
+        while (getline(ss, line, '\n')) re.emplace_back(line);
 
         return re;
     }
