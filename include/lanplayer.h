@@ -14,14 +14,32 @@
 
 #include <utility>
 #include "player.h"
+#include "lanplayer_excep.h"
 #include <sstream>
 
+#define LANPROTOCOL "1"
+
 namespace plushies::lanplay {
+    enum ConnStatus {
+        DISCONNECTED = -1,
+        CONFIRM = 0,
+        CONNECTED = 1
+    };
+
     class LanPlayer : public Player {
     protected:
+        ConnStatus conn_status;
         int serverSocket;
         sockaddr_in address{};
     public:
+        /**
+         * @brief Initialize connection to the server/client
+         * @param gm Game mode the player is in
+         * @param plushcnt Number of plushes used
+         * @return Connection Status (ACC/DEN/Approve reques)
+         */
+        virtual ConnStatus Connect(GameMode gm, int plushcnt) = 0;
+
         /**
          * @brief Receive message from the socket 
          * @param buf Buffer to store data in
@@ -36,7 +54,7 @@ namespace plushies::lanplay {
          * @param len Ammount of data to send from buffer (will ignore \0 as end)
          * @param flags Socket connection flags 
         */
-        virtual void sen(char* buf, int len, int flags) = 0;
+        virtual void sen(const char* buf, int len, int flags) = 0;
 
         LanPlayer(const char* ip);
         virtual ~LanPlayer();
@@ -46,15 +64,19 @@ namespace plushies::lanplay {
     public:
         int ready(const Plush& opponent) override;
 
+        ConnStatus Connect(GameMode gm, int plushcnt) override;
+
         void rec(char *buf, const int len, const int flags) override {
+            if (conn_status != CONNECTED) throw InvalidConnection();
             recv(serverSocket, buf, len, flags);
         }
 
-        void sen(char *buf, const int len, const int flags) override {
+        void sen(const char *buf, const int len, const int flags) override {
+            if (conn_status != CONNECTED) throw InvalidConnection();
             send(serverSocket, buf, len, flags);
         }
 
-        Client(const char* ip);
+        Client(const char* ip, GameMode gm, int plushcnt);
         ~Client() override;
     };
 
@@ -65,11 +87,21 @@ namespace plushies::lanplay {
     public:
         int ready(const Plush& opponent) override;
 
+        ConnStatus Connect(GameMode gm, int plushcnt) override;
+
+        /**
+         * @brief Approve or Deny conneciton manually
+         * @param approve Set true to accept connection, false to deny
+         */
+        void ConnectionRespond(bool approve);
+
         void rec(char *buf, const int len, const int flags) override {
+            if (conn_status != CONNECTED) throw InvalidConnection();
             send(clientSocket, buf, len, flags);
         }
 
-        void sen(char *buf, const int len, const int flags) override {
+        void sen(const char *buf, const int len, const int flags) override {
+            if (conn_status != CONNECTED) throw InvalidConnection();
             send(clientSocket, buf, len, flags);
         }
 
@@ -77,21 +109,5 @@ namespace plushies::lanplay {
         ~Server() override;
     };
 
-    class ConnectionFailed final : public std::exception {
-        std::string message;
-
-    public:
-        explicit ConnectionFailed(const char * msg) : message(msg) {}
-        explicit ConnectionFailed(string msg) : message(std::move(msg)) {}
-        explicit ConnectionFailed(int code) {
-            std::stringstream ss;
-            ss << "Connection error: " << code;
-            message = ss.str();
-        }
-        ConnectionFailed() : message("Connection failed!") {}
-
-        [[nodiscard]] const char* what() const noexcept override
-        { return message.c_str(); }
-    };
 }
 #endif //PLUSHIES_LANPLAYER_H

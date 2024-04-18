@@ -8,7 +8,7 @@ int main() { dotest(); return 0; }
 
 #include "game.h"
 
-int main() {gameInit(); return 0; }
+int main() { gameInit(); return 0; }
 
 #endif
 

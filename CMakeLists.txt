@@ -45,6 +45,7 @@ add_executable(Plushies src/main.cpp
         src/lanplayer.cpp
         lib/nyetwork.h
         lib/nyetwork.cpp
+        include/lanplayer_excep.h
 
 )
 
