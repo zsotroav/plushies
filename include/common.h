@@ -69,6 +69,18 @@ namespace plushies {
         DETAIL = 2,
         INVALID = -1
     };
+
+    enum EnemyMode {
+        INVALIDENEMY = -1,
+        OVERLORD_GENERIC = 0,
+        OVERLORD_DENNIS  = 1,
+        OVERLORD_CLYDE   = 2,
+        OVERLORD_NINTY   = 3,
+        OVERLORD_WAFFLES = 4,
+        OVERLORD_MUFFINS = 5,
+        LAN_SERVER       = 10,
+        LAN_CLIENT       = 15
+    };
 }
 
 /**

@@ -82,21 +82,22 @@ void gameInit() {
     warningScreen();  // Screen size check and warning
 
     GameMode gm;
-    int cnt, opp;
+    int cnt;
+    EnemyMode opp;
     menu(gm, cnt, opp); // Get game config
 
-    Server s = Server(opp==0);
+    Server s = Server(opp);
 
-    if (opp == 0) {
+    if (opp > 5) {
         // TODO: LAN PLAY
     } else {
         // Register overlords
         switch ( opp > 0 ? opp : random(1, 5)) {
-            case 1:  s.RegisterPlayer(new overlord::Dennis (s, cnt)); break;
-            case 2:  s.RegisterPlayer(new overlord::Clyde  (s, cnt)); break;
-            case 3:  s.RegisterPlayer(new overlord::Ninty  (s, cnt)); break;
-            case 4:  s.RegisterPlayer(new overlord::Waffles(s, cnt)); break;
-            default: s.RegisterPlayer(new overlord::Muffins(s, cnt)); break;
+            case 1: s.RegisterPlayer(new overlord::Dennis (s, cnt)); break;
+            case 2: s.RegisterPlayer(new overlord::Clyde  (s, cnt)); break;
+            case 3: s.RegisterPlayer(new overlord::Ninty  (s, cnt)); break;
+            case 4: s.RegisterPlayer(new overlord::Waffles(s, cnt)); break;
+            case 5: s.RegisterPlayer(new overlord::Muffins(s, cnt)); break;
         }
     }
 

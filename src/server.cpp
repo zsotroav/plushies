@@ -18,8 +18,6 @@ using std::string, std::stoi;
 
 namespace plushies {
 
-    Player Server::syncPlayer(int id) { return *players[id]; }
-
     int Server::serverLoop() {
         while(true) {
             auto f0 = std::async(&Player::ready, players[0], players[1]->active());
@@ -114,10 +112,10 @@ namespace plushies {
         return row;
     }
 
-    Server::Server(bool lan,
+    Server::Server(EnemyMode em,
                    const string& brandFile,
                    const string& actionFile,
-                   const string& actionLearnFile) : lan(lan) {
+                   const string& actionLearnFile) : lan(em) {
         std::ifstream ifbrand(brandFile, std::ios::in);
         while (ifbrand.good()) {
             auto l = readCSV(ifbrand);

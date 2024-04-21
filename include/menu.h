@@ -13,7 +13,7 @@
  * @param cnt Output Plush count value
  * @param opp Output Opponent selection
  */
-void menu(plushies::GameMode& gm, int& cnt, int& opp);
+void menu(plushies::GameMode& gm, int& cnt, plushies::EnemyMode& opp);
 
 /**
  * @brief Write the main menu header (logo and welcome message)

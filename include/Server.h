@@ -18,16 +18,17 @@ using std::string;
 namespace plushies {
 
     class Server {
-        ActionContext executedActions[2];
-        bool lan;
+        EnemyMode lan;
 
         Player* players[2];
     public:
 
-        [[nodiscard]] inline const Player* const getPlayer(int i) const
+        [[nodiscard]] Player* getPlayer(const int i) const
         { return players[i]; }
 
-        [[nodiscard]] inline const bool getLanMode() { return lan; }
+        [[nodiscard]] EnemyMode getLanMode() const { return lan; }
+        [[nodiscard]] bool againstLAN() const
+        { return lan == LAN_CLIENT || lan == LAN_SERVER; }
 
         /**
          * @brief Available Brands in the current game
@@ -38,13 +39,6 @@ namespace plushies {
          * @brief Available actions in the current game
          */
         std::vector<Action> actions;
-
-        /**
-         * @brief Get all info about a specific player to sync local state
-         * @param id ID of player (0-1)
-         * @return Copy of player
-         */
-        Player syncPlayer(int id);
 
         /**
          * @brief Generate a random plush with optional strength restrictions 
@@ -60,7 +54,7 @@ namespace plushies {
             players[num] = p;
         }
 
-        Server(bool lan, const string& brandFile = "data/brands.csv",
+        Server(EnemyMode em, const string& brandFile = "data/brands.csv",
                const string& actionFile = "data/actions.csv",
                const string& actionLearnFile = "data/action_learn.csv");
 
