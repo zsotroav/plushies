@@ -41,11 +41,11 @@ add_executable(Plushies src/main.cpp
         include/menu_plush_create.h
         src/game_screen.cpp
         include/game_screen.h
-        include/lanplayer.h
-        src/lanplayer.cpp
+        #include/lanplayer.h
+        #src/lanplayer.cpp
         lib/nyetwork.h
         lib/nyetwork.cpp
-        include/lanplayer_excep.h
+        lib/nyetwork_excep.h
 
 )
 

@@ -11,7 +11,7 @@
 
 using namespace std;
 
-namespace plushies::lanplay {
+namespace nyetwork {
     class ConnectionFailed final : public std::exception {
         std::string message;
 

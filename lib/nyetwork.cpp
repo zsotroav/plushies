@@ -1,3 +1,5 @@
+#include "nyetwork.h"
+
 #include <array>
 #include <cstdio>
 #include <memory>
@@ -33,5 +35,59 @@ namespace nyetwork {
         while (getline(ss, line, '\n')) re.emplace_back(line);
 
         return re;
+    }
+
+    Communicator::Communicator(const char *ip) : conn_status(DISCONNECTED) {
+        #ifdef __WIN32__
+            WORD versionWanted = MAKEWORD(1, 1);
+            WSADATA wsaData;
+            WSAStartup(versionWanted, &wsaData);
+        #endif
+
+        serverSocket = socket(AF_INET, SOCK_STREAM, 0);
+
+        address.sin_family = AF_INET;
+        address.sin_port = htons(65000);
+        address.sin_addr.s_addr = inet_addr(ip);
+    }
+
+    Server::Server(const char *ip) : Communicator(ip) {
+        const int status = bind(serverSocket,
+                                reinterpret_cast<struct sockaddr *>(&address),
+                                sizeof(address));
+        if (status != 0) throw ConnectionFailed(status);
+
+        // Wait for connection
+        listen(serverSocket, 1);
+        clientSocket = accept(serverSocket, nullptr, nullptr);
+    }
+
+    Communicator::~Communicator() {
+        close(serverSocket);
+        #ifdef __WIN32__
+            WSACleanup();
+        #endif
+    }
+
+        Client::~Client() {
+        close(serverSocket);
+        #ifdef __WIN32__
+            WSACleanup();
+        #endif
+    }
+
+    Server::~Server() {
+        close(serverSocket);
+        close(clientSocket);
+        #ifdef __WIN32__
+            WSACleanup();
+        #endif
+    }
+
+    Client::Client(const char *ip) : Communicator(ip) {
+        const int status = connect(serverSocket,
+                                   reinterpret_cast<struct sockaddr *>(&address),
+                                   sizeof(address));
+        if (status != 0) throw ConnectionFailed(status);
     }
 }
