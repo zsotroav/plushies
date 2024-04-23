@@ -42,7 +42,7 @@ namespace plushies {
             if (sw1) {
                 players[1]->setActive(-1*p1 - 1);
                 try {
-                    if (!lan) { // Lan has accuracy precalculated
+                    if (!enemyMode) { // Lan has accuracy precalculated
                         players[1]->active() << (players[0]->active() >> (p0 - 1));
                         continue;
                     }
@@ -64,7 +64,7 @@ namespace plushies {
             ActionContext ac0 = {0, 0, NONE, Physical};
             ActionContext ac1 = {0, 0, NONE, Physical};
             try {
-                if (!lan) { // Lan has accuracy precalculated
+                if (!againstLAN()) { // Lan has accuracy precalculated
                     ac0 = players[0]->active() >> (p0 - 1);
                     std::cout << "asd";
                 } else {
@@ -115,7 +115,7 @@ namespace plushies {
     Server::Server(EnemyMode em,
                    const string& brandFile,
                    const string& actionFile,
-                   const string& actionLearnFile) : lan(em) {
+                   const string& actionLearnFile) : enemyMode(em) {
         std::ifstream ifbrand(brandFile, std::ios::in);
         while (ifbrand.good()) {
             auto l = readCSV(ifbrand);

@@ -6,8 +6,8 @@
 #ifndef PLUSHIES_SERVER_H
 #define PLUSHIES_SERVER_H
 
-#include <vector>
 #include <string>
+#include <vector>
 #include "action.h"
 #include "common.h"
 #include "player.h"
@@ -18,7 +18,7 @@ using std::string;
 namespace plushies {
 
     class Server {
-        EnemyMode lan;
+        EnemyMode enemyMode;
 
         Player* players[2];
     public:
@@ -26,9 +26,9 @@ namespace plushies {
         [[nodiscard]] Player* getPlayer(const int i) const
         { return players[i]; }
 
-        [[nodiscard]] EnemyMode getLanMode() const { return lan; }
+        [[nodiscard]] EnemyMode getLanMode() const { return enemyMode; }
         [[nodiscard]] bool againstLAN() const
-        { return lan == LAN_CLIENT || lan == LAN_SERVER; }
+        { return enemyMode == LAN_CLIENT || enemyMode == LAN_SERVER; }
 
         /**
          * @brief Available Brands in the current game
