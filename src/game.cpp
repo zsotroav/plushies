@@ -13,6 +13,8 @@
 
 #include "game.h"
 
+#include "menu_lanconf.h"
+
 #ifdef __WIN32__
     #include <windows.h>
 #endif // Windows
@@ -89,6 +91,8 @@ void gameInit() {
     Server s = Server(opp);
 
     if (opp > 5) {
+        string ipm, ipr;
+        menuLanconf(ipm, ipr, opp == LAN_SERVER);
         // TODO: LAN PLAY
     } else {
         // Register overlords

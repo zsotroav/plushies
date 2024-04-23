@@ -39,6 +39,8 @@ add_executable(Plushies src/main.cpp
         src/overlord.cpp
         src/menu_plush_create.cpp
         include/menu_plush_create.h
+        src/menu_lanconf.cpp
+        include/menu_lanconf.h
         src/game_screen.cpp
         include/game_screen.h
         #include/lanplayer.h

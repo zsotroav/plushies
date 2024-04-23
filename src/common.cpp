@@ -28,6 +28,11 @@ std::wstring convertUFT8(const std::string& s) {
     return converter.from_bytes(s);
 }
 
+std::string convertFromUFT8(const std::wstring& ws) {
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    return converter.to_bytes(ws);
+}
+
 std::wostream& operator<<(std::wostream& os, plushies::type type) {
     switch (type) {
         case plushies::NONE:     return os << "NONE    ";
