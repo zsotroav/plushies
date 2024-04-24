@@ -64,6 +64,7 @@ namespace nyetwork {
         }
 
         explicit Client(const char* ip);
+        explicit Client(const string& ip) : Client(ip.c_str()) {};
         ~Client() override;
     };
 
@@ -82,6 +83,7 @@ namespace nyetwork {
         }
 
         explicit Server(const char* ip);
+        explicit Server(const string& ip) : Server(ip.c_str()) {};
         ~Server() override;
     };
 

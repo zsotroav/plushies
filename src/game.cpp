@@ -90,10 +90,15 @@ void gameInit() {
 
     Server s = Server(opp);
 
-    if (opp > 5) {
-        string ipm, ipr;
-        menuLanconf(ipm, ipr, opp == LAN_SERVER);
-        // TODO: LAN PLAY
+    // TODO: LAN PLAY
+    if (opp == LAN_CLIENT || opp == LAN_SERVER) {
+        try {
+            if (opp == LAN_CLIENT) s.registerComm(new nyetwork::Client(menuLanconf(false)));
+            else s.registerComm(new nyetwork::Server(menuLanconf(true)));
+        } catch (...) { // Can only throw conn failed
+            wcout << "Connection failed!" << endl;
+            return;
+        }
     } else {
         // Register overlords
         switch ( opp > 0 ? opp : random(1, 5)) {

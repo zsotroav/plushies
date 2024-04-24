@@ -47,13 +47,13 @@ namespace nyetwork {
         serverSocket = socket(AF_INET, SOCK_STREAM, 0);
 
         address.sin_family = AF_INET;
-        address.sin_port = htons(65000);
+        address.sin_port = htons(6000);
         address.sin_addr.s_addr = inet_addr(ip);
     }
 
     Server::Server(const char *ip) : Communicator(ip) {
         const int status = bind(serverSocket,
-                                reinterpret_cast<struct sockaddr *>(&address),
+                                (struct sockaddr*)&address,
                                 sizeof(address));
         if (status != 0) throw ConnectionFailed(status);
 

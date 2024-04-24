@@ -7,7 +7,6 @@
 #include <sstream>
 #include <thread>
 #include <future>
-#include <utility>
 #include <string>
 #include <vector>
 #include "common.h"
@@ -18,7 +17,15 @@ using std::string, std::stoi;
 
 namespace plushies {
 
+    void setupLan() {
+
+    }
+
     int Server::serverLoop() {
+        if (enemyMode == LAN_CLIENT || enemyMode == LAN_SERVER) setupLan();
+
+
+        // Enter server gameplay loop
         while(true) {
             auto f0 = std::async(&Player::ready, players[0], players[1]->active());
             auto f1 = std::async(&Player::ready, players[1], players[0]->active());
@@ -100,6 +107,11 @@ namespace plushies {
 
     }
 
+    void Server::registerComm(nyetwork::Communicator *c) {
+        com = c;
+    }
+
+
     std::vector<string> readCSV(std::ifstream& ifstream) {
         string line, word;
 
@@ -115,7 +127,7 @@ namespace plushies {
     Server::Server(EnemyMode em,
                    const string& brandFile,
                    const string& actionFile,
-                   const string& actionLearnFile) : enemyMode(em) {
+                   const string& actionLearnFile) : enemyMode(em), com(nullptr) {
         std::ifstream ifbrand(brandFile, std::ios::in);
         while (ifbrand.good()) {
             auto l = readCSV(ifbrand);

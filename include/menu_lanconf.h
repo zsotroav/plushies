@@ -7,7 +7,7 @@
 
 #include <string>
 
-void menuLanconf(string& ip_me, string& ip_re, bool server);
+const string menuLanconf(bool server);
 
 
 

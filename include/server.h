@@ -12,6 +12,7 @@
 #include "common.h"
 #include "player.h"
 #include "plush.h"
+#include "nyetwork.h"
 
 using std::string;
 
@@ -19,6 +20,7 @@ namespace plushies {
 
     class Server {
         EnemyMode enemyMode;
+        nyetwork::Communicator* com;
 
         Player* players[2];
     public:
@@ -29,6 +31,8 @@ namespace plushies {
         [[nodiscard]] EnemyMode getLanMode() const { return enemyMode; }
         [[nodiscard]] bool againstLAN() const
         { return enemyMode == LAN_CLIENT || enemyMode == LAN_SERVER; }
+
+        void registerComm(nyetwork::Communicator* c);
 
         /**
          * @brief Available Brands in the current game
@@ -61,6 +65,7 @@ namespace plushies {
         ~Server() {
             delete players[0];
             delete players[1];
+            if (com != nullptr) delete com; // NOLINT(*-delete-null-pointer)
         }
     };
 }

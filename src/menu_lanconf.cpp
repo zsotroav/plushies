@@ -19,19 +19,17 @@ void printIP() {
     }
 }
 
-void menuLanconf(string& ip_me, string& ip_re, bool server) {
+const string menuLanconf(const bool server) {
     wcout << "Configuring LAN Play  --  "
           << (server ? "Server mode" : "Client mode") << endl << endl
           << "Your potential IP addresses are: " << endl;
     printIP();
-    wcout << endl << endl << "Enter the IP you want to use: " << flush;
+
+    wcout << (server ? "Enter the IP address you want to use: " :
+                       "Enter the IP of the server you want to connect to: ")
+          << flush;
 
     std::wstring ws;
     wcin >> ws;
-    ip_me = convertFromUFT8(ws);
-
-    wcout << "Enter the IP of the server you want to connect to: " << flush;
-
-    wcin >> ws;
-    ip_re = convertFromUFT8(ws);
+    return convertFromUFT8(ws);
 }
