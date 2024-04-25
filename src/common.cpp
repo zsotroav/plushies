@@ -18,7 +18,7 @@ int random(int a, int b) {
     return mean;
 }
 
-double operator>>(plushies::type attacker, plushies::type target) {
+double operator>>(plushies::Type attacker, plushies::Type target) {
     if (attacker == plushies::NONE || target == plushies::NONE) return 1;
     return plushies::relationChart[attacker-1][target-1];
 }
@@ -33,7 +33,7 @@ std::string convertFromUFT8(const std::wstring& ws) {
     return converter.to_bytes(ws);
 }
 
-std::wostream& operator<<(std::wostream& os, plushies::type type) {
+std::wostream& operator<<(std::wostream& os, plushies::Type type) {
     switch (type) {
         case plushies::NONE:     return os << "NONE    ";
         case plushies::NORMAL:   return os << "NORMAL  ";

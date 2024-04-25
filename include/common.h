@@ -25,7 +25,7 @@ namespace plushies {
             {0,   1,   1,   1,   1,   2,   1,   1,   2   }, // Ghost
     };
 
-    enum type {
+    enum Type {
         NONE     = 0,
         NORMAL   = 1,
         FIRE     = 2,
@@ -59,7 +59,7 @@ namespace plushies {
     struct ActionContext {
         int damage;
         int speed;
-        type type;
+        Type type;
         ActionCategory category;
     };
 
@@ -91,7 +91,7 @@ namespace plushies {
  */
 int random(int a, int b);
 
-double operator>>(plushies::type attacker, plushies::type target);
+double operator>>(plushies::Type attacker, plushies::Type target);
 
 std::wstring convertUFT8(const std::string& s);
 std::string convertFromUFT8(const std::wstring& ws);
@@ -99,7 +99,7 @@ std::string convertFromUFT8(const std::wstring& ws);
 inline std::wostream& operator<<(std::wostream& os, const std::string& s)
 { return os << convertUFT8(s); }
 
-std::wostream& operator<<(std::wostream& os, plushies::type type);
+std::wostream& operator<<(std::wostream& os, plushies::Type type);
 
 std::wostream& operator<<(std::wostream& os, plushies::ActionCategory ac);
 

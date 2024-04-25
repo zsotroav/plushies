@@ -136,8 +136,8 @@ namespace plushies {
             int arr[] = { stoi(l[3]), stoi(l[4]), stoi(l[5]), stoi(l[6]), stoi(l[7]), stoi(l[8]) };
             this->brands.emplace_back(
                     l[0],
-                    static_cast<type>(stoi(l[1])),
-                    static_cast<type>(stoi(l[2])),
+                    static_cast<Type>(stoi(l[1])),
+                    static_cast<Type>(stoi(l[2])),
                     arr);
         }
         ifbrand.close();
@@ -152,7 +152,7 @@ namespace plushies {
                     stoi(l[2]), // Accuracy
                     stoi(l[3]), // Energy
                     std::stod(l[4]), // Priority mod
-                    static_cast<type>(stoi(l[5])),
+                    static_cast<Type>(stoi(l[5])),
                     static_cast<ActionCategory>(stoi(l[6])));
         }
         ifaction.close();

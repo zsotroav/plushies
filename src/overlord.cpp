@@ -20,8 +20,8 @@ int maxminAction(plushies::Player& att,
     int mid = 0;
 
     for (int i = 1; i < 4; ++i) {
-        if (att.activeAction(i).getType() == plushies::type::NONE ||
-                att.activeAction(i).getType() == plushies::type::NONE)
+        if (att.activeAction(i).getType() == plushies::Type::NONE ||
+                att.activeAction(i).getType() == plushies::Type::NONE)
             continue;
 
         int c = 0;

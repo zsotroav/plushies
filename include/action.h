@@ -18,7 +18,7 @@ namespace plushies {
         int energy;
         int maxEnergy;
         double priority;
-        type type;
+        Type type;
         ActionCategory category;
     public:
         /// Getters
@@ -31,9 +31,9 @@ namespace plushies {
         inline void decEnergy() { energy -= 1; }
         inline double getPriority() const { return priority; }
         inline ActionCategory getCategory() const { return category; }
-        inline plushies::type getType() const { return type; }
+        inline plushies::Type getType() const { return type; }
 
-        Action(string name, int dam, int acc, int en, double pri, plushies::type typ,
+        Action(string name, int dam, int acc, int en, double pri, plushies::Type typ,
                ActionCategory cat);
 
         bool operator==(const Action& rhs);

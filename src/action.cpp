@@ -11,7 +11,7 @@ using namespace plushies;
 /// Constructors
 
 Action::Action(string name, int dam, int acc, int en, double pri,
-               plushies::type typ,plushies::ActionCategory cat):
+               plushies::Type typ,plushies::ActionCategory cat):
                name(std::move(name)), damage(dam), accuracy(acc),
                energy(en), maxEnergy(en), priority(pri), type(typ),
                category(cat) {}

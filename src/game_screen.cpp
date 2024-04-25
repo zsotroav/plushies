@@ -127,7 +127,7 @@ int chooseAction(const Plush& p) {
     updateActionInfo(p.Actions[0]);
     int i = 1;
     for (; i < 4; ++i) {
-        if (p.Actions[i].getType() == plushies::type::NONE || p.Actions[i].getType() == NONE) break;
+        if (p.Actions[i].getType() == plushies::Type::NONE || p.Actions[i].getType() == NONE) break;
         updateSelection(p.Actions[i].getName(), i);
     }
 

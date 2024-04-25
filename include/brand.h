@@ -15,8 +15,8 @@ using std::string;
 namespace plushies {
     class Brand {
         string name;
-        type baseType;
-        type secondaryType;
+        Type baseType;
+        Type secondaryType;
         int baseStats[6];
 
         std::vector<Action*> learnActions; //!< Learnable Actions 
@@ -24,8 +24,8 @@ namespace plushies {
     public:
         // Getters
         inline string getName() const {return name; }
-        inline type getBaseType() const { return baseType; }
-        inline type getSecondaryType() const { return secondaryType; }
+        inline Type getBaseType() const { return baseType; }
+        inline Type getSecondaryType() const { return secondaryType; }
         inline int getBaseStat(const StatOrder stat) const { return baseStats[stat]; }
 
         inline int baseStatTotal() const { 
@@ -40,7 +40,7 @@ namespace plushies {
 
 
         // ctor
-        Brand(string name, type base, type secondary, const int baseStats[6]);
+        Brand(string name, Type base, Type secondary, const int baseStats[6]);
     };
 }
 
