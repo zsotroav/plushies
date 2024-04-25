@@ -25,9 +25,9 @@ void Connection::sendPSYN(const Server& s, Plush &plush) const {
     for (int i = 0; i < 4; ++i) {
         if (plush.Actions[i] == NullAction) { ss << "-1"; continue; }
 
-        for (auto & a : s.actions) {
-            if (a.getName() != plush.Actions[i].getName()) continue;
-            ss << i << " ";
+        for (int j = 0; j < s.actions.size(); ++j) {
+            if (s.actions[j].getName() != plush.Actions[i].getName()) continue;
+            ss << j << " ";
             break;
         }
     }
@@ -67,7 +67,7 @@ Plush Connection::recPSYN(Server &s) const {
 
     // Get the Action from index, only replace NullActions if needed
     for (int i = 0; i < 4; ++i) {
-        if (row[10+i] == "-1") continue;
+        if (row[9+i] == "-1") continue;
         ac[i] = s.actions[stoi(row[9+i])];
     }
 
