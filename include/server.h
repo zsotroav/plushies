@@ -10,6 +10,7 @@
 #include <vector>
 #include "action.h"
 #include "common.h"
+#include "lanhandle.h"
 #include "player.h"
 #include "plush.h"
 #include "nyetwork.h"
@@ -20,7 +21,8 @@ namespace plushies {
 
     class Server {
         EnemyMode enemyMode;
-        nyetwork::Communicator* com;
+        GameMode game_mode_;
+        lanplay::Connection* con;
 
         Player* players[2];
     public:
@@ -58,14 +60,15 @@ namespace plushies {
             players[num] = p;
         }
 
-        Server(EnemyMode em, const string& brandFile = "data/brands.csv",
+        Server(EnemyMode em, GameMode gm,
+               const string& brandFile = "data/brands.csv",
                const string& actionFile = "data/actions.csv",
                const string& actionLearnFile = "data/action_learn.csv");
 
         ~Server() {
             delete players[0];
             delete players[1];
-            if (com != nullptr) delete com; // NOLINT(*-delete-null-pointer)
+            if (con != nullptr) delete con; // NOLINT(*-delete-null-pointer)
         }
     };
 }

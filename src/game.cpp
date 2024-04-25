@@ -88,9 +88,10 @@ void gameInit() {
     EnemyMode opp;
     menu(gm, cnt, opp); // Get game config
 
-    Server s = Server(opp);
+    Server s = Server(opp, gm);
 
     // TODO: LAN PLAY
+    // TODO: Move into ctor?
     if (opp == LAN_CLIENT || opp == LAN_SERVER) {
         try {
             if (opp == LAN_CLIENT) s.registerComm(new nyetwork::Client(menuLanconf(false)));

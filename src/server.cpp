@@ -12,17 +12,19 @@
 #include "common.h"
 #include "server.h"
 #include "player.h"
+#include "lanhandle.h"
 
 using std::string, std::stoi;
 
 namespace plushies {
-
-    void setupLan() {
-
-    }
-
     int Server::serverLoop() {
-        if (enemyMode == LAN_CLIENT || enemyMode == LAN_SERVER) setupLan();
+        if (enemyMode == LAN_CLIENT || enemyMode == LAN_SERVER) {
+            switch (con->connect(game_mode_, players[1]->numPlushes())) {
+                case lanplay::DISCONNECTED: return -1;
+                case lanplay::CONFIRM:   break; // TODO: Confirm
+                case lanplay::CONNECTED: break;
+            }
+        }
 
 
         // Enter server gameplay loop
@@ -108,7 +110,11 @@ namespace plushies {
     }
 
     void Server::registerComm(nyetwork::Communicator *c) {
-        com = c;
+        switch (enemyMode) {
+            case LAN_CLIENT: con = new lanplay::ClientConnection(c); break;
+            case LAN_SERVER: con = new lanplay::ServerConnection(c); break;
+            default: throw std::invalid_argument("Register lan on non-lan mode?");
+        }
     }
 
 
@@ -124,10 +130,12 @@ namespace plushies {
         return row;
     }
 
-    Server::Server(EnemyMode em,
+    Server::Server(EnemyMode em, GameMode gm,
                    const string& brandFile,
                    const string& actionFile,
-                   const string& actionLearnFile) : enemyMode(em), com(nullptr) {
+                   const string& actionLearnFile) :
+        enemyMode(em), game_mode_(gm), con(nullptr)
+    {
         std::ifstream ifbrand(brandFile, std::ios::in);
         while (ifbrand.good()) {
             auto l = readCSV(ifbrand);

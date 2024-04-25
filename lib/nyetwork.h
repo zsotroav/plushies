@@ -59,7 +59,6 @@ namespace nyetwork {
             recv(serverSocket, buf, len, flags);
         }
 
-
         void sen(const char *buf, const int len, const int flags) override {
             if (conn_status != CONNECTED) throw InvalidConnection();
             send(serverSocket, buf, len, flags);
@@ -76,7 +75,7 @@ namespace nyetwork {
     public:
         void rec(char *buf, const int len, const int flags) override {
             if (conn_status != CONNECTED) throw InvalidConnection();
-            send(clientSocket, buf, len, flags);
+            recv(clientSocket, buf, len, flags);
         }
 
         void sen(const char *buf, const int len, const int flags) override {

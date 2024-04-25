@@ -68,6 +68,15 @@ namespace nyetwork {
         // Wait for connection
         listen(serverSocket, 1);
         clientSocket = accept(serverSocket, nullptr, nullptr);
+        conn_status = CONNECTED;
+    }
+
+    Client::Client(const char *ip) : Communicator(ip) {
+        const int status = connect(serverSocket,
+                                   (struct sockaddr*)(&address),
+                                   sizeof(address));
+        if (status != 0) throw ConnectionFailed(status);
+        conn_status = CONNECTED;
     }
 
     Communicator::~Communicator() {
@@ -77,7 +86,7 @@ namespace nyetwork {
         #endif
     }
 
-        Client::~Client() {
+    Client::~Client() {
         close(serverSocket);
         #ifdef __WIN32__
             WSACleanup();
@@ -92,10 +101,4 @@ namespace nyetwork {
         #endif
     }
 
-    Client::Client(const char *ip) : Communicator(ip) {
-        const int status = connect(serverSocket,
-                                   reinterpret_cast<struct sockaddr *>(&address),
-                                   sizeof(address));
-        if (status != 0) throw ConnectionFailed(status);
-    }
 }

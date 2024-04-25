@@ -48,6 +48,8 @@ add_executable(Plushies src/main.cpp
         lib/nyetwork.h
         lib/nyetwork.cpp
         lib/nyetwork_excep.h
+        include/lanhandle.h
+        src/lanhandle.cpp
 
 )
 

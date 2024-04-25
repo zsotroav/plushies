@@ -2,7 +2,7 @@
 // Created by zsotroav on 2024-03-24.
 //
 
-/// @file Common data structures and enums
+/// @file common.h Common data structures and enums
 
 #ifndef PLUSHIES_COMMON_H
 #define PLUSHIES_COMMON_H
