@@ -11,13 +11,15 @@
 #include "overlord.h"
 #include "server.h"
 
+#include "memtrace.h"
+
 #include "game.h"
 
 #include "menu_lanconf.h"
 
 #ifdef __WIN32__
     #include <windows.h>
-#endif // Windows
+#endif // __WIN32__
 
 using namespace plushies;
 using std::wcout, std::endl, std::flush;

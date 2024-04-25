@@ -13,16 +13,17 @@
 #include "server.h"
 #include "player.h"
 #include "lanhandle.h"
+#include "memtrace.h"
 
 using std::string, std::stoi;
 
 namespace plushies {
     int Server::serverLoop() {
         if (enemyMode == LAN_CLIENT || enemyMode == LAN_SERVER) {
-            switch (con->connect(game_mode_, players[1]->numPlushes())) {
-                case lanplay::DISCONNECTED: return -1;
-                case lanplay::CONFIRM:   break; // TODO: Confirm
-                case lanplay::CONNECTED: break;
+            switch (con->connect(*this)) {
+                case DISCONNECTED: return -1;
+                case CONFIRM:   break; // TODO: Confirm
+                case CONNECTED: break;
             }
         }
 

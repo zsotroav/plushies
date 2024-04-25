@@ -7,7 +7,8 @@
 #ifndef PLUSHIES_COMMON_H
 #define PLUSHIES_COMMON_H
 
-#include <ostream>
+#include <string>
+#include <vector>
 #include <string>
 
 namespace plushies {
@@ -81,6 +82,12 @@ namespace plushies {
         LAN_SERVER       = 10,
         LAN_CLIENT       = 15
     };
+
+    enum ConnStatus {
+        DISCONNECTED = -1,
+        CONFIRM = 0,
+        CONNECTED = 1
+    };
 }
 
 /**
@@ -102,5 +109,7 @@ inline std::wostream& operator<<(std::wostream& os, const std::string& s)
 std::wostream& operator<<(std::wostream& os, plushies::Type type);
 
 std::wostream& operator<<(std::wostream& os, plushies::ActionCategory ac);
+
+std::vector<std::string> split(std::string s, const char delim);
 
 #endif //PLUSHIES_COMMON_H

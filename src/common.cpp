@@ -3,7 +3,7 @@
 //
 
 #include <codecvt>
-#include <iostream>
+#include <sstream>
 #include <locale>
 #include <random>
 #include <string>
@@ -57,3 +57,10 @@ std::wostream& operator<<(std::wostream& os, plushies::ActionCategory ac) {
     return os;
 }
 
+std::vector<std::string> split(std::string s, const char delim) {
+    std::string word;
+    std::vector<std::string> row;
+    std::stringstream ss(s);
+    while (std::getline(ss, word, delim)) row.push_back(word);
+    return row;
+}

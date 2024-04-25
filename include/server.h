@@ -10,7 +10,6 @@
 #include <vector>
 #include "action.h"
 #include "common.h"
-#include "lanhandle.h"
 #include "player.h"
 #include "plush.h"
 #include "nyetwork.h"
@@ -18,6 +17,9 @@
 using std::string;
 
 namespace plushies {
+    namespace lanplay {
+        class Connection;
+    }
 
     class Server {
         EnemyMode enemyMode;
@@ -33,6 +35,8 @@ namespace plushies {
         [[nodiscard]] EnemyMode getLanMode() const { return enemyMode; }
         [[nodiscard]] bool againstLAN() const
         { return enemyMode == LAN_CLIENT || enemyMode == LAN_SERVER; }
+
+        [[nodiscard]] GameMode getGameMode() const { return game_mode_; }
 
         void registerComm(nyetwork::Communicator* c);
 
