@@ -23,6 +23,10 @@ namespace plushies::lanplay {
         { communicator->rec(buf, len, flags); }
         inline void sen(const char* buf, const int len, const int flags = 0) const
         { communicator->sen(buf, len, flags); }
+        inline void sen(const char* string) const
+        { communicator->sen(string, strlen(string), 0); }
+        inline void sen(const std::string& string) const
+        { communicator->sen(string.c_str(), string.length(), 0); }
 
         inline void sen(const stringstream& ss) const
         { communicator->sen(ss.str().c_str(), strlen(ss.str().c_str()), 0); }
@@ -39,11 +43,16 @@ namespace plushies::lanplay {
         virtual ConnStatus connect(Server& server) = 0;
 
         /**
-         * @brief Get action choice of user
-         * @param myChoice The choice this user made that is to be sent
-         * @return Choice of opponent
+         * @brief Let the lan player know we are ready to receive their choice
          */
-        //virtual int ActionReady(future<int> myChoice) = 0;
+        virtual void ActionReady() = 0;
+
+        /**
+         * @brief Sync the choice of the local and lan player
+         * @param myChoice The choice of the local player to send
+         * @return Choice of the lan player
+         */
+        virtual int SyncActions(int myChoice) = 0;
 
         // TODO: PSYN ?
         void sendPSYN(const Server& s, Plush& plush) const;
@@ -58,20 +67,22 @@ namespace plushies::lanplay {
         virtual ~Connection() { delete communicator; }
     };
 
-    class ServerConnection : public Connection {
+    class ServerConnection final : public Connection {
     public:
         ConnStatus connect(Server& server) override;
-        //int ActionReady(future<int> myChoice) override;
+        void ActionReady() override;
+        int SyncActions(int myChoice) override;
         ServerConnection(nyetwork::Communicator* com) : Connection(com) {}
-        ~ServerConnection() override { delete communicator; }
+        ~ServerConnection() override {}
     };
 
-    class ClientConnection : public Connection {
+    class ClientConnection final : public Connection {
     public:
         ConnStatus connect(Server& server) override;
-        //int ActionReady(future<int> myChoice) override;
+        void ActionReady() override;
+        int SyncActions(int myChoice) override;
         ClientConnection(nyetwork::Communicator* com) : Connection(com) {}
-        ~ClientConnection() override { delete communicator; }
+        ~ClientConnection() override {}
     };
 
 

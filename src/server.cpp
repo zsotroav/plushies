@@ -19,7 +19,7 @@ using std::string, std::stoi;
 
 namespace plushies {
     int Server::serverLoop() {
-        if (enemyMode == LAN_CLIENT || enemyMode == LAN_SERVER) {
+        if (againstLAN()) {
             switch (con->connect(*this)) {
                 case DISCONNECTED: return -1;
                 case CONFIRM:   break; // TODO: Confirm
@@ -27,16 +27,40 @@ namespace plushies {
             }
         }
 
-
         // Enter server gameplay loop
         while(true) {
-            auto f0 = std::async(&Player::ready, players[0], players[1]->active());
-            auto f1 = std::async(&Player::ready, players[1], players[0]->active());
+            // Send LAN player notice that we are ready for the next choice
+            if (againstLAN()) con->ActionReady();
 
-            int p0 = f0.get();
-            int p1 = f1.get();
+            // Ask local player to choose
+            future<int> f1 = std::async(&Player::ready, players[1],
+                                        players[0]->active());
+            future<int> f0; // For LAN player/local AI
 
-            bool sw0 = p0 < 0, sw1 = p1 < 0;
+            int p0, p1; // Result storage
+
+            // If we aren't against a lan player we can just get their choice
+            if (!againstLAN())
+                f0 = std::async(&Player::ready, players[0],
+                                players[1]->active());
+
+            // We need the local player's choice before we can get the lan's
+            p1 = f1.get();
+
+            // If we are against a lan player, get their choices
+            if (enemyMode == LAN_CLIENT)
+                f0 = std::async(&lanplay::ClientConnection::SyncActions,
+                                (dynamic_cast<lanplay::ClientConnection *>(con)),
+                                p1);
+            else if (enemyMode == LAN_SERVER)
+                f0 = std::async(&lanplay::ServerConnection::SyncActions,
+                                (dynamic_cast<lanplay::ServerConnection *>(con)),
+                                p1);
+
+            // Get enemy's (overlord/lan player) choice as well
+            p0 = f0.get();
+
+            const bool sw0 = p0 < 0, sw1 = p1 < 0;
 
             // Forfeit
             if (p0 == 0) return 1;
@@ -52,7 +76,7 @@ namespace plushies {
             if (sw1) {
                 players[1]->setActive(-1*p1 - 1);
                 try {
-                    if (!enemyMode) { // Lan has accuracy precalculated
+                    if (!againstLAN()) { // Lan has accuracy precalculated
                         players[1]->active() << (players[0]->active() >> (p0 - 1));
                         continue;
                     }
@@ -131,6 +155,8 @@ namespace plushies {
         return row;
     }
 
+    // ReSharper disable once CppPossiblyUninitializedMember
+    // Intnetionally uninitialized, registering players is not the ctors job
     Server::Server(EnemyMode em, GameMode gm,
                    const string& brandFile,
                    const string& actionFile,
@@ -210,4 +236,11 @@ namespace plushies {
 
         return Plush(brands[brandid], uv, ac);
     }
+
+    Server::~Server() {
+        delete players[0];
+        delete players[1];
+        if (con != nullptr) delete con;
+    }
+
 }

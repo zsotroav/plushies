@@ -92,7 +92,6 @@ void gameInit() {
 
     Server s = Server(opp, gm);
 
-    // TODO: LAN PLAY
     // TODO: Move into ctor?
     if (opp == LAN_CLIENT || opp == LAN_SERVER) {
         try {

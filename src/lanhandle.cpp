@@ -37,7 +37,7 @@ void Connection::sendPSYN(const Server& s, Plush &plush) const {
 
 Plush Connection::recPSYN(Server &s) const {
     // PSYN <BRAND NAME> <PLUSH UVs> <HP> <MOVE IDs>
-    // PSYN Blahaj 63 63 63 63 63 63 200 -1 -1 -1 -1
+    // PSYN Blahaj 63 63 63 63 63 63 200 -1 -1 -1 -1   <-- Example
     char buff[64] = { 0 };
     rec(buff, sizeof(buff), 0);
 
@@ -96,6 +96,7 @@ ConnStatus ServerConnection::connect(Server& server) {
         return DISCONNECTED;
     }
 
+    // Anything that isn't an accept is good as a deny
     sen("CACC", 4, 0);
 
     // PSYN - Plush Sync
@@ -106,13 +107,13 @@ ConnStatus ServerConnection::connect(Server& server) {
     Player* dummy = new Player();
 
     // TODO: Actual number sync
-    for (int i = 0; i < player->numPlushes(); ++i) {
-        auto p = recPSYN(server);
-        dummy->addPlush(p);
-    }
+    for (int i = 0; i < player->numPlushes(); ++i)
+        dummy->addPlush(recPSYN(server));
 
+    // Register synced dummy player to the server
     server.RegisterPlayer(dummy);
 
+    // Connection established and game is ready
     return CONNECTED;
 }
 
@@ -129,11 +130,12 @@ ConnStatus ClientConnection::connect(Server& server) {
     rec(buff, 8, 0); // CACK
     rec(buff, 8, 0); // CACC/CDEN
 
+    // Anything that isn't an accept is good as a deny
     if (strcmp(buff, "CACC") != 0) return DISCONNECTED;
 
-    // PSYN - Plush Sync
-
     Player* dummy = new Player();
+
+    // PSYN - Plush Sync
 
     // TODO: Actual number sync
     for (int i = 0; i < player->numPlushes(); ++i)
@@ -142,8 +144,54 @@ ConnStatus ClientConnection::connect(Server& server) {
     for (int i = 0; i < player->numPlushes(); ++i)
         sendPSYN(server, player->getPlushes()[i]);
 
+    // Register synced dummy player to the server
     server.RegisterPlayer(dummy);
 
+    // Connection established and game is ready
     return CONNECTED;
 }
 
+string encodeChoice(const int c) {
+    stringstream ss;
+
+    if (c == 0) ss << "ADEF";
+    else if (c < 0)  ss << "ASWP " << (-1*c);
+    else {
+        ss << "AATK ";
+        // TODO: Accuracy
+        // if (failed) ss << (c+10);
+        ss << c;
+    }
+
+    return ss.str();
+}
+
+int decodeChoice(const char* c) {
+    const auto spl = split(c, ' ');
+    if (spl[0] == "ADEF") return 0;
+    if (spl[0] == "ASWP") return stoi(spl[1]) * -1;
+    return stoi(spl[1]);
+}
+
+void ClientConnection::ActionReady() {
+    char buff[8] = { 0 };
+    while (strcmp(buff, "ARDY") != 0) rec(buff, sizeof(buff), 0);
+}
+
+int ClientConnection::SyncActions(int myChoice) {
+    char buff[8] = { 0 };
+
+    sen(encodeChoice(myChoice));
+    rec(buff, sizeof(buff), 0);
+    return decodeChoice(buff);
+}
+
+void ServerConnection::ActionReady() { sen("ARDY"); }
+
+int ServerConnection::SyncActions(int myChoice) {
+    char buff[8] = { 0 };
+
+    rec(buff, sizeof(buff), 0);
+    sen(encodeChoice(myChoice));
+    return decodeChoice(buff);
+}

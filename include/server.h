@@ -13,6 +13,7 @@
 #include "player.h"
 #include "plush.h"
 #include "nyetwork.h"
+#include "memtrace.h"
 
 using std::string;
 
@@ -69,11 +70,7 @@ namespace plushies {
                const string& actionFile = "data/actions.csv",
                const string& actionLearnFile = "data/action_learn.csv");
 
-        ~Server() {
-            delete players[0];
-            delete players[1];
-            if (con != nullptr) delete con; // NOLINT(*-delete-null-pointer)
-        }
+        ~Server();
     };
 }
 
