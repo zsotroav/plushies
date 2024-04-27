@@ -14,6 +14,8 @@
 #include "player.h"
 #include "lanhandle.h"
 #include "memtrace.h"
+#include "menu_lanconf.h"
+#include "overlord.h"
 
 using std::string, std::stoi;
 
@@ -155,14 +157,8 @@ namespace plushies {
         return row;
     }
 
-    // ReSharper disable once CppPossiblyUninitializedMember
-    // Intnetionally uninitialized, registering players is not the ctors job
-    Server::Server(EnemyMode em, GameMode gm,
-                   const string& brandFile,
-                   const string& actionFile,
-                   const string& actionLearnFile) :
-        enemyMode(em), game_mode_(gm), con(nullptr)
-    {
+    void Server::loadFiles(const string &brandFile, const string &actionFile,
+                           const string &actionLearnFile) {
         std::ifstream ifbrand(brandFile, std::ios::in);
         while (ifbrand.good()) {
             auto l = readCSV(ifbrand);
@@ -196,12 +192,43 @@ namespace plushies {
         while (iflearn.good()) {
             auto l = readCSV(iflearn);
             for (size_t i = 1; i < l.size(); i++) {
-                brands[stoi(l[0])].addLearnableAction(&actions[stoi(l[i])]);    
+                brands[stoi(l[0])].addLearnableAction(&actions[stoi(l[i])]);
             }
-            
+
         }
         iflearn.close();
+    }
 
+    void Server::registerOpponents(int cnt) {
+
+        if (enemyMode == LAN_CLIENT || enemyMode == LAN_SERVER) {
+            try {
+                if (enemyMode == LAN_CLIENT) registerComm(new nyetwork::Client(menuLanconf(false)));
+                else registerComm(new nyetwork::Server(menuLanconf(true)));
+            } catch (...) { // Can only throw conn failed
+                wcout << "Connection failed!" << endl;
+                return;
+            }
+        } else {
+            // Register overlords
+            switch ( enemyMode > 0 ? enemyMode : random(1, 5)) {
+                case 1: RegisterPlayer(new overlord::Dennis (*this, cnt)); break;
+                case 2: RegisterPlayer(new overlord::Clyde  (*this, cnt)); break;
+                case 3: RegisterPlayer(new overlord::Ninty  (*this, cnt)); break;
+                case 4: RegisterPlayer(new overlord::Waffles(*this, cnt)); break;
+                case 5: RegisterPlayer(new overlord::Muffins(*this, cnt)); break;
+            }
+        }
+    }
+
+    Server::Server(EnemyMode em, GameMode gm, int cnt,
+                   const string& brandFile,
+                   const string& actionFile,
+                   const string& actionLearnFile) :
+        enemyMode(em), game_mode_(gm), con(nullptr) {
+
+        loadFiles(brandFile, actionFile, actionLearnFile);
+        registerOpponents(cnt);
     }
 
     Plush Server::createRandomPlush(int bst, int uvmin, int uvmax) {

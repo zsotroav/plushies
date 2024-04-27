@@ -90,27 +90,7 @@ void gameInit() {
     EnemyMode opp;
     menu(gm, cnt, opp); // Get game config
 
-    Server s = Server(opp, gm);
-
-    // TODO: Move into ctor?
-    if (opp == LAN_CLIENT || opp == LAN_SERVER) {
-        try {
-            if (opp == LAN_CLIENT) s.registerComm(new nyetwork::Client(menuLanconf(false)));
-            else s.registerComm(new nyetwork::Server(menuLanconf(true)));
-        } catch (...) { // Can only throw conn failed
-            wcout << "Connection failed!" << endl;
-            return;
-        }
-    } else {
-        // Register overlords
-        switch ( opp > 0 ? opp : random(1, 5)) {
-            case 1: s.RegisterPlayer(new overlord::Dennis (s, cnt)); break;
-            case 2: s.RegisterPlayer(new overlord::Clyde  (s, cnt)); break;
-            case 3: s.RegisterPlayer(new overlord::Ninty  (s, cnt)); break;
-            case 4: s.RegisterPlayer(new overlord::Waffles(s, cnt)); break;
-            case 5: s.RegisterPlayer(new overlord::Muffins(s, cnt)); break;
-        }
-    }
+    Server s = Server(opp, gm, cnt);
 
     Player* human = new Player();
     for (int i = 0; i < cnt; ++i) {

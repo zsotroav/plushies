@@ -28,6 +28,11 @@ namespace plushies {
         lanplay::Connection* con;
 
         Player* players[2];
+
+        void loadFiles(const string& brandFile,
+                       const string& actionFile,
+                       const string& actionLearnFile);
+        void registerOpponents(int cnt);
     public:
 
         [[nodiscard]] Player* getPlayer(const int i) const
@@ -65,7 +70,7 @@ namespace plushies {
             players[num] = p;
         }
 
-        Server(EnemyMode em, GameMode gm,
+        Server(EnemyMode em, GameMode gm, int cnt,
                const string& brandFile = "data/brands.csv",
                const string& actionFile = "data/actions.csv",
                const string& actionLearnFile = "data/action_learn.csv");
