@@ -19,7 +19,7 @@ namespace plushies {
         int activePlush;
 
     public:
-        void addPlush(Plush p);
+        void addPlush(const Plush &p);
         void setActive(int i);
         void nextAlive();
         int numPlushes(bool alive = false);

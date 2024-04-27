@@ -23,28 +23,27 @@ namespace plushies {
         // Public members
         std::vector<Action> Actions;
 
-
         /// Getters
         [[nodiscard]] inline std::string getName() const { return brand.getName(); }
         [[nodiscard]] inline Brand& getBrand() const { return brand; }
         [[nodiscard]] inline int getHP() const { return health; }
         [[nodiscard]] inline int getMaxHP() const { return maxhp; }
-        [[nodiscard]] inline int getUV(StatOrder uvo) const { return UV[uvo]; }
+        [[nodiscard]] inline int getUV(const StatOrder uvo) const { return UV[uvo]; }
 
         /// Functions
         int validMoves() const;
 
-        int calcDamage(const Action& act);
-        int calcDamage(int actionId);
+        int calcDamage(const Action& act) const;
+        int calcDamage(int actionId) const;
 
-        ActionContext getAC(const Action& act);
-        ActionContext getAC(const int actId);
+        ActionContext getAC(const Action& act) const;
+        ActionContext getAC(const int actId) const;
 
-        ActionContext getSafeAC(const Action& act);
-        ActionContext getSafeAC(const int actId);
+        ActionContext getSafeAC(const Action& act) const;
+        ActionContext getSafeAC(const int actId) const;
 
-        int calcSpeed(const Action& act);
-        int calcSpeed(int actionId);
+        int calcSpeed(const Action& act) const;
+        int calcSpeed(int actionId) const;
 
         /// Operators
 
@@ -53,7 +52,7 @@ namespace plushies {
          * @param act Pointer to action
          * @return Damage before type effectiveness calculations
          */
-        ActionContext operator>>(Action& act);
+        ActionContext operator>>(Action& act) const;
 
         /**
          * @brief Get damage of executed action
@@ -83,12 +82,12 @@ namespace plushies {
 
 /**
  * @brief Get exact amount of damage dealt by an Action context on a plush
- * @param lhs Action Context attacking the plush
- * @param rhs Plush being attacked
+ * @param damage Action Context attacking the plush
+ * @param target Plush being attacked
  * @return Damage after all defense and type calculations.
  */
-int operator>>(const plushies::ActionContext& lhs,
-               const plushies::Plush& rhs);
+int operator>>(const plushies::ActionContext& damage,
+               const plushies::Plush& target);
 
 
 #endif //PLUSHIES_PLUSH_H

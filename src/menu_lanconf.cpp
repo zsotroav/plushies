@@ -19,7 +19,7 @@ void printIP() {
     }
 }
 
-const string menuLanconf(const bool server) {
+string menuLanconf(const bool server) {
     wcout << "Configuring LAN Play  --  "
           << (server ? "Server mode" : "Client mode") << endl << endl
           << "Your potential IP addresses are: " << endl;

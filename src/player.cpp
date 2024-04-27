@@ -1,16 +1,14 @@
 //
 // Created by zsotroav on 2024-03-24.
 //
-#include <iostream>
 #include "player.h"
+#include <stdexcept>
 #include "game_screen.h"
 
 namespace plushies {
+    void Player::addPlush(const Plush &p) { plushes.push_back(p); }
 
-
-    void Player::addPlush(Plush p) { plushes.push_back(p); }
-
-    void Player::setActive(int i) {
+    void Player::setActive(const int i) {
         if (activePlush == i) throw std::invalid_argument("Already active");
         if (numPlushes() < i) throw std::invalid_argument("Unknown plush");
         if (plushes[i].getHP() <= 0) throw std::invalid_argument("Dead plush");
@@ -19,13 +17,14 @@ namespace plushies {
     }
 
     void Player::nextAlive() {
-        for (int i = 0; i < numPlushes(); i++) {
+        const int num = numPlushes();
+        for (int i = 0; i < num; ++i) {
             try { setActive(i); break; }
             catch (...) {}
         }
     }
 
-    int Player::numPlushes(bool alive) {
+    int Player::numPlushes(const bool alive) {
         if (!alive) return plushes.size();
 
         int counter = 0;
@@ -33,9 +32,9 @@ namespace plushies {
         return counter;
     }
 
-    int Player::ready(const Plush& foe) {
+    int Player::ready(const Plush& opponent) {
         updatePlush(plushes[activePlush]);
-        updatePlush(foe, true);
+        updatePlush(opponent, true);
         return chooseMove(*this);
     }
 

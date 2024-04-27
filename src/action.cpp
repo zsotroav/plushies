@@ -10,12 +10,12 @@ using namespace plushies;
 
 /// Constructors
 
-Action::Action(string name, int dam, int acc, int en, double pri,
-               plushies::Type typ,plushies::ActionCategory cat):
+Action::Action(string name, const int dam, const int acc, const int en,
+               const double pri, const Type typ, const ActionCategory cat):
                name(std::move(name)), damage(dam), accuracy(acc),
                energy(en), maxEnergy(en), priority(pri), type(typ),
                category(cat) {}
 
-bool Action::operator==(const Action& rhs) {
+bool Action::operator==(const Action& rhs) const {
      return name == rhs.name && damage == rhs.damage && accuracy == rhs.accuracy;
 }

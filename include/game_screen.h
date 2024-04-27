@@ -8,10 +8,8 @@
 #include <string>
 #include <vector>
 #include "action.h"
-#include "brand.h"
 #include "plush.h"
 #include "player.h"
-#include "server.h"
 
 /**
  * @brief Print the main game screen
@@ -25,17 +23,17 @@ void printScreen();
  */
 void updatePlush(const plushies::Plush& p, bool foe = false);
 
-void updateActionInfo(const plushies::Action a);
+void updateActionInfo(const plushies::Action &a);
 
 void updateSelection(const std::string& item, const int id,
                      const bool highlight = false);
 
-void printList(std::vector<std::string>& list);
+void printList(const std::vector<std::string>& list);
 
 int chooseAction(const plushies::Plush& p);
 
 int choosePlush(const plushies::Player& p);
 
-int chooseMove(const plushies::Player& p);
+int chooseMove(const plushies::Player& player);
 
 #endif //PLUSHIES_GAME_SCREEN_H

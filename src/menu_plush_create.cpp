@@ -53,7 +53,7 @@ void printMPC() {
              "                                                            ╚═══════════════════════╝  ╚══════╧════════════════════════╝";
 }
 
-void printDetail(int i, std::string s, bool highlight = false) {
+void printDetail(const int i, const std::string& s, const bool highlight = false) {
     econio_gotoxy(90, 2+i);
     std::stringstream ss;
     ss << std::setfill('0') << std::setw(2) << i;
@@ -71,7 +71,7 @@ void printDetail(int i, std::string s, bool highlight = false) {
     for (size_t j = 0; j < 23 - s.length(); ++j) wcout << " ";
 }
 
-void printBrandDetail(const Brand& b, int i, bool highlight = false) {
+void printBrandDetail(const Brand& b, const int i, const bool highlight = false) {
     printDetail(i, b.getName(), highlight);
 
     econio_gotoxy(75, 3);
@@ -91,7 +91,7 @@ void printBrandDetail(const Brand& b, int i, bool highlight = false) {
     wcout << std::flush;
 }
 
-void printActionDetail(const Action* a, int i, bool highlight = false) {
+void printActionDetail(const Action* a, const int i, const bool highlight = false) {
     printDetail(i, a->getName(), highlight);
 
     econio_gotoxy(74, 24);
@@ -106,9 +106,9 @@ void printActionDetail(const Action* a, int i, bool highlight = false) {
     wcout << a->getCategory();
 }
 
-void printBrands(Server& s) {
-    auto b = s.brands;
-    int l = b.size();
+void printBrands(const Server& s) {
+    const auto b = s.brands;
+    const int l = b.size();
 
     for (int i = 1; i < l; ++i) printBrandDetail(b[i], i);
     for (int i = 0; i < 27-l; ++i) {
@@ -120,9 +120,9 @@ void printBrands(Server& s) {
     wcout << flush;
 }
 
-void printActions(Brand& b) {
-    auto a = b.getLearnableActions();
-    int l = a.size();
+void printActions(const Brand& b) {
+    const auto a = b.getLearnableActions();
+    const int l = a.size();
 
     for (int i = 1; i < l; ++i) printActionDetail(a[i], i);
     for (int i = 0; i < 27-l; ++i) {
@@ -134,11 +134,10 @@ void printActions(Brand& b) {
     wcout << flush;
 }
 
-int selectItem(Server& s, int brandid = -1) {
-    int curr = 0;
-    int prev = 0;
-    int l = brandid < 0 ? ( brandid == -2 ? 5 : s.brands.size()) :
-                          s.brands[brandid].getLearnableActions().size();
+int selectItem(const Server& s, const int brandid = -1) {
+    int curr = 0, prev;
+    const int l = brandid < 0 ? ( brandid == -2 ? 5 : s.brands.size()) :
+                      s.brands[brandid].getLearnableActions().size();
 
     while (true) {
         while (!econio_kbhit()) econio_sleep(0.2);
@@ -151,6 +150,7 @@ int selectItem(Server& s, int brandid = -1) {
                 if (curr == l - 1) continue;
                 prev = curr; ++curr; break;
             case ' ': case KEY_ENTER: return curr;
+            default: continue;
         }
 
         if (brandid == -1) {
@@ -164,7 +164,7 @@ int selectItem(Server& s, int brandid = -1) {
 }
 
 
-Plush plushies::menuPlushCreate(Server& s, bool detailed) {
+Plush plushies::menuPlushCreate(Server& s, const bool detailed) {
     econio_clrscr();
     printMPC();
     if (detailed) {
@@ -174,7 +174,7 @@ Plush plushies::menuPlushCreate(Server& s, bool detailed) {
 
     printBrands(s);
 
-    int brandid = selectItem(s);
+    const int brandid = selectItem(s);
     econio_gotoxy(13, 2);
     wcout << brandid << " - " << s.brands[brandid].getName() << flush;
 
@@ -183,7 +183,7 @@ Plush plushies::menuPlushCreate(Server& s, bool detailed) {
     for (int i = 0; i < 4; ++i) {
         printActions(s.brands[brandid]);
 
-        int acid = selectItem(s, brandid);
+        const int acid = selectItem(s, brandid);
         ac[i] = *s.brands[brandid].getLearnableActions()[acid];
 
         econio_gotoxy(10, 4 + 2*i);

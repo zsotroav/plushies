@@ -2,8 +2,8 @@
 // Created by zsotroav on 2024-04-14.
 //
 
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 
 #include "brand.h"
 #include "econio.h"
@@ -48,14 +48,14 @@ void printScreen() {
              " XXx;:::::;;;.....::::+x+;;++xX       ╘══════════════════════╝                           ╚═══════════════════════╝  ";
 }
 
-void updatePlush(const plushies::Plush& p, bool foe) {
+void updatePlush(const Plush& p, const bool foe) {
     econio_gotoxy(foe ? 63 : 40, foe ? 2 : 26);
     wcout << p.getBrand().getName();
 
     for (size_t i = 0; i < 20 - p.getBrand().getName().length(); ++i)  wcout << " ";
 
     econio_gotoxy(foe ? 63 : 40, foe ? 4 : 28);
-    int n = ((double)p.getHP() / p.getMaxHP()) * 20;
+    const int n = (static_cast<double>(p.getHP()) / p.getMaxHP()) * 20;
 
     for (int i = 0; i < n; ++i) wcout << L"█";
     for (int i = 0; i < 20 - n; ++i) wcout << " ";
@@ -71,7 +71,7 @@ void updatePlush(const plushies::Plush& p, bool foe) {
 }
 
 
-void updateActionInfo(const Action a) {
+void updateActionInfo(const Action& a) {
     econio_gotoxy(91, 27);
     wcout << "TYP/" << a.getType() << "     ";
 
@@ -117,7 +117,7 @@ void updateSelection(const std::string& item, const int id, const bool highlight
     wcout << flush;
 }
 
-void printList(std::vector<std::string>& list) {
+void printList(const std::vector<std::string>& list) {
     updateSelection(list[0], 0, true);
     for (size_t i = 1; i < list.size(); ++i) updateSelection(list[i], i);
 }
@@ -127,11 +127,11 @@ int chooseAction(const Plush& p) {
     updateActionInfo(p.Actions[0]);
     int i = 1;
     for (; i < 4; ++i) {
-        if (p.Actions[i].getType() == plushies::Type::NONE || p.Actions[i].getType() == NONE) break;
+        if (p.Actions[i].getType() == NONE) break;
         updateSelection(p.Actions[i].getName(), i);
     }
 
-    int curr = 0, prev = 0;
+    int curr = 0, prev;
 
     while (true) {
         while (!econio_kbhit()) econio_sleep(0.2);
@@ -144,10 +144,10 @@ int chooseAction(const Plush& p) {
                 if (curr == i - 1) continue;
                 prev = curr; ++curr; break;
             case ' ': case KEY_ENTER:
-                std::vector<std::string> v = {"", "", "", ""};
-                printList(v);
+                printList({"", "", "", ""});
                 clearActionInfo();
                 return curr;
+            default: continue;
         }
 
         updateSelection(p.Actions[curr].getName(), curr, true);
@@ -159,14 +159,14 @@ int chooseAction(const Plush& p) {
 }
 
 int choosePlush(const Player& p) {
-    auto pl = p.getPlushes();
+    const auto pl = p.getPlushes();
     updateSelection(pl[0].getName(), 0, true);
     size_t i = 1;
     for (; i < pl.size(); ++i) {
         updateSelection(pl[i].getName(), i);
     }
 
-    size_t curr = 0, prev = 0;
+    size_t curr = 0, prev;
 
     while (true) {
         while (!econio_kbhit()) econio_sleep(0.2);
@@ -179,9 +179,9 @@ int choosePlush(const Player& p) {
                 if (curr == i - 1) continue;
                 prev = curr; ++curr; break;
             case ' ': case KEY_ENTER:
-                std::vector<std::string> v = {"", "", "", ""};
-                printList(v);
+                printList({"", "", "", ""});
                 return curr;
+            default: continue;
         }
 
         updateSelection(pl[curr].getName(), curr, true);
@@ -189,10 +189,11 @@ int choosePlush(const Player& p) {
     }
 }
 
-int chooseMove(const plushies::Player& player) {
-    std::vector<string> options = { "Attack", "Swap plushies", "Forfeit", ""};
+int chooseMove(const Player& player) {
+    const std::vector<string> options =
+        { "Attack", "Swap plushies", "Forfeit", ""};
     printList(options);
-    int curr = 0, prev = 0;
+    int curr = 0, prev;
     bool selecting = true;
 
     while (selecting) {
@@ -206,6 +207,7 @@ int chooseMove(const plushies::Player& player) {
                 if (curr == 2) continue;
                 prev = curr; ++curr; break;
             case ' ': case KEY_ENTER: selecting = false;
+            default: continue;
         }
 
         updateSelection(options[curr], curr, true);

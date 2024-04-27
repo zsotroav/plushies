@@ -5,10 +5,6 @@
 #ifndef PLUSHIES_MENU_PLUSH_CREATE_H
 #define PLUSHIES_MENU_PLUSH_CREATE_H
 
-#include "action.h"
-#include "brand.h"
-#include "common.h"
-#include "player.h"
 #include "plush.h"
 #include "server.h"
 

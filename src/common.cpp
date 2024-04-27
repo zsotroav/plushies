@@ -3,24 +3,25 @@
 //
 
 #include <codecvt>
-#include <sstream>
 #include <locale>
 #include <random>
+#include <sstream>
 #include <string>
 
 #include "common.h"
 
-int random(int a, int b) {
+using namespace plushies;
+
+int random(const int a, const int b) {
     std::random_device r;
     std::default_random_engine e1(r());
     std::uniform_int_distribution<int> uniform_dist(a, b);
-    int mean = uniform_dist(e1);
-    return mean;
+    return uniform_dist(e1);
 }
 
-double operator>>(plushies::Type attacker, plushies::Type target) {
-    if (attacker == plushies::NONE || target == plushies::NONE) return 1;
-    return plushies::relationChart[attacker-1][target-1];
+double operator>>(const Type attacker, const Type target) {
+    if (attacker == NONE || target == NONE) return 1;
+    return relationChart[attacker-1][target-1];
 }
 
 std::wstring convertUFT8(const std::string& s) {
@@ -33,31 +34,31 @@ std::string convertFromUFT8(const std::wstring& ws) {
     return converter.to_bytes(ws);
 }
 
-std::wostream& operator<<(std::wostream& os, plushies::Type type) {
+std::wostream& operator<<(std::wostream& os, const Type type) {
     switch (type) {
-        case plushies::NONE:     return os << "NONE    ";
-        case plushies::NORMAL:   return os << "NORMAL  ";
-        case plushies::FIRE:     return os << "FIRE    ";
-        case plushies::WATER:    return os << "WATER   ";
-        case plushies::GRASS:    return os << "GRASS   ";
-        case plushies::ELECTRIC: return os << "ELECTRIC";
-        case plushies::FIGHTING: return os << "FIGHTING";
-        case plushies::FLYING:   return os << "FLYING  ";
-        case plushies::ROCK:     return os << "ROCK    ";
-        case plushies::GHOST:    return os << "GHOST   ";
+        case NONE:     return os << "NONE    ";
+        case NORMAL:   return os << "NORMAL  ";
+        case FIRE:     return os << "FIRE    ";
+        case WATER:    return os << "WATER   ";
+        case GRASS:    return os << "GRASS   ";
+        case ELECTRIC: return os << "ELECTRIC";
+        case FIGHTING: return os << "FIGHTING";
+        case FLYING:   return os << "FLYING  ";
+        case ROCK:     return os << "ROCK    ";
+        case GHOST:    return os << "GHOST   ";
     }
     return os;
 }
 
-std::wostream& operator<<(std::wostream& os, plushies::ActionCategory ac) {
+std::wostream& operator<<(std::wostream& os, const ActionCategory ac) {
     switch (ac) {
-        case plushies::Physical: return os << "PHYSICAL";
-        case plushies::Special:  return os << "SPECIAL ";
+        case Physical: return os << "PHYSICAL";
+        case Special:  return os << "SPECIAL ";
     }
     return os;
 }
 
-std::vector<std::string> split(std::string s, const char delim) {
+std::vector<std::string> split(const std::string& s, const char delim) {
     std::string word;
     std::vector<std::string> row;
     std::stringstream ss(s);

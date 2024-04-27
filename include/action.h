@@ -33,10 +33,10 @@ namespace plushies {
         inline ActionCategory getCategory() const { return category; }
         inline plushies::Type getType() const { return type; }
 
-        Action(string name, int dam, int acc, int en, double pri, plushies::Type typ,
+        Action(string name, int dam, int acc, int en, double pri, Type typ,
                ActionCategory cat);
 
-        bool operator==(const Action& rhs);
+        bool operator==(const Action& rhs) const;
     };
 
 

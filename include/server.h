@@ -6,6 +6,7 @@
 #ifndef PLUSHIES_SERVER_H
 #define PLUSHIES_SERVER_H
 
+#include "memtrace.h"
 #include <string>
 #include <vector>
 #include "action.h"
@@ -13,7 +14,6 @@
 #include "player.h"
 #include "plush.h"
 #include "nyetwork.h"
-#include "memtrace.h"
 
 using std::string;
 
@@ -66,7 +66,7 @@ namespace plushies {
 
         int serverLoop();
 
-        inline void RegisterPlayer(Player* p, int num = 0) {
+        void RegisterPlayer(Player* p, const int num = 0) {
             players[num] = p;
         }
 

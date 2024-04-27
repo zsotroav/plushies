@@ -7,10 +7,8 @@
 
 using namespace plushies;
 
-plushies::Brand::Brand(string name, plushies::Type base,
-                       plushies::Type secondary, const int *baseStats) :
-        name(std::move(name)), baseType(base), secondaryType(secondary) {
-    for (int i = 0; i < 6; ++i) {
-        this->baseStats[i] = baseStats[i];
-    }
+Brand::Brand(string name, const Type base, const Type secondary,
+             const int *baseStats) : name(std::move(name)),
+             baseType(base), secondaryType(secondary) {
+    for (int i = 0; i < 6; ++i)  this->baseStats[i] = baseStats[i];
 }

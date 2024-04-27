@@ -2,6 +2,8 @@
 // Created by zsotroav on 2024-04-09.
 //
 
+// ReSharper disable CppPossiblyErroneousEmptyStatements
+
 #include <iostream>
 #include "common.h"
 #include "econio.h"
@@ -42,12 +44,10 @@ GameMode modeSelect() {
 
     wcout << "Game mode: Random/Custom/Detailed " << flush;
 
-
     while (!econio_kbhit()) econio_sleep(0.2);
-    int c = econio_getch();
     econio_gotoxy(11, 21);
 
-    switch (c) {
+    switch (econio_getch()) {
         case 'r': case 'R':
             wcout << "Random                    " << endl;
             return RANDOM;
@@ -87,7 +87,7 @@ int plushCountSelect() {
     return -1;
 }
 
-EnemyMode opponentSelect(bool detail) {
+EnemyMode opponentSelect(const bool detail) {
     econio_gotoxy(0, 25);
     wcout << "Play against local AI or LAN play? " << flush;
 

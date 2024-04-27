@@ -61,7 +61,7 @@ namespace nyetwork {
 
     Server::Server(const char *ip) : Communicator(ip) {
         const int status = bind(serverSocket,
-                                (struct sockaddr*)&address,
+                                reinterpret_cast<struct sockaddr *>(&address),
                                 sizeof(address));
         if (status != 0) throw ConnectionFailed(status);
 
@@ -73,7 +73,7 @@ namespace nyetwork {
 
     Client::Client(const char *ip) : Communicator(ip) {
         const int status = connect(serverSocket,
-                                   (struct sockaddr*)(&address),
+                                   reinterpret_cast<struct sockaddr *>(&address),
                                    sizeof(address));
         if (status != 0) throw ConnectionFailed(status);
         conn_status = CONNECTED;

@@ -7,7 +7,7 @@
 
 #include <string>
 
-const string menuLanconf(bool server);
+string menuLanconf(bool server);
 
 
 

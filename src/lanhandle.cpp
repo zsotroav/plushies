@@ -13,7 +13,7 @@ using namespace plushies::lanplay;
 using namespace plushies;
 
 
-void Connection::sendPSYN(const Server& s, Plush &plush) const {
+void Connection::sendPSYN(const Server& s, const Plush &plush) const {
     stringstream ss;
     ss << "PSYN " << plush.getBrand().getName() << " ";
 
@@ -42,7 +42,7 @@ Plush Connection::recPSYN(Server &s) const {
     rec(buff, sizeof(buff), 0);
 
     // Split received data
-    auto row = split(buff, ' ');
+    const auto row = split(buff, ' ');
 
     // We want PSYN and can't deal with anything else
     if (row.size() != 13 || row[0] != "PSYN")
@@ -59,7 +59,7 @@ Plush Connection::recPSYN(Server &s) const {
     }
 
     // Create array for Unique Values
-    int uv[] = { stoi(row[2]), stoi(row[3]), stoi(row[4]),
+    const int uv[] = { stoi(row[2]), stoi(row[3]), stoi(row[4]),
                  stoi(row[5]), stoi(row[6]), stoi(row[7]) };
 
     // Create array for Actions with invalid actions
@@ -79,7 +79,7 @@ Plush Connection::recPSYN(Server &s) const {
 }
 
 ConnStatus ServerConnection::connect(Server& server) {
-    auto player = server.getPlayer(1);
+    const auto player = server.getPlayer(1);
     // Get connection request
     // CONN <VERSION> <GAME MODE> <PLUSH COUNT>
     char buffer[16] = { 0 };
@@ -118,7 +118,7 @@ ConnStatus ServerConnection::connect(Server& server) {
 }
 
 ConnStatus ClientConnection::connect(Server& server) {
-    auto player = server.getPlayer(1);
+    const auto player = server.getPlayer(1);
     // Send connection request
     // CONN <VERSION> <GAME MODE> <PLUSH COUNT>
     stringstream ss;
@@ -178,7 +178,7 @@ void ClientConnection::ActionReady() {
     while (strcmp(buff, "ARDY") != 0) rec(buff, sizeof(buff), 0);
 }
 
-int ClientConnection::SyncActions(int myChoice) {
+int ClientConnection::SyncActions(const int myChoice) {
     char buff[8] = { 0 };
 
     sen(encodeChoice(myChoice));
@@ -188,7 +188,7 @@ int ClientConnection::SyncActions(int myChoice) {
 
 void ServerConnection::ActionReady() { sen("ARDY"); }
 
-int ServerConnection::SyncActions(int myChoice) {
+int ServerConnection::SyncActions(const int myChoice) {
     char buff[8] = { 0 };
 
     rec(buff, sizeof(buff), 0);

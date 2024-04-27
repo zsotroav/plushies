@@ -52,7 +52,7 @@ namespace nyetwork {
         virtual ~Communicator();
     };
 
-    class Client : public Communicator {
+    class Client final : public Communicator {
     public:
         void rec(char *buf, const int len, const int flags) override {
             if (conn_status != CONNECTED) throw InvalidConnection();
@@ -69,7 +69,7 @@ namespace nyetwork {
         ~Client() override;
     };
 
-    class Server : public Communicator {
+    class Server final : public Communicator {
         int clientSocket;
 
     public:

@@ -55,7 +55,7 @@ namespace plushies::lanplay {
         virtual int SyncActions(int myChoice) = 0;
 
         // TODO: PSYN ?
-        void sendPSYN(const Server& s, Plush& plush) const;
+        void sendPSYN(const Server& s, const Plush& plush) const;
         Plush recPSYN(Server& s) const;
 
         /**

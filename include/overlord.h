@@ -5,7 +5,6 @@
 #ifndef PLUSHIES_OVERLORD_H
 #define PLUSHIES_OVERLORD_H
 
-#include <vector>
 #include "common.h"
 #include "plush.h"
 #include "player.h"
@@ -16,7 +15,7 @@ namespace plushies::overlord {
     /**
      * @brief Random moves, random plushes
      */
-    class Dennis : public plushies::Player {
+    class Dennis final : public Player {
     public:
         int ready(const Plush& opponent) override;
 
@@ -31,7 +30,7 @@ namespace plushies::overlord {
     /**
      * @brief Waits 5-10 secs random move, random plushes
      */
-    class Clyde : public plushies::Player {
+    class Clyde final : public Player {
     public:
         int ready(const Plush& opponent) override;
         
@@ -46,7 +45,7 @@ namespace plushies::overlord {
     /**
      * @brief Most damage, high stat, high UVs
      */
-    class Ninty : public plushies::Player {
+    class Ninty final : public Player {
     public:
         int ready(const Plush& opponent) override;
 
@@ -61,7 +60,7 @@ namespace plushies::overlord {
     /**
      * @brief Use least damage, high stat, mid UVs
      */
-    class Waffles : public plushies::Player {
+    class Waffles final : public plushies::Player {
     public:
         int ready(const Plush& opponent) override;
 
@@ -76,7 +75,7 @@ namespace plushies::overlord {
     /**
      * @brief Least damage, random plushes
      */
-    class Muffins : public plushies::Player {
+    class Muffins final : public plushies::Player {
     public:
         int ready(const Plush& opponent) override;
         

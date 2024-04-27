@@ -2,20 +2,22 @@
 // Created by zsotroav on 2024-03-24.
 //
 
-#include <iostream>
 #include <fstream>
-#include <sstream>
-#include <thread>
 #include <future>
+#include <iostream>
+#include <sstream>
 #include <string>
+#include <thread>
 #include <vector>
 #include "common.h"
-#include "server.h"
-#include "player.h"
 #include "lanhandle.h"
-#include "memtrace.h"
 #include "menu_lanconf.h"
 #include "overlord.h"
+#include "player.h"
+
+#include "memtrace.h"
+
+#include "server.h"
 
 using std::string, std::stoi;
 
@@ -39,7 +41,7 @@ namespace plushies {
                                         players[0]->active());
             future<int> f0; // For LAN player/local AI
 
-            int p0, p1; // Result storage
+            int p1; // Result storage
 
             // If we aren't against a lan player we can just get their choice
             if (!againstLAN())
@@ -60,7 +62,7 @@ namespace plushies {
                                 p1);
 
             // Get enemy's (overlord/lan player) choice as well
-            p0 = f0.get();
+            const int p0 = f0.get();
 
             const bool sw0 = p0 < 0, sw1 = p1 < 0;
 
@@ -199,7 +201,7 @@ namespace plushies {
         iflearn.close();
     }
 
-    void Server::registerOpponents(int cnt) {
+    void Server::registerOpponents(const int cnt) {
 
         if (enemyMode == LAN_CLIENT || enemyMode == LAN_SERVER) {
             try {
@@ -221,7 +223,7 @@ namespace plushies {
         }
     }
 
-    Server::Server(EnemyMode em, GameMode gm, int cnt,
+    Server::Server(const EnemyMode em, const GameMode gm, const int cnt,
                    const string& brandFile,
                    const string& actionFile,
                    const string& actionLearnFile) :
@@ -231,9 +233,9 @@ namespace plushies {
         registerOpponents(cnt);
     }
 
-    Plush Server::createRandomPlush(int bst, int uvmin, int uvmax) {
+    Plush Server::createRandomPlush(const int bst, const int uvmin, const int uvmax) {
         int brandid = random(0, brands.size() - 1);
-        bool bsts = bst >= 0;
+        const bool bsts = bst >= 0;
         
         while ((brands[brandid].baseStatTotal() < bst && bsts) ||
                (brands[brandid].baseStatTotal() > -1* bst && !bsts)) 
@@ -246,7 +248,7 @@ namespace plushies {
                     random(uvmin, uvmax),
                     random(uvmin, uvmax)};
 
-        auto learn = brands[brandid].getLearnableActions();
+        const auto learn = brands[brandid].getLearnableActions();
         
         Action ac[] = { NullAction, NullAction, NullAction, NullAction};
 

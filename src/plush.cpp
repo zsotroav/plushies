@@ -10,8 +10,6 @@
 using plushies::ActionContext;
 using namespace plushies;
 
-
-
 /// Ctor
 
 Plush::Plush(Brand& brand, const int UV[6],
@@ -41,16 +39,16 @@ int Plush::validMoves() const {
     return cnt;
 }
 
-int Plush::calcDamage(const Action& act) {
-    int lvl = 50;
-    auto cat = act.getCategory() == Physical ? Atk : SpA;
-    auto type = act.getType();
+int Plush::calcDamage(const Action& act) const {
+    const int lvl = 50;
+    const auto cat = act.getCategory() == Physical ? Atk : SpA;
+    const auto type = act.getType();
     return floor(
             (
                     (((2.0*lvl)/8 + 5) * // Base power multiplier
                      act.getDamage() *   // Base power
                      brand.getBaseStat(cat) * // Stat multiplier
-                     ((double) UV[cat] / 120 + 1)) // UV multiplier
+                     (static_cast<double>(UV[cat]) / 120 + 1)) // UV multiplier
             ) / 20 // Move base power
 
             * // Same Type Attack Bonus
@@ -59,70 +57,63 @@ int Plush::calcDamage(const Action& act) {
     );
 }
 
-int Plush::calcDamage(int actionId) {
+int Plush::calcDamage(const int actionId) const {
     if (actionId > 3) throw std::invalid_argument("Invalid move");
     return calcDamage(Actions[actionId]);
 }
 
-int Plush::calcSpeed(const Action& act) {
+int Plush::calcSpeed(const Action& act) const {
     return floor(brand.getBaseStat(StatOrder::Spe) *
            (UV[StatOrder::Spe] / 120.0 + 1) *
            act.getPriority());
 }
 
-int Plush::calcSpeed(int actionId) {
+int Plush::calcSpeed(const int actionId) const {
     if (actionId > 3) throw std::invalid_argument("Invalid move");
     return calcSpeed(Actions[actionId]);
 }
 
-ActionContext Plush::getAC(const Action& act) {
-    int dmg = calcDamage(act);
-    int spd = calcSpeed(act);
-
-    return {dmg, spd, act.getType(), act.getCategory()};
+ActionContext Plush::getAC(const Action& act) const {
+    return {calcDamage(act), calcSpeed(act), act.getType(), act.getCategory()};
 }
 
-ActionContext Plush::getAC(const int actId) {
+ActionContext Plush::getAC(const int actId) const {
     return getAC(Actions[actId]);
 }
 
-ActionContext Plush::getSafeAC(const Action& act){
+ActionContext Plush::getSafeAC(const Action& act) const {
     if (act.getType() == NONE) throw std::invalid_argument("Invalid move");
     if (act.getEnergy() <= 0) throw std::invalid_argument("No more energy");
     return getAC(act);
 }
 
-ActionContext Plush::getSafeAC(const int actId) {
+ActionContext Plush::getSafeAC(const int actId) const {
     return getSafeAC(Actions[actId]);
 }
 
 /// Operators
 
-ActionContext Plush::operator>>(Action& act) {
-    auto ac = getSafeAC(act);
-
+ActionContext Plush::operator>>(Action& act) const {
     act.decEnergy();
+    if (random(0,100) > act.getAccuracy()) throw FailedAction();
 
-    int ran = random(0,100);
-    if (ran > act.getAccuracy()) throw FailedAction();
-
-    return ac;
+    return getSafeAC(act);
 }
 
-ActionContext Plush::operator>>(int actionId) {
+ActionContext Plush::operator>>(const int actionId) {
     if (actionId > 3) throw std::invalid_argument("Invalid move");
     return *this >> Actions[actionId];
 }
 
-void Plush::operator<<(int hp) { health -= hp; }
+void Plush::operator<<(const int hp) { health -= hp; }
 
-void Plush::operator<<(ActionContext damage) {
+void Plush::operator<<(const ActionContext damage) {
     *this << (damage >> *this);
 }
 
 int operator>>(const ActionContext& damage, const Plush& target) {
-    auto cat = damage.category == Physical ? Def : SpD;
-    auto brand = target.getBrand();
+    const auto cat = damage.category == Physical ? Def : SpD;
+    const auto brand = target.getBrand();
 
     return floor(damage.damage *
                  (damage.type >> brand.getBaseType()) *

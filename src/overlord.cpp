@@ -12,19 +12,18 @@ using namespace plushies::overlord;
 
 int maxminAction(plushies::Player& att,
                  const plushies::Plush& opponent,
-                 bool maxmode = true) {
+                 const bool maxmode = true) {
 
-    int max = 0;
+    int max;
     try { max = (att.active().getSafeAC(0)) >> opponent; }
     catch (...) { max = 0; }
     int mid = 0;
 
     for (int i = 1; i < 4; ++i) {
-        if (att.activeAction(i).getType() == plushies::Type::NONE ||
-                att.activeAction(i).getType() == plushies::Type::NONE)
+        if (att.activeAction(i).getType() == plushies::Type::NONE)
             continue;
 
-        int c = 0;
+        int c;
         try { c = (att.active().getSafeAC(i)) >> opponent; }
         catch (...) { c = 0; }
         if ((c < max && maxmode) || (c > max && !maxmode)) continue;
@@ -53,31 +52,31 @@ int Ninty::ready(const Plush& opponent) {
     return maxminAction(*this, opponent);
 }
 
-int Waffles::ready(const plushies::Plush &opponent) {
+int Waffles::ready(const Plush &opponent) {
     return maxminAction(*this, opponent, false);
 }
 
-int Muffins::ready(const plushies::Plush &opponent) {
+int Muffins::ready(const Plush &opponent) {
     return maxminAction(*this, opponent, false);
 }
 
 
-Dennis::Dennis(Server& s, int count) {
+Dennis::Dennis(Server& s, const int count) {
     for (int i = 0; i < count; i++) addPlush(s.createRandomPlush());
 }
 
-Clyde::Clyde(Server& s, int count) {
+Clyde::Clyde(Server& s, const int count) {
     for (int i = 0; i < count; i++) addPlush(s.createRandomPlush());
 }
 
-Ninty::Ninty(Server& s, int count) {
+Ninty::Ninty(Server& s, const int count) {
     for (int i = 0; i < count; i++) addPlush(s.createRandomPlush(300, 50));
 }
 
-Waffles::Waffles(Server& s, int count) {
+Waffles::Waffles(Server& s, const int count) {
     for (int i = 0; i < count; i++) addPlush(s.createRandomPlush(300, 30, 50));
 }
 
-Muffins::Muffins(Server& s, int count) {
+Muffins::Muffins(Server& s, const int count) {
     for (int i = 0; i < count; i++) addPlush(s.createRandomPlush());
 }
