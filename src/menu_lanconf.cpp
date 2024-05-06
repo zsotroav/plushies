@@ -10,6 +10,8 @@
 
 #include "menu_lanconf.h"
 
+#include "econio.h"
+
 using std::wcout, std::wcin, std::endl, std::string;
 
 void printIP() {
@@ -29,7 +31,16 @@ string menuLanconf(const bool server) {
                        "Enter the IP of the server you want to connect to: ")
           << flush;
 
+    econio_normalmode();
+    // Linux/Unix technically does not automatically switch to using wcin
+#if defined(_WIN32) || defined(_WIN64)
     std::wstring ws;
     wcin >> ws;
     return convertFromUFT8(ws);
+#else
+    string s;
+    cin >> s;
+    return s;
+#endif
+    econio_rawmode();
 }
