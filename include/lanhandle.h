@@ -5,6 +5,7 @@
 #ifndef LANHANDLE_H
 #define LANHANDLE_H
 
+#include <cstring>
 #include <future>
 
 #include "common.h"

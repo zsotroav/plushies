@@ -118,4 +118,6 @@ void gameInit() {
              "omnomnoms... " << (res == 1 ? "But you at least won" :
                                             "And you couldn't even win...")
           << std::endl << "Thank you for playing." << std::endl;
+
+    econio_normalmode(); // Reset input mode after game
 }
