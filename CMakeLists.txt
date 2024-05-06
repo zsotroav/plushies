@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.25)
 project(Plushies)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -17,7 +17,7 @@ add_executable(Plushies src/main.cpp
         lib/econio.c
         lib/econio.h
 
-        include/Server.h
+        include/server.h
 
         include/plush.h
         src/plush.cpp
