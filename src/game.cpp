@@ -16,20 +16,29 @@
 
 #ifdef __WIN32__
     #include <windows.h>
+#else
+    #include <locale>
 #endif // __WIN32__
 
 using namespace plushies;
 using std::wcout, std::endl, std::flush;
 
 bool setUnicodeMode() {
+#if defined(_WIN32) || defined(_WIN64)
+
     // GH/GiovanniDicanio/PrintUnicodeTextToConsoleWin/PrintUnicodeToConsoleWin/PrintUnicodeToConsoleWin.cpp#L23
-    int result = _setmode(_fileno(stdout), _O_U16TEXT);
-    if (result == -1) {
+    if (_setmode(_fileno(stdout), _O_U16TEXT) == -1) {
         wcout << L"*** ERROR: _setmode failed - "
                  "Can't set stdout to Unicode UTF-16.\n\n";
         return false;
     }
     return true;
+#else
+    try { std::locale::global(std::locale("en_US.UTF-8")); }
+    catch (...) { return false; }
+    wcout << L"Setting locale..." << endl;
+    return true;
+#endif
 }
 
 void warningScreen() {
