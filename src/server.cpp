@@ -72,13 +72,15 @@ namespace plushies {
 
             // Swap
             if (sw0) {
-                players[0]->setActive(-1*p0 - 1);
+                try { players[0]->setActive(-1*p0 - 1); }
+                catch (...) { } // Trying to swap into the active plush...
                 try { players[0]->active() << (players[1]->active() >> (p1-1)); }
                 catch (...) { } // If the move failed, oh well, suck for you ig
                 continue;
             }
             if (sw1) {
-                players[1]->setActive(-1*p1 - 1);
+                try { players[1]->setActive(-1*p1 - 1); }
+                catch (...) { } // Trying to swap into the active plush...
                 try {
                     if (!againstLAN()) { // Lan has accuracy precalculated
                         players[1]->active() << (players[0]->active() >> (p0 - 1));
