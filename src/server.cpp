@@ -270,7 +270,7 @@ namespace plushies {
     Server::~Server() {
         delete players[0];
         delete players[1];
-        if (con != nullptr) delete con;
+        delete con;
     }
 
 }

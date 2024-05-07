@@ -6,7 +6,6 @@
 #ifndef PLUSHIES_SERVER_H
 #define PLUSHIES_SERVER_H
 
-#include "memtrace.h"
 #include <string>
 #include <vector>
 #include "action.h"
@@ -66,9 +65,7 @@ namespace plushies {
 
         int serverLoop();
 
-        void RegisterPlayer(Player* p, const int num = 0) {
-            players[num] = p;
-        }
+        void RegisterPlayer(Player* p, const int num = 0) { players[num] = p; }
 
         Server(EnemyMode em, GameMode gm, int cnt,
                const string& brandFile = "data/brands.csv",

@@ -7,6 +7,7 @@
 #include "common.h"
 #include "nyetwork.h"
 #include "server.h"
+
 #include "memtrace.h"
 
 using namespace plushies::lanplay;
