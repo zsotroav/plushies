@@ -25,7 +25,7 @@ void Connection::sendPSYN(const Server& s, const Plush &plush) const {
     for (int i = 0; i < 4; ++i) {
         if (plush.Actions[i] == NullAction) { ss << "-1"; continue; }
 
-        for (int j = 0; j < s.actions.size(); ++j) {
+        for (size_t j = 0; j < s.actions.size(); ++j) {
             if (s.actions[j].getName() != plush.Actions[i].getName()) continue;
             ss << j << " ";
             break;
@@ -52,7 +52,7 @@ Plush Connection::recPSYN(Server &s) const {
     int brand = 0;
 
     // Find actual brand
-    for (int i = 0; i < s.brands.size(); ++i) {
+    for (size_t i = 0; i < s.brands.size(); ++i) {
         if (s.brands[i].getName() != row[1]) continue;
         brand = i;
         break;

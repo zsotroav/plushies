@@ -211,7 +211,6 @@ namespace plushies {
                 else registerComm(new nyetwork::Server(menuLanconf(true)));
             } catch (...) { // Can only throw conn failed
                 wcout << "Connection failed!" << endl;
-                return;
             }
         } else {
             // Register overlords
