@@ -74,7 +74,7 @@ void warningScreen() {
         wcout << L"╝" << flush;
 
         // Welcome splash screen (end exactly at col 80)
-        econio_textcolor(COL_WHITE);
+        econio_textcolor(COL_RESET);
         econio_gotoxy(46, 14);
         wcout << "Plush Monsters' Fight Club" << endl;
 

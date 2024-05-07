@@ -36,11 +36,12 @@ string menuLanconf(const bool server) {
 #if defined(_WIN32) || defined(_WIN64)
     std::wstring ws;
     wcin >> ws;
+    econio_rawmode();
     return convertFromUFT8(ws);
 #else
     string s;
     cin >> s;
+    econio_rawmode();
     return s;
 #endif
-    econio_rawmode();
 }

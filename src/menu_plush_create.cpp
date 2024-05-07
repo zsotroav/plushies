@@ -63,8 +63,8 @@ void printDetail(const int i, const std::string& s, const bool highlight = false
         econio_textbackground(COL_WHITE);
     }
     wcout << ss.str();
-    econio_textcolor(COL_WHITE);
-    econio_textbackground(COL_BLACK);
+    econio_textcolor(COL_RESET);
+    econio_textbackground(COL_RESET);
 
     wcout << L"  │ " << s;
 

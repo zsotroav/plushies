@@ -110,8 +110,8 @@ void updateSelection(const std::string& item, const int id, const bool highlight
     for (size_t i = 0; i < 21 - item.length(); ++i) wcout << " ";
 
     if (highlight) {
-        econio_textbackground(COL_BLACK);
-        econio_textcolor(COL_WHITE);
+        econio_textbackground(COL_RESET);
+        econio_textcolor(COL_RESET);
     }
 
     wcout << flush;
