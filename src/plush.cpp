@@ -83,7 +83,7 @@ ActionContext Plush::getAC(const int actId) const {
 
 ActionContext Plush::getSafeAC(const Action& act) const {
     if (act.getType() == NONE) throw std::invalid_argument("Invalid move");
-    if (act.getEnergy() <= 0) throw std::invalid_argument("No more energy");
+    if (act.getEnergy() <= 0) throw FailedAction("No more energy");
     return getAC(act);
 }
 
@@ -94,6 +94,7 @@ ActionContext Plush::getSafeAC(const int actId) const {
 /// Operators
 
 ActionContext Plush::operator>>(Action& act) const {
+    if (act.getEnergy() <= 0) throw FailedAction("No more energy");
     act.decEnergy();
     if (random(0,100) > act.getAccuracy()) throw FailedAction();
 
