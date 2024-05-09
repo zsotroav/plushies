@@ -36,11 +36,20 @@ namespace plushies {
         int calcDamage(const Action& act) const;
         int calcDamage(int actionId) const;
 
-        ActionContext getAC(const Action& act) const;
-        ActionContext getAC(const int actId) const;
+        static void validateACThrow(const Action& act);
+        void validateACThrow(const int actId) const { validateACThrow(Actions[actId]); }
+
+        static bool validateAC(const Action& act);
+        bool validateAC(const int actId) const { return validateAC(Actions[actId]); }
+
+        ActionContext getAC(const Action& act) const
+        { return {calcDamage(act), calcSpeed(act), act.getType(), act.getCategory()}; }
+        ActionContext getAC(const int actId) const
+        { return getAC(Actions[actId]); }
 
         ActionContext getSafeAC(const Action& act) const;
-        ActionContext getSafeAC(const int actId) const;
+        ActionContext getSafeAC(const int actId) const
+        { return getSafeAC(Actions[actId]); }
 
         int calcSpeed(const Action& act) const;
         int calcSpeed(int actionId) const;

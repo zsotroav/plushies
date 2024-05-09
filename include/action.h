@@ -23,15 +23,15 @@ namespace plushies {
     public:
         /// Getters
 
-        inline string getName() const { return name; }
-        inline int getDamage() const { return damage; }
-        inline int getAccuracy() const { return accuracy; }
-        inline int getEnergy() const { return energy; }
-        inline int getMaxEnergy() const { return maxEnergy; }
-        inline void decEnergy() { energy -= 1; }
-        inline double getPriority() const { return priority; }
-        inline ActionCategory getCategory() const { return category; }
-        inline plushies::Type getType() const { return type; }
+        string getName() const { return name; }
+        int getDamage() const { return damage; }
+        int getAccuracy() const { return accuracy; }
+        int getEnergy() const { return energy; }
+        int getMaxEnergy() const { return maxEnergy; }
+        void decEnergy() { energy -= 1; }
+        double getPriority() const { return priority; }
+        ActionCategory getCategory() const { return category; }
+        Type getType() const { return type; }
 
         Action(string name, int dam, int acc, int en, double pri, Type typ,
                ActionCategory cat);

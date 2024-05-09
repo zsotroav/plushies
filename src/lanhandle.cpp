@@ -79,7 +79,7 @@ Plush Connection::recPSYN(Server &s) const {
     return p;
 }
 
-ConnStatus ServerConnection::connect(Server& server) {
+bool ServerConnection::connect(Server& server) {
     const auto player = server.getPlayer(1);
     // Get connection request
     // CONN <VERSION> <GAME MODE> <PLUSH COUNT>
@@ -89,16 +89,24 @@ ConnStatus ServerConnection::connect(Server& server) {
     ss << "CONN " << LANPROTOCOL << " " << server.getGameMode()
        << " " << player->numPlushes();
     rec(buffer, sizeof(buffer), 0);
-    sen("CACK", 4, 0);
+    sen("CACK");
+
+    auto spl = split(ss.str(), ' ');
+
+    stringstream ver;
+    ver << LANPROTOCOL;
 
     if (strcmp(ss.str().c_str(), buffer) != 0) {
+        // If it is not a connection request or the version is incorrect
+        if (spl[0] != "CONN" || spl[1] != ver.str()) return false;
+
         // TODO: Prompt manual check
-        sen("CDEN", 4, 0);
-        return DISCONNECTED;
+        sen("CDEN");
+        return false;
     }
 
     // Anything that isn't an accept is good as a deny
-    sen("CACC", 4, 0);
+    sen("CACC");
 
     // PSYN - Plush Sync
 
@@ -115,10 +123,10 @@ ConnStatus ServerConnection::connect(Server& server) {
     server.RegisterPlayer(dummy);
 
     // Connection established and game is ready
-    return CONNECTED;
+    return true;
 }
 
-ConnStatus ClientConnection::connect(Server& server) {
+bool ClientConnection::connect(Server& server) {
     const auto player = server.getPlayer(1);
     // Send connection request
     // CONN <VERSION> <GAME MODE> <PLUSH COUNT>
@@ -132,7 +140,7 @@ ConnStatus ClientConnection::connect(Server& server) {
     rec(buff, 8, 0); // CACC/CDEN
 
     // Anything that isn't an accept is good as a deny
-    if (strcmp(buff, "CACC") != 0) return DISCONNECTED;
+    if (strcmp(buff, "CACC") != 0) return false;
 
     Player* dummy = new Player();
 
@@ -149,7 +157,7 @@ ConnStatus ClientConnection::connect(Server& server) {
     server.RegisterPlayer(dummy);
 
     // Connection established and game is ready
-    return CONNECTED;
+    return true;
 }
 
 string encodeChoice(const int c) {

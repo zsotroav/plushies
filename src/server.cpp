@@ -23,13 +23,7 @@ using std::string, std::stoi;
 
 namespace plushies {
     int Server::serverLoop() {
-        if (againstLAN()) {
-            switch (con->connect(*this)) {
-                case DISCONNECTED: return -1;
-                case CONFIRM:   break; // TODO: Confirm
-                case CONNECTED: break;
-            }
-        }
+        if (againstLAN()) { if (!con->connect(*this)) return -1; }
 
         // Enter server gameplay loop
         while(true) {
@@ -51,15 +45,18 @@ namespace plushies {
             // We need the local player's choice before we can get the lan's
             p1 = f1.get();
 
+            // Pre-calculate accuracy of our attack
+            const bool p1fail = p1 > 0 ? !players[1]->active().validateAC(p1) : false;
+
             // If we are against a lan player, get their choices
             if (enemyMode == LAN_CLIENT)
                 f0 = std::async(&lanplay::ClientConnection::SyncActions,
                                 (dynamic_cast<lanplay::ClientConnection *>(con)),
-                                p1);
+                                p1 + (p1fail ? 10 : 0));
             else if (enemyMode == LAN_SERVER)
                 f0 = std::async(&lanplay::ServerConnection::SyncActions,
                                 (dynamic_cast<lanplay::ServerConnection *>(con)),
-                                p1);
+                                p1 + (p1fail ? 10 : 0));
 
             // Get enemy's (overlord/lan player) choice as well
             const int p0 = f0.get();
@@ -86,13 +83,6 @@ namespace plushies {
                         players[1]->active() << (players[0]->active() >> (p0 - 1));
                         continue;
                     }
-
-                    if (p0 > 10) {
-                        // Opponent's action failed, we just decrement the energy
-                        players[0]->active().Actions[p0-11].decEnergy();
-                        continue;
-                    }
-
                     // use getAC to avoid double calculating accuracy
                     players[1]->active() << (players[0]->active().getAC(p0-1));
                 }
@@ -106,18 +96,12 @@ namespace plushies {
             try {
                 if (!againstLAN()) { // Lan has accuracy precalculated
                     ac0 = players[0]->active() >> (p0 - 1);
-                    std::cout << "asd";
-                } else {
-                    if (p0 > 10) {
-                        // Opponent's action failed, we just decrement the energy
-                        players[0]->active().Actions[p0-11].decEnergy();
-                    } else {
-                        // use getAC to avoid double calculating accuracy
-                        ac0 = players[0]->active().getAC(p0 - 1);
-                    }
+                } else if (p0 < 10) {
+                    // use getAC to avoid double calculating accuracy
+                    ac0 = players[0]->active().getAC(p0 - 1);
                 }
             } catch (...) {}
-            try { ac1 = players[1]->active() >> (p1-1);} catch (...) {}
+            try { ac1 = p1fail ? ac1 : players[1]->active() >> (p1-1); } catch (...) {}
 
             if (ac0.speed > ac1.speed) {
                 players[0]->active() << ac1;

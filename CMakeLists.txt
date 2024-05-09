@@ -53,7 +53,7 @@ add_executable(Plushies src/main.cpp
 
 )
 
-add_compile_definitions(MEMTRACE MEMTRACE_ERRFILE=mem.trace)
+add_compile_definitions(MEMTRACE MEMTRACE_ERRFILE=mem.trace COMPILE_DEBUG_ENABLED)
 
 configure_file(data/brands.csv data/brands.csv COPYONLY)
 configure_file(data/actions.csv data/actions.csv COPYONLY)

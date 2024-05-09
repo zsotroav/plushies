@@ -73,22 +73,20 @@ int Plush::calcSpeed(const int actionId) const {
     return calcSpeed(Actions[actionId]);
 }
 
-ActionContext Plush::getAC(const Action& act) const {
-    return {calcDamage(act), calcSpeed(act), act.getType(), act.getCategory()};
-}
-
-ActionContext Plush::getAC(const int actId) const {
-    return getAC(Actions[actId]);
-}
-
 ActionContext Plush::getSafeAC(const Action& act) const {
-    if (act.getType() == NONE) throw std::invalid_argument("Invalid move");
-    if (act.getEnergy() <= 0) throw FailedAction("No more energy");
+    validateACThrow(act);
     return getAC(act);
 }
 
-ActionContext Plush::getSafeAC(const int actId) const {
-    return getSafeAC(Actions[actId]);
+void Plush::validateACThrow(const Action& act) {
+    if (act.getType() == NONE) throw std::invalid_argument("Invalid move");
+    if (act.getEnergy() <= 0) throw FailedAction("No more energy");
+    if (random(0,100) > act.getAccuracy()) throw FailedAction();
+}
+
+bool Plush::validateAC(const Action &act) {
+    try { validateACThrow(act); return true; }
+    catch(...) { return false; }
 }
 
 /// Operators
@@ -96,7 +94,6 @@ ActionContext Plush::getSafeAC(const int actId) const {
 ActionContext Plush::operator>>(Action& act) const {
     if (act.getEnergy() <= 0) throw FailedAction("No more energy");
     act.decEnergy();
-    if (random(0,100) > act.getAccuracy()) throw FailedAction();
 
     return getSafeAC(act);
 }

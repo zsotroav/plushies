@@ -60,7 +60,16 @@ void updatePlush(const Plush& p, const bool foe) {
     for (int i = 0; i < n; ++i) wcout << L"█";
     for (int i = 0; i < 20 - n; ++i) wcout << " ";
 
-    if (foe) return;
+    if (foe) {
+#ifdef COMPILE_DEBUG_ENABLED
+        econio_gotoxy(74, 3);
+        std::stringstream ss;
+        ss << std::setfill(' ') << std::setw(3) << p.getHP();
+
+        wcout << ss.str() << "/" << p.getMaxHP() << " HP" << flush;
+#endif
+        return;
+    }
 
     econio_gotoxy(50, 27);
 

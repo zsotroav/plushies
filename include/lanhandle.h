@@ -41,7 +41,7 @@ namespace plushies::lanplay {
          * @note This function creates player0 (the opponent dummy player) for
          * the server
          */
-        virtual ConnStatus connect(Server& server) = 0;
+        virtual bool connect(Server& server) = 0;
 
         /**
          * @brief Let the lan player know we are ready to receive their choice
@@ -55,7 +55,6 @@ namespace plushies::lanplay {
          */
         virtual int SyncActions(int myChoice) = 0;
 
-        // TODO: PSYN ?
         void sendPSYN(const Server& s, const Plush& plush) const;
         Plush recPSYN(Server& s) const;
 
@@ -70,7 +69,7 @@ namespace plushies::lanplay {
 
     class ServerConnection final : public Connection {
     public:
-        ConnStatus connect(Server& server) override;
+        bool connect(Server& server) override;
         void ActionReady() override;
         int SyncActions(int myChoice) override;
         ServerConnection(nyetwork::Communicator* com) : Connection(com) {}
@@ -79,7 +78,7 @@ namespace plushies::lanplay {
 
     class ClientConnection final : public Connection {
     public:
-        ConnStatus connect(Server& server) override;
+        bool connect(Server& server) override;
         void ActionReady() override;
         int SyncActions(int myChoice) override;
         ClientConnection(nyetwork::Communicator* com) : Connection(com) {}

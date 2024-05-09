@@ -82,12 +82,6 @@ namespace plushies {
         LAN_SERVER       = 10,
         LAN_CLIENT       = 15
     };
-
-    enum ConnStatus {
-        DISCONNECTED = -1,
-        CONFIRM = 0,
-        CONNECTED = 1
-    };
 }
 
 /**
