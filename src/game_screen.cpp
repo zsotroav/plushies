@@ -91,10 +91,10 @@ void updateActionInfo(const Action& a) {
     wcout << ss.str();
 
     econio_gotoxy(91, 28);
-    wcout << a.getDamage() << " PWR";
+    wcout << a.getDamage() << " PWR  ";
 
     econio_gotoxy(101, 28);
-    wcout << (a.getCategory() == ActionCategory::Physical ? L"★" : L"◎")
+    wcout << (a.getCategory() == Physical ? L"★" : L"◎")
     << "   ACC " << a.getAccuracy() << (a.getAccuracy() < 100 ? "%" : "")
 
     << flush;
