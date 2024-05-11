@@ -45,3 +45,20 @@ string menuLanconf(const bool server) {
     return s;
 #endif
 }
+
+bool lanConfirm(const int numPlushes, const int gameMode) {
+    wcout << endl << "There is an incoming request with a setup different"
+          << "from yours with these details: " << endl
+          << "- Plush count: " << numPlushes << endl
+          << "- Game mode:   " << gameMode << endl << endl
+          << "Accept request? (y/n)";
+
+    while (true) {
+        while (!econio_kbhit()) econio_sleep(0.2);
+
+        char c = econio_getch();
+
+        if (c == 'y' || c == 'Y') return true;
+        if (c == 'n' || c == 'N') return false;
+    }
+}

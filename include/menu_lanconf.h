@@ -9,6 +9,6 @@
 
 string menuLanconf(bool server);
 
-
+bool lanConfirm(const int numPlushes, const int gameMode);
 
 #endif //MENU_LANCONF_H

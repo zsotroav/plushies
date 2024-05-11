@@ -9,6 +9,7 @@
 #include "server.h"
 
 #include "memtrace.h"
+#include "menu_lanconf.h"
 
 using namespace plushies::lanplay;
 using namespace plushies;
@@ -95,28 +96,29 @@ bool ServerConnection::connect(Server& server) {
 
     stringstream ver;
     ver << LANPROTOCOL;
+    int pc = player->numPlushes();
 
     if (strcmp(ss.str().c_str(), buffer) != 0) {
         // If it is not a connection request or the version is incorrect
-        if (spl[0] != "CONN" || spl[1] != ver.str()) return false;
+        if (spl.size() != 4 || spl[0] != "CONN" || spl[1] != ver.str()) return false;
 
-        // TODO: Prompt manual check
-        sen("CDEN");
-        return false;
+        pc = stoi(spl[3]);
+        if (!lanConfirm(pc, stoi(spl[2]))) { sen("CDEN"); return false; }
     }
 
     // Anything that isn't an accept is good as a deny
-    sen("CACC");
+    ss.clear();
+    ss << "CACC " << player->numPlushes();
+
+    sen(ss);
 
     // PSYN - Plush Sync
-
     for (int i = 0; i < player->numPlushes(); ++i)
         sendPSYN(server, player->getPlushes()[i]);
 
     Player* dummy = new Player();
 
-    // TODO: Actual number sync
-    for (int i = 0; i < player->numPlushes(); ++i)
+    for (int i = 0; i < pc; ++i)
         dummy->addPlush(recPSYN(server));
 
     // Register synced dummy player to the server
@@ -139,15 +141,16 @@ bool ClientConnection::connect(Server& server) {
     rec(buff, 8, 0); // CACK
     rec(buff, 8, 0); // CACC/CDEN
 
+    auto spl = split(buff, ' ');
+
     // Anything that isn't an accept is good as a deny
-    if (strcmp(buff, "CACC") != 0) return false;
+    if (spl[0]!= "CACC") return false;
 
     Player* dummy = new Player();
 
     // PSYN - Plush Sync
 
-    // TODO: Actual number sync
-    for (int i = 0; i < player->numPlushes(); ++i)
+    for (int i = 0; i < stoi(spl[1]); ++i)
         dummy->addPlush(recPSYN(server));
 
     for (int i = 0; i < player->numPlushes(); ++i)
@@ -165,12 +168,7 @@ string encodeChoice(const int c) {
 
     if (c == 0) ss << "ADEF";
     else if (c < 0)  ss << "ASWP " << (-1*c);
-    else {
-        ss << "AATK ";
-        // TODO: Accuracy
-        // if (failed) ss << (c+10);
-        ss << c;
-    }
+    else ss << "AATK " << c;
 
     return ss.str();
 }

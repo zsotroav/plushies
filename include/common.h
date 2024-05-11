@@ -104,6 +104,8 @@ std::wostream& operator<<(std::wostream& os, plushies::Type type);
 
 std::wostream& operator<<(std::wostream& os, plushies::ActionCategory ac);
 
+std::wostream& operator<<(std::wostream& os, plushies::EnemyMode em);
+
 std::vector<std::string> split(const std::string& s, char delim);
 
 #endif //PLUSHIES_COMMON_H

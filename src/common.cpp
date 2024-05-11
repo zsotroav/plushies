@@ -50,6 +50,15 @@ std::wostream& operator<<(std::wostream& os, const Type type) {
     return os;
 }
 
+std::wostream& operator<<(std::wostream& os, const GameMode gm) {
+    switch(gm) {
+        case RANDOM: return os << "Random";
+        case CUSTOM: return os << "Custom";
+        case DETAIL: return os << "Detailed custom";
+        defualt:     return os << "??";
+    }
+}
+
 std::wostream& operator<<(std::wostream& os, const ActionCategory ac) {
     switch (ac) {
         case Physical: return os << "PHYSICAL";
