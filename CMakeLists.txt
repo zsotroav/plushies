@@ -50,6 +50,9 @@ add_executable(Plushies src/main.cpp
         lib/nyetwork_excep.h
         include/lanhandle.h
         src/lanhandle.cpp
+        include/test.h
+        src/test.cpp
+        lib/gtest_lite.h
 
 )
 

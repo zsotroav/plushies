@@ -1,3 +1,11 @@
+#ifdef COMPILE_DEBUG_ENABLED
+
+#pragma warning DEBUG COMPILE ENABLED
+
+#endif
+
+//////////////////////////////////////////
+
 #ifdef CPORTA
 
 #include "test.h"
@@ -9,12 +17,5 @@ int main() { dotest(); return 0; }
 #include "game.h"
 
 int main() { gameInit(); return 0; }
-
-#endif
-
-
-#ifdef COMPILE_DEBUG_ENABLED
-
-#pragma warning DEBUG COMPILE ENABLED
 
 #endif
