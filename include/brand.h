@@ -17,29 +17,42 @@ namespace plushies {
         string name;
         Type baseType;
         Type secondaryType;
-        int baseStats[6];
+        int baseStats[6]; //!< Base stat for the brand in standard StatOrder
 
         std::vector<Action*> learnActions; //!< Learnable Actions 
 
     public:
-        // Getters
-        inline string getName() const {return name; }
-        inline Type getBaseType() const { return baseType; }
-        inline Type getSecondaryType() const { return secondaryType; }
-        inline int getBaseStat(const StatOrder stat) const { return baseStats[stat]; }
+        /// Getters
 
-        inline int baseStatTotal() const { 
-            return baseStats[0] + baseStats[1] + baseStats[2] + 
+        string getName() const {return name; }
+        Type getBaseType() const { return baseType; }
+        Type getSecondaryType() const { return secondaryType; }
+        int getBaseStat(const StatOrder stat) const { return baseStats[stat]; }
+        std::vector<Action*> getLearnableActions() const { return learnActions; }
+
+        /**
+         * Calculate the base stat total of the brand
+         * @return The base stat total (sum of all six stats) of the brand
+         */
+        int baseStatTotal() const {
+            return baseStats[0] + baseStats[1] + baseStats[2] +
                    baseStats[3] + baseStats[4] + baseStats[5];
         }
 
-        inline std::vector<Action*> getLearnableActions() const { return learnActions; }
+        /**
+         * Add an Action to the brand's available actions
+         * @param ac Pointer to Action in the server
+         */
+        void addLearnableAction(Action* ac);
 
-        /// Setters
-        inline void addLearnableAction(Action* ac) { learnActions.push_back(ac); }
 
-
-        // ctor
+        /**
+         * Constructor
+         * @param name Name of brand
+         * @param base Base type
+         * @param secondary Secondary type
+         * @param baseStats Array of the Base Stats in standard StatOrder
+         */
         Brand(string name, Type base, Type secondary, const int baseStats[6]);
     };
 }
