@@ -28,11 +28,22 @@ namespace plushies {
         int getAccuracy() const { return accuracy; }
         int getEnergy() const { return energy; }
         int getMaxEnergy() const { return maxEnergy; }
-        void decEnergy() { energy -= 1; }
         double getPriority() const { return priority; }
         ActionCategory getCategory() const { return category; }
         Type getType() const { return type; }
 
+        void decEnergy() { energy -= 1; } //!< Decrement the available energy by one
+
+        /**
+         *
+         * @param name Name of the Action
+         * @param dam Base damage
+         * @param acc Accuracy (0-100)
+         * @param en Maximum energy
+         * @param pri Priority modifier
+         * @param typ Base type for the Action
+         * @param cat Category of the Action
+         */
         Action(string name, int dam, int acc, int en, double pri, Type typ,
                ActionCategory cat);
 

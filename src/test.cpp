@@ -19,24 +19,34 @@ using namespace plushies;
 
 void dotest() {
     /// action.h
-    Action testAction = {"Test Action", 100, 100, 5, 2, NORMAL, Physical};
+
+    Action testAction1 = NullAction;
+    Action testAction2 = NullAction;
+
+    TEST(Action ctor, Test thow/no throw) {
+
+        EXPECT_NO_THROW( testAction1 = Action("Test Action", 100, 100, 5, 2, NORMAL, Physical) );
+        EXPECT_THROW(testAction2 = Action("Throw", 10, 200, 5, 2, NORMAL, Physical), std::invalid_argument );
+
+    } ENDM
+
 
     TEST(Action ctor, Test Action ctor) {
         // Test is ctor initialized everything properly
-        EXPECT_TRUE(std::string("Test Action") == testAction.getName());
-        EXPECT_EQ( 100, testAction.getDamage() );
-        EXPECT_EQ( 100, testAction.getAccuracy() );
-        EXPECT_EQ( 5, testAction.getMaxEnergy() );
-        EXPECT_DOUBLE_EQ( 2, testAction.getPriority() );
-        EXPECT_EQ( Type::NORMAL, testAction.getType() );
-        EXPECT_EQ( ActionCategory::Physical, testAction.getCategory() );
+        EXPECT_TRUE(std::string("Test Action") == testAction1.getName());
+        EXPECT_EQ( 100, testAction1.getDamage() );
+        EXPECT_EQ( 100, testAction1.getAccuracy() );
+        EXPECT_EQ( 5, testAction1.getMaxEnergy() );
+        EXPECT_DOUBLE_EQ( 2, testAction1.getPriority() );
+        EXPECT_EQ( Type::NORMAL, testAction1.getType() );
+        EXPECT_EQ( ActionCategory::Physical, testAction1.getCategory() );
     } ENDM
 
     TEST(Action Energy, DecEnergy) {
-        EXPECT_EQ( 5, testAction.getMaxEnergy() );  // Max Energy is 5
-        testAction.decEnergy();                     // Decrement (use) energy
-        EXPECT_EQ( 4, testAction.getEnergy() );     // Available en. is 4
-        EXPECT_EQ( 5, testAction.getMaxEnergy() );  // Max should still be 5
+        EXPECT_EQ( 5, testAction1.getMaxEnergy() );  // Max Energy is 5
+        testAction1.decEnergy();                     // Decrement (use) energy
+        EXPECT_EQ( 4, testAction1.getEnergy() );     // Available en. is 4
+        EXPECT_EQ( 5, testAction1.getMaxEnergy() );  // Max should still be 5
     } ENDM
 
     /// brand.h
@@ -44,7 +54,7 @@ void dotest() {
 
     /// common.h
 
-    /// Type relation
+    // Type relation
 
     TEST(Type relation 1, GRASS > WATER) {
         EXPECT_DOUBLE_EQ( 2, Type::GRASS >> Type::WATER );

@@ -1,6 +1,6 @@
 #ifdef COMPILE_DEBUG_ENABLED
 
-#pragma warning DEBUG COMPILE ENABLED
+#warning DEBUG_COMPILE_ENABLED
 
 #endif
 
