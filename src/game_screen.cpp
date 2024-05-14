@@ -52,25 +52,30 @@ void updatePlush(const Plush& p, const bool foe) {
     econio_gotoxy(foe ? 63 : 40, foe ? 2 : 26);
     wcout << p.getBrand().getName();
 
+    // Pad name with spaces to not leave old data there
     for (size_t i = 0; i < 20 - p.getBrand().getName().length(); ++i)  wcout << " ";
 
+    // Locate health bar
     econio_gotoxy(foe ? 63 : 40, foe ? 4 : 28);
     const int n = (static_cast<double>(p.getHP()) / p.getMaxHP()) * 20;
 
+    // Health bar
     for (int i = 0; i < n; ++i) wcout << L"█";
     for (int i = 0; i < 20 - n; ++i) wcout << " ";
 
     if (foe) {
 #ifdef COMPILE_DEBUG_ENABLED
+        // If compiled with the debug flag the opponent's exact HP is also shown
         econio_gotoxy(74, 3);
         std::stringstream ss;
         ss << std::setfill(' ') << std::setw(3) << p.getHP();
 
         wcout << ss.str() << "/" << p.getMaxHP() << " HP" << flush;
 #endif
-        return;
+        return; // Only the health bar is updated
     }
 
+    // Write out player's HP
     econio_gotoxy(50, 27);
 
     std::stringstream ss;
@@ -78,7 +83,6 @@ void updatePlush(const Plush& p, const bool foe) {
 
     wcout << ss.str() << "/" << p.getMaxHP() << " HP" << flush;
 }
-
 
 void updateActionInfo(const Action& a) {
     econio_gotoxy(91, 27);
@@ -127,6 +131,7 @@ void updateSelection(const std::string& item, const int id, const bool highlight
 }
 
 void printList(const std::vector<std::string>& list) {
+    if (list.size() > 4) throw std::out_of_range("Too many items");
     updateSelection(list[0], 0, true);
     for (size_t i = 1; i < list.size(); ++i) updateSelection(list[i], i);
 }
