@@ -48,8 +48,8 @@ void warningScreen() {
     CONSOLE_SCREEN_BUFFER_INFO csbi;
 
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-    int columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-    int rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+    const int columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+    const int rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
     std::cout << columns << rows;
     if (columns >= 120 && rows >= 30) return;
 #endif // Windows
@@ -96,7 +96,7 @@ void gameInit() {
     EnemyMode opp;
     menu(gm, cnt, opp); // Get game config
 
-    Server s = Server(opp, gm, cnt);
+    Server s = {opp, gm, cnt};
 
     Player* human = new Player();
     for (int i = 0; i < cnt; ++i) {
