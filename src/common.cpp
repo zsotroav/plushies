@@ -34,37 +34,37 @@ std::string convertFromUFT8(const std::wstring& ws) {
     return converter.to_bytes(ws);
 }
 
-std::wostream& operator<<(std::wostream& os, const Type type) {
+std::wostream& operator<<(std::wostream& wos, const Type type) {
     switch (type) {
-        case NONE:     return os << "NONE    ";
-        case NORMAL:   return os << "NORMAL  ";
-        case FIRE:     return os << "FIRE    ";
-        case WATER:    return os << "WATER   ";
-        case GRASS:    return os << "GRASS   ";
-        case ELECTRIC: return os << "ELECTRIC";
-        case FIGHTING: return os << "FIGHTING";
-        case FLYING:   return os << "FLYING  ";
-        case ROCK:     return os << "ROCK    ";
-        case GHOST:    return os << "GHOST   ";
+        case NONE:     return wos << "NONE    ";
+        case NORMAL:   return wos << "NORMAL  ";
+        case FIRE:     return wos << "FIRE    ";
+        case WATER:    return wos << "WATER   ";
+        case GRASS:    return wos << "GRASS   ";
+        case ELECTRIC: return wos << "ELECTRIC";
+        case FIGHTING: return wos << "FIGHTING";
+        case FLYING:   return wos << "FLYING  ";
+        case ROCK:     return wos << "ROCK    ";
+        case GHOST:    return wos << "GHOST   ";
     }
-    return os;
+    return wos;
 }
 
-std::wostream& operator<<(std::wostream& os, const GameMode gm) {
+std::wostream& operator<<(std::wostream& wos, const GameMode gm) {
     switch(gm) {
-        case RANDOM: return os << "Random";
-        case CUSTOM: return os << "Custom";
-        case DETAIL: return os << "Detailed custom";
-        defualt:     return os << "??";
+        case RANDOM: return wos << "Random";
+        case CUSTOM: return wos << "Custom";
+        case DETAIL: return wos << "Detailed custom";
+        default:     return wos << "??";
     }
 }
 
-std::wostream& operator<<(std::wostream& os, const ActionCategory ac) {
+std::wostream& operator<<(std::wostream& wos, const ActionCategory ac) {
     switch (ac) {
-        case Physical: return os << "PHYSICAL";
-        case Special:  return os << "SPECIAL ";
+        case Physical: return wos << "PHYSICAL";
+        case Special:  return wos << "SPECIAL ";
     }
-    return os;
+    return wos;
 }
 
 std::vector<std::string> split(const std::string& s, const char delim) {

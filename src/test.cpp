@@ -1,6 +1,3 @@
-// Created by zsotroav on 2024-05-11.
-//
-
 #include "test.h"
 #include "gtest_lite.h"
 #include <string>
@@ -10,6 +7,7 @@
 #include "common.h"
 #include "overlord.h"
 #include "player.h"
+#include "plush.h"
 #include "server.h"
 
 #include "memtrace.h"
@@ -79,8 +77,8 @@ void dotest() {
         EXPECT_EQ(0, testBrand.getLearnableActions().size());
     } END
 
-    Action* ac1 = new Action(testAction1); // Should be a valid action
-    Action* ac2 = new Action(NullAction);  // Is known to be invalid
+    const auto ac1 = new Action(testAction1); // Should be a valid action
+    const auto ac2 = new Action(NullAction);  // Is known to be invalid
 
     TEST(Brand learnable actions, Add actions) {
         EXPECT_NO_THROW(testBrand.addLearnableAction(ac1));
@@ -98,19 +96,62 @@ void dotest() {
 
     /// common.h
 
-    // Type relation
+    // Can not test random
 
-    TEST(Type relation 1, GRASS > WATER) {
+    // Type relations
+    TEST(common.type, GRASS > WATER) {
         EXPECT_DOUBLE_EQ( 2, Type::GRASS >> Type::WATER );
     } END
 
-    TEST(Type relation 2, WATER > GRASS) {
+    TEST(common.type, WATER > GRASS) {
         EXPECT_DOUBLE_EQ( 0.5, Type::WATER >> Type::GRASS );
     } END
 
-    TEST(Type relation 3, NORMAL > GHOST) {
+    TEST(common.type, NORMAL > GHOST) {
         EXPECT_DOUBLE_EQ( 0, Type::NORMAL >> Type::GHOST );
     } END
+
+    // convertUTF8
+    TEST(common, convert UTF8) {
+        const string base = "asdfghjkléáőúűöüóí";
+        const wstring wbase = L"asdfghjkléáőúűöüóí";
+
+        EXPECT_TRUE(wbase == convertUFT8(base));
+        EXPECT_TRUE(base == convertFromUFT8(wbase));
+
+    } ENDM
+
+    // wostream operators meh
+
+    // split
+    TEST(common, split space) {
+        const std::vector<string> v = { "a", "b", "c", "d"};
+
+        const auto test = split("a b c d", ' ');
+
+        EXPECT_EQ(v.size(), test.size());
+
+        for (size_t i = 0; i < v.size(); ++i) {
+            if (v[i] == test[i]) continue;
+            FAIL() << "Items do not match: " << v[i] << " - " << test[i];
+        }
+
+    } ENDM
+
+
+    TEST(common, split semicolumn) {
+        const std::vector<string> v = { "a", "b", "c", "d"};
+
+        const auto test = split("a;b;c;d", ';');
+
+        EXPECT_EQ(v.size(), test.size());
+
+        for (size_t i = 0; i < v.size(); ++i) {
+            if (v[i] == test[i]) continue;
+            FAIL() << "Items do not match: " << v[i] << " - " << test[i];
+        }
+
+    } ENDM
 
     ///
 

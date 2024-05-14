@@ -92,20 +92,67 @@ namespace plushies {
  */
 int random(int a, int b);
 
+/**
+ * Get the type effectiveness between two types
+ * @param attacker Type of attacker
+ * @param target Type of target
+ * @return Type effectiveness modifier
+ */
 double operator>>(plushies::Type attacker, plushies::Type target);
 
+/**
+ * Convert string to wstring for wcout
+ * @param s regular string to convert
+ * @return UTF-8 (wide) string
+ */
 std::wstring convertUFT8(const std::string& s);
+
+/**
+ * Convert wstring to string from wcin
+ * @param ws UTF-8 (wide) string to convert
+ * @return regular string
+ */
 std::string convertFromUFT8(const std::wstring& ws);
 
-inline std::wostream& operator<<(std::wostream& os, const std::string& s)
-{ return os << convertUFT8(s); }
+/**
+ * Write a regular string out to a wide ostream
+ * @param wos Wide output stream (such as wcout)
+ * @param s Regular string to be converted to wstring and written out
+ * @return Chainable wostream
+ */
+inline std::wostream& operator<<(std::wostream& wos, const std::string& s)
+{ return wos << convertUFT8(s); }
 
-std::wostream& operator<<(std::wostream& os, plushies::Type type);
+/**
+ * Write Type out to wide output stream
+ * @param wos Wide output stream (such as wcout)
+ * @param type Plush Type to write out
+ * @return Chainable wostream
+ */
+std::wostream& operator<<(std::wostream& wos, plushies::Type type);
 
-std::wostream& operator<<(std::wostream& os, plushies::ActionCategory ac);
+/**
+ * Write Action Category out to wide output stream
+ * @param wos Wide output stream (such as wcout)
+ * @param ac Action Category to write out
+ * @return Chainable wostream
+ */
+std::wostream& operator<<(std::wostream& wos, plushies::ActionCategory ac);
 
-std::wostream& operator<<(std::wostream& os, plushies::EnemyMode em);
+/**
+ * Write Enemy Mode out to wide output stream
+ * @param wos Wide output stream (such as wcout)
+ * @param em Enemy Mode to write out
+ * @return Chainable wostream
+ */
+std::wostream& operator<<(std::wostream& wos, plushies::EnemyMode em);
 
+/**
+ * Split a string at delimiters
+ * @param s String to be split
+ * @param delim Delimiter to split at
+ * @return std::vector of split strings
+ */
 std::vector<std::string> split(const std::string& s, char delim);
 
 #endif //PLUSHIES_COMMON_H
