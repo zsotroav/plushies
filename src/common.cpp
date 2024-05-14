@@ -74,3 +74,21 @@ std::vector<std::string> split(const std::string& s, const char delim) {
     while (std::getline(ss, word, delim)) row.push_back(word);
     return row;
 }
+
+std::string encodeChoice(const int c) {
+    std::stringstream ss;
+
+    if (c == 0) ss << "ADEF";
+    else if (c < 0)  ss << "ASWP " << (-1*c);
+    else ss << "AATK " << c;
+
+    return ss.str();
+}
+
+int decodeChoice(const char* c) {
+    const auto spl = split(c, ' ');
+    if (spl[0] == "ADEF") return 0;
+    if (spl[0] == "ASWP") return stoi(spl[1]) * -1;
+    return stoi(spl[1]);
+}
+

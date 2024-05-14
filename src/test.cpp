@@ -139,7 +139,7 @@ void dotest() {
     } ENDM
 
 
-    TEST(common, split semicolumn) {
+    TEST(common, split semicolon) {
         const std::vector<string> v = { "a", "b", "c", "d"};
 
         const auto test = split("a;b;c;d", ';');
@@ -151,6 +151,20 @@ void dotest() {
             FAIL() << "Items do not match: " << v[i] << " - " << test[i];
         }
 
+    } ENDM
+
+    TEST(common.lan, encode) {
+        EXPECT_TRUE("ADEF"    == encodeChoice(0));
+        EXPECT_TRUE("ASWP 1"  == encodeChoice(-1));
+        EXPECT_TRUE("AATK 1"  == encodeChoice(1));
+        EXPECT_TRUE("AATK 11" == encodeChoice(11));
+    } ENDM
+
+    TEST(common.lan, decode) {
+        EXPECT_TRUE(0  == decodeChoice("ADEF"));
+        EXPECT_TRUE(-1 == decodeChoice("ASWP 1"));
+        EXPECT_TRUE(1  == decodeChoice("AATK 1"));
+        EXPECT_TRUE(11 == decodeChoice("AATK 11"));
     } ENDM
 
     ///

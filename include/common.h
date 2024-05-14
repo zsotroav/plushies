@@ -155,4 +155,19 @@ std::wostream& operator<<(std::wostream& wos, plushies::EnemyMode em);
  */
 std::vector<std::string> split(const std::string& s, char delim);
 
+
+/**
+ * Encode int choice to string for lan communication
+ * @param c Choice to be encoded
+ * @return Encoded choice ready for send
+ */
+std::string encodeChoice(int c);
+
+/**
+ * Decode choice from lan communication for internal server use
+ * @param c String to decode
+ * @return Decoded choice
+ */
+int decodeChoice(const char* c);
+
 #endif //PLUSHIES_COMMON_H

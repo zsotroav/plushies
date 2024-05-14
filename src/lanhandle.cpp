@@ -48,7 +48,7 @@ Plush Connection::recPSYN(Server &s) const {
 
     // We want PSYN and can't deal with anything else
     if (row.size() != 13 || row[0] != "PSYN")
-        throw std::invalid_argument("nop");
+        throw std::invalid_argument("Didn't receive PSYN");
 
     // Init temporary brand
     int brand = 0;
@@ -92,7 +92,7 @@ bool ServerConnection::connect(Server& server) {
     rec(buffer, sizeof(buffer), 0);
     sen("CACK");
 
-    auto spl = split(ss.str(), ' ');
+    const auto spl = split(ss.str(), ' ');
 
     stringstream ver;
     ver << LANPROTOCOL;
@@ -161,23 +161,6 @@ bool ClientConnection::connect(Server& server) {
 
     // Connection established and game is ready
     return true;
-}
-
-string encodeChoice(const int c) {
-    stringstream ss;
-
-    if (c == 0) ss << "ADEF";
-    else if (c < 0)  ss << "ASWP " << (-1*c);
-    else ss << "AATK " << c;
-
-    return ss.str();
-}
-
-int decodeChoice(const char* c) {
-    const auto spl = split(c, ' ');
-    if (spl[0] == "ADEF") return 0;
-    if (spl[0] == "ASWP") return stoi(spl[1]) * -1;
-    return stoi(spl[1]);
 }
 
 void ClientConnection::ActionReady() {
