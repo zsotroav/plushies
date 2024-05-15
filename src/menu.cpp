@@ -16,7 +16,7 @@ using std::wcout, std::endl, std::flush;
 #define cout wcout
 
 void writeMainHeader() {
-    static auto logo =  L"                        ▄███████▄  ▄█       ███    █▄     ▄████████    ▄█    █▄   \n"
+    static auto logo = L"                        ▄███████▄  ▄█       ███    █▄     ▄████████    ▄█    █▄   \n"
                         "                       ███    ███ ███       ███    ███   ███    ███   ███    ███  \n"
                         "                       ███    ███ ███       ███    ███   ███    █▀    ███    ███  \n"
                         "                       ███    ███ ███       ███    ███   ███         ▄███▄▄▄▄███▄▄\n"
@@ -48,6 +48,7 @@ GameMode modeSelect() {
     econio_gotoxy(11, 21);
 
     switch (econio_getch()) {
+        // So many spaces to overwrite the selection prompt
         case 'r': case 'R':
             wcout << "Random                    " << endl;
             return RANDOM;
@@ -76,26 +77,25 @@ int plushCountSelect() {
 
     econio_gotoxy(19, 23);
 
-
+    // ASCII 49 = 1 -- ASCII 51 = 3
     if (c >= 49 && c <= 51) {
         c -= 48;
         wcout << c << "      " << endl;
         return c;
     }
     econio_gotoxy(24, 23);
-    wcout << "??" << endl;
-    return -1;
+    wcout << "??" << endl; // incalid selection
+    return -1; // return invalid status, function will get called again
 }
 
 EnemyMode opponentSelect(const bool detail) {
     econio_gotoxy(0, 25);
     wcout << "Play against local AI or LAN play? " << flush;
 
-
     while (!econio_kbhit()) econio_sleep(0.2);
     int c = econio_getch();
 
-    if (c == 'l' || c == 'L') {
+    if (c == 'l' || c == 'L') { // LAN Play
         wcout << endl << "Are you Hosting the game, or joining as Client?" << flush;
         while (true) {
             while (!econio_kbhit()) econio_sleep(0.2);
@@ -103,9 +103,10 @@ EnemyMode opponentSelect(const bool detail) {
             if (c == 'h' || c == 'H' || c == 's' || c == 'S') return LAN_SERVER;
             if (c == 'c' || c == 'C') return  LAN_CLIENT;
         }
-    }// LAN
+    }
 
-    if (c != 'a' && c != 'A') return INVALIDENEMY; // INV
+    // Invalid choice, will get called again
+    if (c != 'a' && c != 'A') return INVALIDENEMY; 
 
     if (!detail) return OVERLORD_GENERIC; // Random AI
     
@@ -114,6 +115,7 @@ EnemyMode opponentSelect(const bool detail) {
              "Which Overlord do you want to play against? "
              "(Dennis/Clyde/Ninty/Waffles/Muffins)" << flush;
 
+    // Wait until overlord type is chosen
     while(true) {
         while (!econio_kbhit()) econio_sleep(0.2);
         c = econio_getch();

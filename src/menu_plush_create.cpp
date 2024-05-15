@@ -53,7 +53,7 @@ void printMPC() {
              "                                                            ╚═══════════════════════╝  ╚══════╧════════════════════════╝";
 }
 
-void printDetail(const int i, const std::string& s, const bool highlight = false) {
+void printDetail(const int i, const std::string& s, const bool highlight) {
     econio_gotoxy(90, 2+i);
     std::stringstream ss;
     ss << std::setfill('0') << std::setw(2) << i;
@@ -71,7 +71,7 @@ void printDetail(const int i, const std::string& s, const bool highlight = false
     for (size_t j = 0; j < 23 - s.length(); ++j) wcout << " ";
 }
 
-void printBrandDetail(const Brand& b, const int i, const bool highlight = false) {
+void printBrandDetail(const Brand& b, const int i, const bool highlight) {
     printDetail(i, b.getName(), highlight);
 
     econio_gotoxy(75, 3);
@@ -91,7 +91,7 @@ void printBrandDetail(const Brand& b, const int i, const bool highlight = false)
     wcout << std::flush;
 }
 
-void printActionDetail(const Action* a, const int i, const bool highlight = false) {
+void printActionDetail(const Action* a, const int i, const bool highlight) {
     printDetail(i, a->getName(), highlight);
 
     econio_gotoxy(74, 24);
@@ -134,7 +134,7 @@ void printActions(const Brand& b) {
     wcout << flush;
 }
 
-int selectItem(const Server& s, const int brandid = -1) {
+int selectItem(const Server& s, const int brandid) {
     int curr = 0, prev;
     const int l = brandid < 0 ? ( brandid == -2 ? 5 : s.brands.size()) :
                       s.brands[brandid].getLearnableActions().size();
@@ -174,12 +174,15 @@ Plush plushies::menuPlushCreate(Server& s, const bool detailed) {
 
     printBrands(s);
 
+    // Select brand
     const int brandid = selectItem(s);
     econio_gotoxy(13, 2);
     wcout << brandid << " - " << s.brands[brandid].getName() << flush;
 
+    // Init actions
     Action ac[] = { NullAction, NullAction, NullAction, NullAction };
 
+    // Select actions
     for (int i = 0; i < 4; ++i) {
         printActions(s.brands[brandid]);
 
@@ -190,21 +193,24 @@ Plush plushies::menuPlushCreate(Server& s, const bool detailed) {
         wcout << acid << " - " << ac[i].getName() << flush;
     }
 
+    // Generate UVs
     int uv[] = { random(30, 63), random(30, 63), random(30, 63),
                  random(30, 63), random(30, 63), random(30, 63)};
+    
+    // UVs can only be set if in detailed mode
     if (detailed) {
-        econio_normalmode();
+        econio_normalmode(); // normal mode for full input
         for (int i = 0; i < 6; ++i) {
             econio_gotoxy(9, 13 + i);
             std::wcin >> uv[i];
-            if (uv[i] < 0 || uv[i] > 63) {
+            if (uv[i] < 0 || uv[i] > 63) { // value checking
                 econio_gotoxy(9, 13 + i);
                 wcout << "?     ";
                 econio_gotoxy(9, 13 + i);
                 i--;
             }
         }
-        econio_rawmode();
+        econio_rawmode(); // (re)set raw mode
     }
 
     return {s.brands[brandid], uv, ac};

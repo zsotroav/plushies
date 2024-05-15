@@ -34,8 +34,9 @@ int plushCountSelect();
 
 /**
  * @brief Ask the player to choose their opponent (AI or LAN play mode)
- * @return 1 - AI <br> 2 - LAN <br> -1 - Invalid selection
+ * @param detail Detailed mode - if true, player can choose specific AI
+ * @return enemy choice
  */
-int opponentSelect();
+plushies::EnemyMode opponentSelect(bool detail);
 
 #endif //PLUSHIES_MENU_H
