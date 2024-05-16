@@ -92,10 +92,11 @@ bool Plush::validateAC(const Action &act) {
 /// Operators
 
 ActionContext Plush::operator>>(Action& act) const {
+    if (act.getType() == NONE) throw std::invalid_argument("Invalid move");
     if (act.getEnergy() <= 0) throw FailedAction("No more energy");
     act.decEnergy();
 
-    return getSafeAC(act);
+    return getAC(act);
 }
 
 ActionContext Plush::operator>>(const int actionId) {

@@ -5,7 +5,6 @@
 #include "action.h"
 #include "brand.h"
 #include "common.h"
-#include "overlord.h"
 #include "player.h"
 #include "plush.h"
 #include "server.h"
@@ -167,7 +166,56 @@ void dotest() {
         EXPECT_TRUE(11 == decodeChoice("AATK 11"));
     } ENDM
 
-    ///
+    /// Plush
+
+    const int UVOK[] = { 10, 10, 10, 10, 10, 10 };
+    const int UVHI[] = { 65, 10, 10, 10, 10, 10 };
+    const int UVLO[] = { -1, 10, 10, 10, 10, 10 };
+
+    Action ac = { "Test Action", 100, 100, 1, 2, NORMAL, Physical };
+
+    Action Actions[] = { ac, ac, ac, ac };
+    Action NullAcs[] = { NullAction, NullAction, NullAction, NullAction };
+
+    TEST(plush, ctor) {
+        EXPECT_NO_THROW(Plush(testBrand, UVOK, Actions));
+        EXPECT_NO_THROW(Plush(testBrand, UVOK, NullAcs));
+        EXPECT_THROW(Plush(testBrand, UVHI, Actions), std::invalid_argument const&);
+        EXPECT_THROW(Plush(testBrand, UVLO, Actions), std::invalid_argument const&);
+    } ENDM
+
+    Plush p1 = {testBrand, UVOK, Actions};
+    Plush p2 = {testBrand, UVOK, NullAcs};
+
+    TEST(plush, ctor.valid) {
+        EXPECT_EQ(testBrand.getName(), p1.getName());
+        for (int i = 0; i < 6; ++i)
+            if (p1.getUV(static_cast<StatOrder>(i)) != 10) FAIL() << "UV";
+        for (int i = 0; i < 4; ++i) if (!(p1.Actions[i] == ac)) FAIL() << "AC";
+    } END
+
+    TEST(plush, HP) {
+        int hp = p1.getHP();
+        EXPECT_EQ(p1.getHP(), p1.getMaxHP());
+        p1 << 1;
+        EXPECT_EQ(hp-1, p1.getHP());
+        EXPECT_EQ(hp, p1.getMaxHP());
+    } END
+
+    TEST(plush, AC) {
+        EXPECT_THROW(p2.getSafeAC(1), std::invalid_argument const&);
+        EXPECT_NO_THROW(p1.operator>>(1));
+        EXPECT_THROW(p1.operator>>(1), FailedAction const&); // Out of energy
+    } END
+
+    TEST(plush, validMoves) {
+        EXPECT_EQ(4, p1.validMoves());
+        EXPECT_EQ(0, p2.validMoves());
+    } END
+
+    /// Player
+
+
 
     delete ac1;
     delete ac2;
