@@ -15,7 +15,7 @@ int maxminAction(plushies::Player& att,
                  const bool maxmode = true) {
 
     int max;
-    try { max = (att.active().getSafeAC(0)) >> opponent; }
+    try { max = (att.getActivePlush().getSafeAC(0)) >> opponent; }
     catch (...) { max = 0; }
     int mid = 0;
 
@@ -24,7 +24,7 @@ int maxminAction(plushies::Player& att,
             continue;
 
         int c;
-        try { c = (att.active().getSafeAC(i)) >> opponent; }
+        try { c = (att.getActivePlush().getSafeAC(i)) >> opponent; }
         catch (...) { c = 0; }
         if ((c < max && maxmode) || (c > max && !maxmode)) continue;
         if ((c == max &&
@@ -39,13 +39,13 @@ int maxminAction(plushies::Player& att,
 
 
 int Dennis::ready(const Plush&) {
-    return random(1, active().validMoves()); 
+    return random(1, getActivePlush().validMoves());
 }
 
 int Clyde::ready(const Plush&) {
     std::this_thread::sleep_for(std::chrono::seconds(random(5, 10)));
 
-    return random(1, active().validMoves());
+    return random(1, getActivePlush().validMoves());
 }
 
 int Ninty::ready(const Plush& opponent) {
