@@ -55,8 +55,11 @@ add_executable(Plushies src/main.cpp
         lib/gtest_lite.h
 
 )
+if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    add_compile_definitions(MEMTRACE MEMTRACE_ERRFILE=mem.trace)
+endif()
 
-add_compile_definitions(MEMTRACE MEMTRACE_ERRFILE=mem.trace COMPILE_DEBUG_ENABLED)
+add_compile_definitions(${BUILD})
 
 configure_file(data/brands.csv data/brands.csv COPYONLY)
 configure_file(data/actions.csv data/actions.csv COPYONLY)

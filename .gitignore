@@ -53,7 +53,7 @@ dkms.conf
 
 .idea/
 .vscode/
-cmake-build-debug/
+cmake-build-*/
 *.pdf
 todo.md
 

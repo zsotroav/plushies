@@ -64,7 +64,7 @@ void updatePlush(const Plush& p, const bool foe) {
     for (int i = 0; i < 20 - n; ++i) wcout << " ";
 
     if (foe) {
-#ifdef COMPILE_DEBUG_ENABLED
+#ifdef DEBUG_EXTRA
         // If compiled with the debug flag the opponent's exact HP is also shown
         econio_gotoxy(74, 3);
         std::stringstream ss;

@@ -1,6 +1,6 @@
-#ifdef COMPILE_DEBUG_ENABLED
+#ifdef DEBUG_EXTRA
 
-#warning DEBUG_COMPILE_ENABLED
+#warning DEBUG_EXTRA_COMPILED
 
 #endif
 
