@@ -7,7 +7,7 @@
 
 <div class="page"></div>
 
-## 1 Legal & License
+## Legal & License
 Copyright (C) 2024  Zsombor Török
 
 This program is free software: you can redistribute it and/or modify
@@ -23,13 +23,22 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-## 2 About
+## About
 Plush Monsters' Fight Club is a basic command-line turn-based battle system
 emulator made as the big homework for the "Basics of Programming 2" course.
 
 For more information, see the [spec.md](specification) or [plan.md](plan).
 
-## 3 High-level overview
+## Compiling
+The project is intended for compiling with CMake. If compiled for debugging, memtrace will automatically be enabled and set to output in the `mem.trace` file.
+
+To add additional compile definitions, define `BUILD` with the definitions to add.
+- Define `CPORTA` to compile into test mode, where only the gtest_lite tests are run.
+- Define `DEBUG_EXTRA` to show additional information while playing
+
+## High-level overview
+
+### Files and folder structure 
 The project follows a simple folder structure with C source code in the 
 `src` directory and related header files in the `include` directory.
 ```
@@ -68,5 +77,21 @@ plushies
 ├── LICENSE          // AGPL-3.0 (License file)
 ├── plan.md          // Plan as required by the subject
 ├── spec.md          // Specifications for the game
-└── USR_DOC.md       // User documentation (quickstart guide)
+└── USR_DOC.md        // User documentation (quickstart guide)
 ```
+
+### Used external resources
+- Libraries:
+  1. [c-econio](https://infoc.eet.bme.hu/megjelenites/c-econio.zip) 
+    by Zoltan Czirkos. [MIT License](include/lib/ECONIO_LICENSE)
+  2. [memtrace](https://infocpp.iit.bme.hu)
+  3. [gtest_lite](https://infocpp.iit.bme.hu)
+- Code snippets: Noted in source if applicable
+- Miscellaneous: 
+   1. ASCII font for logo generated with [patorjk.com](https://patorjk.com/software/taag)
+
+
+
+
+
+
