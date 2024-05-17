@@ -7,7 +7,6 @@
 #include "common.h"
 #include "player.h"
 #include "plush.h"
-#include "server.h"
 
 #include "memtrace.h"
 
@@ -113,8 +112,8 @@ void dotest() {
 
     // convertUTF8
     TEST(common, convert UTF8) {
-        const string base = "asdfghjkléáőúűöüóí";
-        const wstring wbase = L"asdfghjkléáőúűöüóí";
+        const std::string   base =  "asdfghjkléáőúűöüóí";
+        const std::wstring wbase = L"asdfghjkléáőúűöüóí";
 
         EXPECT_TRUE(wbase == convertUFT8(base));
         EXPECT_TRUE(base == convertFromUFT8(wbase));

@@ -116,7 +116,8 @@ void gameInit() {
     econio_clrscr();
     wcout << "A few plushies may have been ripped apart by bonks and " <<
              "omnomnoms... " << (res == 1 ? "But you at least won" :
-                                            "And you couldn't even win...")
+                                (res == 0 ? "And you couldn't even win..." :
+             "And someone used explosion to cause a catastrophic error..."))
           << std::endl << "Thank you for playing." << std::endl;
 
     econio_normalmode(); // Reset input mode after game
