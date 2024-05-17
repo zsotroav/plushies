@@ -29,8 +29,6 @@
 
 <!-- /code_chunk_output -->
 
-<div class="page"></div>
-
 ## Legal & License
 Copyright (C) 2024  Zsombor Török
 
@@ -114,6 +112,8 @@ plushies
 - Miscellaneous: 
   1. ASCII font for logo generated with [patorjk.com](https://patorjk.com/software/taag)
   2. ASCII plush generated with [asciiart.eu](https://www.asciiart.eu/image-to-ascii)
+
+<div class="page"></div>
 
 ## Files 
 

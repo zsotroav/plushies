@@ -66,38 +66,8 @@ only a single IP address is required:
 * For the client, this IP is the server's IP
 
 ### Plush creation menu
-```
-                                    Plush Monsters' Fight Club - Plush Configuration
-                                                                                       ╔══════╤════════════════════════╗
-Plush Brand: 0 - Blahaj                                            ╔════════════════╗  ║  00  │ Water puke             ║
-                                                                   ║       99       ║  ║  01  │ Water wheel            ║
-Action 1: 0 - Water puke                                           ║                ║  ║  02  │ Bonk                   ║
-                                                                   ║   40      70   ║  ║  03  │ Quick Bonk             ║
-Action 2:                                                          ║                ║  ║  04  │ Omnomnom               ║
-                                                                   ║   50      65   ║  ║  05  │ Rain Dance             ║
-Action 3:                                                          ║                ║  ║  06  │ Stare                  ║
-                                                                   ║       45       ║  ║      │                        ║
-Action 4:                                                          ╟────────────────╢  ║      │                        ║
-                                                                   ║ TYP1/ WATER    ║  ║      │                        ║
-Uniquie Values:                                                    ║ TYP2/ NONE     ║  ║      │                        ║
-  - HP:        How tanky are you?                                  ╚════════════════╝  ║      │                        ║
-  - ATK:       That's gonna hurt                                                       ║      │                        ║
-  - DEF:       Nothing without a good defense                                          ║      │                        ║
-  - SPD:       We're *special*                                                         ║      │                        ║
-  - SPA:       We attack *special*                                                     ║      │                        ║
-  - SPE:       Gotta go fast                                                           ║      │                        ║
-                                                                                       ║      │                        ║
-                                                                                       ║      │                        ║
-                                                                                       ║      │                        ║
-                                                                                       ║      │                        ║
-                                                            ╔═══════════════════════╗  ║      │                        ║
-                                                            ║      POWER  50        ║  ║      │                        ║
-                                                            ║   ACCURACY  90%       ║  ║      │                        ║
-                                                            ║     ENERGY  5         ║  ║      │                        ║
-                                                            ║       TYPE  WATER     ║  ║      │                        ║
-                                                            ║   CATEGORY  PHYSICAL  ║  ║      │                        ║
-                                                            ╚═══════════════════════╝  ╚══════╧════════════════════════╝
-```
+
+![menu](menu_plush_create.png)
 
 The plush create menu can be divided into five segments:
 * Input/prompt fields (top left)
