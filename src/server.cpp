@@ -32,7 +32,7 @@ namespace plushies {
 
             // Ask local player to choose
             future<int> f1 = std::async(&Player::ready, players[1],
-                                        players[0]->getActivePlush());
+                                        players[0]->active());
             future<int> f0; // For LAN player/local AI
 
             int p1; // Result storage
@@ -40,13 +40,13 @@ namespace plushies {
             // If we aren't against a lan player we can just get their choice
             if (!againstLAN())
                 f0 = std::async(&Player::ready, players[0],
-                                players[1]->getActivePlush());
+                                players[1]->active());
 
             // We need the local player's choice before we can get the lan's
             p1 = f1.get();
 
             // Pre-calculate accuracy of our attack
-            const bool p1fail = p1 > 0 ? !players[1]->getActivePlush().validateAC(p1) : false;
+            const bool p1fail = p1 > 0 ? !players[1]->active().validateAC(p1) : false;
 
             // If we are against a lan player, get their choices
             if (enemyMode == LAN_CLIENT)
@@ -71,7 +71,7 @@ namespace plushies {
             if (sw0) {
                 try { players[0]->setActive(-1*p0 - 1); }
                 catch (...) { } // Trying to swap into the active plush...
-                try { players[0]->getActivePlush() << (players[1]->getActivePlush() >> (p1-1)); }
+                try { players[0]->active() << (players[1]->active() >> (p1-1)); }
                 catch (...) { } // If the move failed, oh well, suck for you ig
                 continue;
             }
@@ -80,11 +80,11 @@ namespace plushies {
                 catch (...) { } // Trying to swap into the active plush...
                 try {
                     if (!againstLAN()) { // Lan has accuracy precalculated
-                        players[1]->getActivePlush() << (players[0]->getActivePlush() >> (p0 - 1));
+                        players[1]->active() << (players[0]->active() >> (p0 - 1));
                         continue;
                     }
                     // use getAC to avoid double calculating accuracy
-                    players[1]->getActivePlush() << (players[0]->getActivePlush().getAC(p0-1));
+                    players[1]->active() << (players[0]->active().getAC(p0-1));
                 }
                 catch (...) { }
                 continue;
@@ -95,30 +95,30 @@ namespace plushies {
             ActionContext ac1 = {0, 0, NONE, Physical};
             try {
                 if (!againstLAN()) { // Lan has accuracy precalculated
-                    ac0 = players[0]->getActivePlush() >> (p0 - 1);
+                    ac0 = players[0]->active() >> (p0 - 1);
                 } else if (p0 < 10) {
                     // use getAC to avoid double calculating accuracy
-                    ac0 = players[0]->getActivePlush().getAC(p0 - 1);
+                    ac0 = players[0]->active().getAC(p0 - 1);
                 }
             } catch (...) {}
-            try { ac1 = p1fail ? ac1 : players[1]->getActivePlush() >> (p1-1); } catch (...) {}
+            try { ac1 = p1fail ? ac1 : players[1]->active() >> (p1-1); } catch (...) {}
 
             if (ac0.speed > ac1.speed) {
-                players[0]->getActivePlush() << ac1;
-                if (players[0]->getActivePlush().getHP() > 0)
-                    players[1]->getActivePlush() << ac0;
+                players[0]->active() << ac1;
+                if (players[0]->active().getHP() > 0)
+                    players[1]->active() << ac0;
             } else {
-                players[1]->getActivePlush() << ac0;
-                if (players[1]->getActivePlush().getHP() > 0)
-                    players[0]->getActivePlush() << ac1;
+                players[1]->active() << ac0;
+                if (players[1]->active().getHP() > 0)
+                    players[0]->active() << ac1;
             }
 
             // Alive checks
             if (players[0]->numPlushes(true) <= 0) return 1;
             if (players[1]->numPlushes(true) <= 0) return 0;
 
-            if (players[0]->getActivePlush().getHP() <= 0) players[0]->nextAlive();
-            if (players[1]->getActivePlush().getHP() <= 0) players[1]->nextAlive();
+            if (players[0]->active().getHP() <= 0) players[0]->nextAlive();
+            if (players[1]->active().getHP() <= 0) players[1]->nextAlive();
 
         }
 

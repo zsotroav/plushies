@@ -10,7 +10,7 @@ namespace plushies {
 
     void Player::setActive(const int i) {
         if (activePlush == i) throw std::invalid_argument("Already active");
-        if (numPlushes() < i) throw std::invalid_argument("Unknown plush");
+        if (numPlushes() <= i) throw std::invalid_argument("Unknown plush");
         if (plushes[i].getHP() <= 0) throw std::invalid_argument("Dead plush");
 
         activePlush = i;

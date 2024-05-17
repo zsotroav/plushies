@@ -28,6 +28,9 @@ namespace plushies {
         /**
          * Set a different plush active (when swapping)
          * @param i ID of plush to set active
+         * @throws std::invalid_argument Already Active plush selected
+         * @throws std::invalid_argument Unknown plush selected
+         * @throws std::invalid_argument Dead plush selected
          */
         void setActive(int i);
 
@@ -55,6 +58,12 @@ namespace plushies {
          * @return Array of plushes of the player
          */
         std::vector<Plush> getPlushes() const { return plushes; }
+
+        /**
+         * Get a reference to the currenlty active plush
+         * @return Reference to currently active plush
+         */
+        Plush& active() { return plushes[activePlush]; }
 
         /**
          * Get the currently active plush
