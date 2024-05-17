@@ -23,10 +23,10 @@ namespace plushies {
 
     /**
      * Read in a line from a CSV file
-     * @param ifstream Stream to read from
+     * @param istream Stream to read from
      * @return vector of strings
      */
-    std::vector<string> readCSV(std::ifstream& ifstream);
+    std::vector<string> readCSV(std::istream& istream);
 
     class Server {
         EnemyMode enemyMode;

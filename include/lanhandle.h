@@ -25,7 +25,7 @@ namespace plushies::lanplay {
          * @param len Maximum length to receive
          * @param flags recv() flags
          */
-        void rec(char* buf, const int len = sizeof(buf), const int flags = 0) const
+        void rec(char* buf, const int len, const int flags = 0) const
         { communicator->rec(buf, len, flags); }
 
         /**

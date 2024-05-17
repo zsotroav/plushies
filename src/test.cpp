@@ -7,6 +7,8 @@
 #include "common.h"
 #include "player.h"
 #include "plush.h"
+#include "server.h"
+#include "overlord.h"
 
 #include "memtrace.h"
 
@@ -50,6 +52,11 @@ void dotest() {
         testAction1.decEnergy();                     // Decrement (use) energy
         EXPECT_EQ( 4, testAction1.getEnergy() );     // Available en. is 4
         EXPECT_EQ( 5, testAction1.getMaxEnergy() );  // Max should still be 5
+    } END
+
+    TEST(Action, failexcep) {
+        auto e = FailedAction();
+        EXPECT_TRUE(std::string("Action failed!") == std::string(e.what()));
     } END
 
     /// brand.h
@@ -118,9 +125,29 @@ void dotest() {
         EXPECT_TRUE(wbase == convertUFT8(base));
         EXPECT_TRUE(base == convertFromUFT8(wbase));
 
+        std::wstringstream ss;
+        ss << base;
+        EXPECT_TRUE(ss.str() == wbase);
     } ENDM
 
-    // wostream operators meh
+    // wostream operators
+    TEST(common, wostream.type) {
+        std::wstringstream ss;
+        ss << FLYING << ELECTRIC;
+        EXPECT_TRUE(ss.str() == std::wstring(L"FLYING  ELECTRIC"));
+    } END
+
+    TEST(common, wostream.gm) {
+        std::wstringstream ss;
+        ss << RANDOM << " " << CUSTOM;
+        EXPECT_TRUE(ss.str() == std::wstring(L"Random Custom"));
+    } END
+
+    TEST(common, wostream.ac) {
+        std::wstringstream ss;
+        ss << Physical << " " << Special;
+        EXPECT_TRUE(ss.str() == std::wstring(L"PHYSICAL SPECIAL "));
+    } END
 
     // split
     TEST(common, split space) {
@@ -203,14 +230,43 @@ void dotest() {
     } END
 
     TEST(plush, AC) {
+        EXPECT_NO_THROW(p1.getSafeAC(1));
         EXPECT_THROW(p2.getSafeAC(1), std::invalid_argument const&);
         EXPECT_NO_THROW(p1.operator>>(1));
         EXPECT_THROW(p1.operator>>(1), FailedAction const&); // Out of energy
     } END
 
+    TEST(plush, damage) {
+        auto pcpy = p1; // Copy to not mess with other tests
+        const int hp = pcpy.getHP();
+        EXPECT_NO_THROW(pcpy << (pcpy >> 0));
+        EXPECT_NE(hp, pcpy.getHP());
+    } END
+
+    TEST(plush, damage) {
+        auto pcpy = p1; // Copy to not mess with other tests
+        const int hp = pcpy.getHP();
+        EXPECT_NO_THROW(pcpy << (pcpy.getAC(0)));
+        EXPECT_NE(hp, pcpy.getHP());
+    } END
+
     TEST(plush, validMoves) {
         EXPECT_EQ(4, p1.validMoves());
         EXPECT_EQ(0, p2.validMoves());
+    } END
+
+    TEST(plush, validateAC) {
+        EXPECT_TRUE(p1.validateAC(0));
+        EXPECT_TRUE(p1.validateAC(p1.Actions[0]));
+        EXPECT_FALSE(p2.validateAC(0));
+        EXPECT_FALSE(p2.validateAC(p2.Actions[0]));
+    } END
+
+    TEST(plush, calcSpeed.Throw) {
+        EXPECT_NO_THROW(p1.calcDamage(0));
+        EXPECT_NO_THROW(p1.calcSpeed(0));
+
+        EXPECT_ANY_THROW(p1.calcDamage(4));
     } END
 
     /// Player
@@ -225,9 +281,11 @@ void dotest() {
 
         EXPECT_EQ(2, pl.numPlushes());
         EXPECT_EQ(2, pl.numPlushes(true));
+        EXPECT_EQ(2, pl.getPlushes().size());
         EXPECT_EQ(p1.getName(), act.getName());
         EXPECT_TRUE(p1.getBrand() == act.getBrand());
         EXPECT_TRUE(p1.Actions[0] == act.Actions[0]);
+        EXPECT_TRUE(ac == pl.activeAction(0));
     } END
 
     TEST(player, setActive ) {
@@ -259,7 +317,40 @@ void dotest() {
         EXPECT_THROW(pl.setActive(1), std::invalid_argument const&); // dead
     } END
 
+    /// server.h
 
+    TEST(server, readCSV) {
+        std::istringstream ifs("asd;fgh;jkl;éáű");
+        auto vec = readCSV(ifs);
+        EXPECT_EQ(4, vec.size());
+        EXPECT_EQ(std::string("asd"), vec[0]);
+        EXPECT_EQ(std::string("fgh"), vec[1]);
+        EXPECT_EQ(std::string("jkl"), vec[2]);
+        EXPECT_EQ(std::string("éáű"), vec[3]);
+    } ENDM
+
+    TEST(server, init) {
+        try {
+            Server s = Server(OVERLORD_CLYDE, RANDOM, 1);
+
+            auto n = overlord::Ninty(s, 1);
+            int re_den = n.ready(n.active());
+            EXPECT_TRUE(re_den >= 0 && re_den <= 4);
+
+            s.RegisterPlayer(new Player(pl), 1);
+            EXPECT_EQ(RANDOM, s.getGameMode());
+            EXPECT_EQ(OVERLORD_CLYDE, s.getLanMode());
+            EXPECT_EQ(false, s.againstLAN());
+
+            if (s.actions.size() == 0) FAIL() << "No actions";
+            if (s.brands.size() == 0 ) FAIL() << "No brands";
+
+            EXPECT_EQ(1, s.getPlayer(0)->numPlushes());
+
+        } catch (...) {
+            FAIL() << "Something threw an error";
+        }
+    } END
 
     delete ac1;
     delete ac2;

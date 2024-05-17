@@ -133,10 +133,10 @@ namespace plushies {
     }
 
 
-    std::vector<string> readCSV(std::ifstream& ifstream) {
+    std::vector<string> readCSV(std::istream& istream) {
         string line, word;
 
-        std::getline(ifstream, line);
+        std::getline(istream, line);
         std::vector<string> row;
         std::stringstream ss(line);
         while (std::getline(ss, word, ';'))

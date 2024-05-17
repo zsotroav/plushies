@@ -140,12 +140,12 @@ std::wostream& operator<<(std::wostream& wos, plushies::Type type);
 std::wostream& operator<<(std::wostream& wos, plushies::ActionCategory ac);
 
 /**
- * Write Enemy Mode out to wide output stream
+ * Write Game Mode out to wide output stream
  * @param wos Wide output stream (such as wcout)
- * @param em Enemy Mode to write out
+ * @param gm Game Mode to write out
  * @return Chainable wostream
  */
-std::wostream& operator<<(std::wostream& wos, plushies::EnemyMode em);
+std::wostream& operator<<(std::wostream& wos, plushies::GameMode gm);
 
 /**
  * Split a string at delimiters
