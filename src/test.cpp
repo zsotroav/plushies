@@ -56,7 +56,8 @@ void dotest() {
     /// brand.h
 
     int st[] = {100, 90, 45, 45, 80, 60 };
-    Brand testBrand = { "Test brand", Type::NORMAL, Type::NONE, st};
+    Brand testBrand  = { "Test brand", NORMAL, NONE, st};
+    Brand testBrand2 = { "Test brand 2", FIRE, WATER, st};
 
     TEST(Brand ctor, ctor/getter validate) {
         EXPECT_TRUE(std::string("Test brand") == testBrand.getName());
@@ -184,8 +185,8 @@ void dotest() {
         EXPECT_THROW(Plush(testBrand, UVLO, Actions), std::invalid_argument const&);
     } ENDM
 
-    Plush p1 = {testBrand, UVOK, Actions};
-    Plush p2 = {testBrand, UVOK, NullAcs};
+    Plush p1 = {testBrand,  UVOK, Actions};
+    Plush p2 = {testBrand2, UVOK, NullAcs};
 
     TEST(plush, ctor.valid) {
         EXPECT_EQ(testBrand.getName(), p1.getName());
@@ -214,6 +215,50 @@ void dotest() {
     } END
 
     /// Player
+
+    Player pl;
+
+    TEST(player, addplush) {
+        pl.addPlush(p1);
+        pl.addPlush(p2);
+
+        auto act = pl.getActivePlush();
+
+        EXPECT_EQ(2, pl.numPlushes());
+        EXPECT_EQ(2, pl.numPlushes(true));
+        EXPECT_EQ(p1.getName(), act.getName());
+        EXPECT_TRUE(p1.getBrand() == act.getBrand());
+        EXPECT_TRUE(p1.Actions[0] == act.Actions[0]);
+    } END
+
+    TEST(player, setActive ) {
+        EXPECT_THROW(pl.setActive(2), std::invalid_argument const&); // Inv
+        EXPECT_THROW(pl.setActive(0), std::invalid_argument const&); // Curr
+        EXPECT_NO_THROW(pl.setActive(1));
+    } END
+
+    TEST(player, numPlushes) {
+        pl.active() << pl.active().getMaxHP() + 10; // For sure dead
+        EXPECT_EQ(1, pl.numPlushes(true));  // One dead
+        EXPECT_EQ(2, pl.numPlushes(false)); // We still have two in total
+    } END
+
+    TEST(player, nextAlive) {
+        auto act = pl.getActivePlush();
+        EXPECT_EQ(p2.getName(), act.getName());
+        EXPECT_TRUE(p2.getBrand() == act.getBrand());
+        EXPECT_TRUE(p2.Actions[0] == act.Actions[0]);
+        pl.nextAlive();
+        auto nex = pl.getActivePlush();
+        EXPECT_EQ(p1.getName(), nex.getName());
+        EXPECT_TRUE(p1.getBrand() == nex.getBrand());
+        EXPECT_TRUE(p1.Actions[0] == nex.Actions[0]);
+    } END
+
+    TEST(player, setActive.dead ) {
+        EXPECT_THROW(pl.setActive(0), std::invalid_argument const&); // Curr
+        EXPECT_THROW(pl.setActive(1), std::invalid_argument const&); // dead
+    } END
 
 
 

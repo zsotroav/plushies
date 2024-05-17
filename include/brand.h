@@ -54,6 +54,14 @@ namespace plushies {
          * @param baseStats Array of the Base Stats in standard StatOrder
          */
         Brand(string name, Type base, Type secondary, const int baseStats[6]);
+
+        bool operator==(const Brand& rhs) const {
+            // If this much matches the game is either configured terribly
+            // or they are actually the same brand
+            return name == rhs.name && baseType == rhs.baseType &&
+                secondaryType == rhs.secondaryType &&
+                baseStatTotal() == rhs.baseStatTotal();
+        }
     };
 }
 
